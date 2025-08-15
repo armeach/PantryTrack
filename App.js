@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Button, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-export default function App() {
+import PantryProvider from './components/PantryProvider'
+
+import TitleScreen, { TitleScreenWrapper } from './screens/TitleScreen';
+import HomeScreen, { HomeScreenWrapper } from './screens/HomeScreen';
+import ManagePantryScreen, { ManageScreenWrapper } from './screens/ManagePantryScreen';
+import ScanScreen, { ScanScreenWrapper } from './screens/ScanScreen'
+
+const Root = createStackNavigator(); 
+
+export default function App() { 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PantryProvider> 
+      <NavigationContainer>
+        <Root.Navigator screenOptions={{ headerShown: false }}>
+          <Root.Screen name='Title' component={TitleScreenWrapper}/>
+          <Root.Screen name='Home' component={HomeScreenWrapper}/>
+          <Root.Screen name='Manage' component={ManageScreenWrapper}/>
+          <Root.Screen name='Scan' component={ScanScreenWrapper}/>
+        </Root.Navigator>
+      </NavigationContainer>
+    </PantryProvider>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+};
