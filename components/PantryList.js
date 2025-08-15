@@ -16,7 +16,7 @@ export default function PantryList({ items, onPressItem, route }) {
                         };
                     }}
                 >
-                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.title}>{item.title}, {item.quantity}{item.quantityUnit}, {item.dateAdded.slice(0, 10)}</Text>
                 </TouchableOpacity>
             )}
         />

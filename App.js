@@ -8,6 +8,7 @@ import PantryProvider from './components/PantryProvider'
 import TitleScreen, { TitleScreenWrapper } from './screens/TitleScreen';
 import HomeScreen, { HomeScreenWrapper } from './screens/HomeScreen';
 import ManagePantryScreen, { ManageScreenWrapper } from './screens/ManagePantryScreen';
+import AddPantryItemScree, { AddItemScreenWrapper } from './screens/AddPantryItemScreen';
 import ScanScreen, { ScanScreenWrapper } from './screens/ScanScreen'
 
 const Root = createStackNavigator(); 
@@ -20,6 +21,7 @@ export default function App() {
           <Root.Screen name='Title' component={TitleScreenWrapper}/>
           <Root.Screen name='Home' component={HomeScreenWrapper}/>
           <Root.Screen name='Manage' component={ManageScreenWrapper}/>
+          <Root.Screen name='AddItem' component={AddItemScreenWrapper}/>
           <Root.Screen name='Scan' component={ScanScreenWrapper}/>
         </Root.Navigator>
       </NavigationContainer>

@@ -1,9 +1,10 @@
 const randomId = () => Math.random().toString(); 
 
-const createItem = (title, quantity) => ({ 
+const createItem = ({ title, quantity=1, quantityUnit='unit', dateAdded=new Date().toISOString() }) => ({ 
     id: randomId(), 
     title,
     quantity,
+    quantityUnit,
     dateAdded: new Date().toISOString(),
 });
 
@@ -13,10 +14,7 @@ const types = {
 };
 
 export const actionCreators = {
-    add: (title, quantity=1) => ({
-        type: types.ADD, 
-        payload: createItem(title, quantity)
-    }),
+    add: (item) => ({ type: types.ADD, payload: createItem(item) }),
     remove: (id) => ({ type: types.REMOVE, payload: id }),
 };
 

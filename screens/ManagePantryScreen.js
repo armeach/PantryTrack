@@ -3,6 +3,7 @@ import {StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'rea
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import NavButton from '../components/NavButton';
 import NavBar from '../components/NavBar';
 
 import PantryList from '../components/PantryList';
@@ -30,10 +31,11 @@ export const ManageScreenWrapper = ({ navigation, route }) => {
                 {/*Top Content*/}
                 <View style={{ flex: 1 }}>
                     <ManagePantryScreen/>
-                    <AddItem
+                    <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} />
+                    {/* <AddItem
                         placeholder={"Add a pantry item, then hit enter!"}
                         onSubmitEditing={(title) => dispatch(actionCreators.add(title))}
-                    />
+                    /> */}
                     <PantryList
                         items={state.items}
                         onPressItem={(id) => dispatch(actionCreators.remove(id))}
