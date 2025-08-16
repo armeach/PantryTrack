@@ -1,37 +1,45 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const units = [
-        'pkgs',
-        'bottles',
-        'cans',
-        'bags',
-        'lbs',
-        'ozs',
-        'units',
-    ];
+    { label: 'package', value: 'pkgs' }, 
+    { label: 'bottles', value: 'bottles' }, 
+    { label: 'cans', value: 'cans' },
+    { label: 'bags', value: 'bags' },
+    { label: 'pounds', value: 'lbs' },
+    { label: 'ounces', value: 'ozs' }, 
+    {label: 'units', value: 'units' },
+];
 
 export default function UnitSelector({ selectedUnit, setSelectedUnit }) {
+    const [open, setOpen] = useState(false); 
+    
     return (
-        <Picker
+        <DropDownPicker
             style={styles.dropdown}
-            itemStyle={styles.text}
-            selectedValue={selectedUnit}
-            onValueChange={(value) => setSelectedUnit(value)}
-        >
-            {units.map((unit) => (
-                <Picker.Item key={unit} label={unit} value={unit} /> 
-            ))}
-            {/* <Picker.Item label="Other" value="Other" /> */}
-        </Picker>
+            textStyle={styles.text}
+            dropDownContainerStyle={styles.dropdownBox}
+            open={open}
+            value={selectedUnit}
+            items={units}
+            setOpen={setOpen}
+            setValue={setSelectedUnit}
+        />
     );
 };
 
 const styles = StyleSheet.create({
     dropdown: {
-        height: 75, 
+        height: 50, 
         width: 200,
+        borderWidth: 0,
+        backgroundColor: 'lightgreen',
+    },
+    dropdownBox: {
+        borderRadius: 12,
+        backgroundColor: 'white',
     },
     text: {
         fontSize: 20,

@@ -3,8 +3,6 @@ import { StyleSheet, Text, TextInput, View}  from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import NavButton from '../components/NavButton';
-
 import AddItem from '../components/AddItem';
 import { actionCreators, reducer, initialState } from '../components/pantry'
 import { PantryContext } from '../components/PantryProvider'
