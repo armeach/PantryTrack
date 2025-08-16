@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
-import NavButton from '../components/NavButton';
+import NavButton from './NavButton';
+import UnitSelector from './UnitSelector';
+import DateSelector from './DateSelector';
 
 export default function AddItem({ navigation, route, onSubmitEditing }) {
     const [text, setText] = useState('');
     const [quantity, setQuantity] = useState(''); 
-    const [quantityUnit, setQuantityUnit] = useState('unit')
-    const [date, setDate] = useState(new Date().toISOString().slice(0, 10)); // default to today
+    const [unit, setUnit] = useState('pkgs')
+    const [date, setDate] = useState(new Date()); // default to today
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const handleSubmit = () => {
         if (!text) return; 
@@ -15,23 +18,25 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
         onSubmitEditing({
             title: text,
             quantity: quantity || 1,
-            quantityUnit: quantityUnit,
+            unit: unit,
             dateAdded: date,
         });
 
         setText('');
         setQuantity('');
-        setQuantityUnit('unit');
+        setUnit('pkgs');
     };
 
     return (
         <View style={{ flex: 1 }}>
+            
             <TextInput
                 style={styles.input}
                 value={text}
                 placeholder="Input an item"
                 onChangeText={setText}
             />
+            
             <TextInput
                 style={styles.input}
                 value={quantity}
@@ -39,18 +44,25 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                 keyboardType="numeric"
                 onChangeText={setQuantity}
             />
-            <TextInput
-                style={styles.input}
-                value={quantityUnit}
-                placeholder="Input unit" // This should be a dropdown long-term
-                onChangeText={setQuantityUnit}
-            />
-            <TextInput
-                style={styles.input}
-                value={date}
-                placeholder="Input date"
-                onChangeText={setDate}
-            />
+            
+            <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit}/>
+            
+            <TouchableOpacity
+                style={styles.dateButton}
+                onPress={() => {
+                    setShowDatePicker(true);
+                }}
+            >
+                <Text style={styles.buttonText}>{date.toISOString().slice(0, 10)}</Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+                <DateSelector 
+                    date={date} 
+                    setDate={setDate} 
+                    setShowDatePicker={setShowDatePicker}
+                />
+            )}
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <TouchableHighlight 
                     style={styles.button} 
@@ -64,6 +76,7 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                 </TouchableHighlight>
                 <NavButton title='Cancel' destination='Manage' navigation={navigation} route={route}/>
             </View>
+
         </View>
     );
 };
@@ -81,6 +94,15 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         alignItems: 'center',
         backgroundColor: 'gray'
+    },
+    dateButton: {
+        height: 50,
+        paddingHorizontal: 10,
+    },
+    buttonText: {
+        fontSize: 20, 
+        textAlign: 'left',
+        color: 'black',
     },
     text: {
         textAlign: 'center',

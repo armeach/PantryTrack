@@ -1,11 +1,11 @@
 const randomId = () => Math.random().toString(); 
 
-const createItem = ({ title, quantity=1, quantityUnit='unit', dateAdded=new Date().toISOString() }) => ({ 
+const createItem = ({ title, quantity=1, unit='unit', dateAdded = new Date() }) => ({ 
     id: randomId(), 
     title,
     quantity,
-    quantityUnit,
-    dateAdded: new Date().toISOString(),
+    unit,
+    dateAdded,
 });
 
 const types = {
@@ -20,8 +20,8 @@ export const actionCreators = {
 
 export const initialState = {
     items: [
-        createItem('Soy Sauce'),
-        createItem('Garlic'),
+        createItem({ title: 'Soy Sauce' }),
+        createItem({ title : 'Garlic' }),
     ]
 };
 

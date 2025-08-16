@@ -32,10 +32,6 @@ export const ManageScreenWrapper = ({ navigation, route }) => {
                 <View style={{ flex: 1 }}>
                     <ManagePantryScreen/>
                     <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} />
-                    {/* <AddItem
-                        placeholder={"Add a pantry item, then hit enter!"}
-                        onSubmitEditing={(title) => dispatch(actionCreators.add(title))}
-                    /> */}
                     <PantryList
                         items={state.items}
                         onPressItem={(id) => dispatch(actionCreators.remove(id))}

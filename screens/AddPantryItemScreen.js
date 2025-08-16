@@ -33,11 +33,6 @@ export const AddItemScreenWrapper = ({ navigation, route }) => {
                         onSubmitEditing={(item) => dispatch(actionCreators.add(item))}
                     />
                 </View>
-
-                {/* <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
-                    <NavButton title='Submit' destination='Manage' navigation={navigation} route={route}/>
-                    <NavButton title='Cancel' destination='Manage' navigation={navigation} route={route}/>
-                </View> */}
             </View>
         </SafeAreaView>
     );
