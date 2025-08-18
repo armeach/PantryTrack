@@ -9,18 +9,33 @@ export default function PantryList({ items, onPressItem, route }) {
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => (
                 <TouchableOpacity
-                    style={styles.item}
+                    style={[styles.item, { backgroundColor: getItemColor(item) }]}
                     onPress={() => {
                         if (route.name != 'Home') {
                             onPressItem(item.id)    
                         };
                     }}
                 >
-                    <Text style={styles.title}>{item.title}, {item.quantity} {item.unit}, {item.dateAdded.toLocaleDateString()}</Text>
+                    <Text style={styles.title}>{item.title}, {item.quantity} {item.unit}, {item.dateAdded.toLocaleDateString()}, {item.expirationDate.toLocaleDateString()}</Text>
                 </TouchableOpacity>
             )}
         />
     );
+};
+
+function getItemColor (item) {
+    const now = new Date(); 
+    const diff = item.expirationDate - now; // difference between now and item expiration (ms)
+    const daysToExpiration = diff / (1000 * 60 * 60 * 24); // compute time to expiration in days
+
+    switch(true) { 
+        case daysToExpiration < 0: 
+            return 'red';
+        case daysToExpiration < 2: 
+            return 'orange';
+        default: 
+            return 'blue';
+    };
 };
 
 const styles = StyleSheet.create({
@@ -31,7 +46,7 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 2,
         borderRadius: 12,
-        backgroundColor: 'gray'
+        // backgroundColor: 'gray'
     },
     title: {
         color: 'white',

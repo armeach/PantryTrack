@@ -1,9 +1,32 @@
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
+import DropDownPicker from 'react-native-dropdown-picker';
+
 import NavButton from './NavButton';
 import UnitSelector from './UnitSelector';
 import DateSelector from './DateSelector';
+
+const getExpirationDate = (dateAdded, value, unit) => {
+    const date = new Date(dateAdded);
+
+    switch(unit) {
+        case 'days': 
+            date.setDate(date.getDate() + value);
+            break;
+        case 'weeks': 
+            date.setDate(date.getDate() + value*7);
+            break;
+        case 'months': 
+            date.setMonth(date.getMonth() + value); 
+            break;
+        case 'years': 
+            date.setFullYear(date.getFullYear() + value); 
+            break; 
+    };
+
+    return date;
+};
 
 export default function AddItem({ navigation, route, onSubmitEditing }) {
     const [text, setText] = useState('');
@@ -11,6 +34,22 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
     const [unit, setUnit] = useState('pkgs')
     const [date, setDate] = useState(new Date()); // default to today
     const [showDatePicker, setShowDatePicker] = useState(false);
+
+    const expirationTimes = Array.from({ length: 30 }, (_, i) => (
+        { label: String(i+1), value: i+1 }
+    ));
+    const expirationUnits = [
+        { label: 'days', value: 'days' },
+        { label: 'weeks', value: 'weeks' },
+        { label: 'months' , value: 'months' },
+        { label: 'years', value: 'years' },
+    ];
+
+    const [expirationTimeOpen, setExpirationTimeOpen] = useState(false);
+    const [expirationValue, setExpirationValue] = useState(1);
+
+    const [expirationUnitsOpen, setExpirationUnitsOpen] = useState(false);
+    const [expirationUnitsValue, setExpirationUnitsValue] = useState('days');
 
     const handleSubmit = () => {
         if (!text) return; 
@@ -20,6 +59,7 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
             quantity: quantity || 1,
             unit: unit,
             dateAdded: date,
+            expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
         });
 
         setText('');
@@ -30,38 +70,70 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
     return (
         <View style={{ flex: 1 }}>
             
-            <TextInput
-                style={styles.input}
-                value={text}
-                placeholder="Input an item"
-                onChangeText={setText}
-            />
-            
-            <TextInput
-                style={styles.input}
-                value={quantity}
-                placeholder="Input a quantity"
-                keyboardType="numeric"
-                onChangeText={setQuantity}
-            />
-            
-            <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit}/>
-            
-            <TouchableOpacity
-                style={styles.dateButton}
-                onPress={() => {
-                    setShowDatePicker(true);
-                }}
-            >
-                <Text style={styles.buttonText}>{date.toISOString().slice(0, 10)}</Text>
-            </TouchableOpacity>
-            {showDatePicker && (
-                <DateSelector 
-                    date={date} 
-                    setDate={setDate} 
-                    setShowDatePicker={setShowDatePicker}
+            <View>
+                <TextInput
+                    style={styles.input}
+                    value={text}
+                    placeholder="Input an item"
+                    onChangeText={setText}
                 />
-            )}
+                
+                <TextInput
+                    style={styles.input}
+                    value={quantity}
+                    placeholder="Input a quantity"
+                    keyboardType="numeric"
+                    onChangeText={setQuantity}
+                />
+                <Text style={{ fontSize: 20 }}>Select Units: </Text>
+                <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit}/>
+                
+                <Text style={{fontSize: 20}}>Select Date:</Text>
+                <TouchableOpacity
+                    style={styles.dateButton}
+                    onPress={() => {
+                        setShowDatePicker(true);
+                    }}
+                >
+                    <Text style={styles.buttonText}>{date.toISOString().slice(0, 10)}</Text>
+                </TouchableOpacity>
+                {showDatePicker && (
+                    <DateSelector 
+                        date={date} 
+                        setDate={setDate} 
+                        setShowDatePicker={setShowDatePicker}
+                    />
+                )}
+            </View>
+
+            <Text style={{ fontSize: 20 }}>Expiration:</Text>
+
+            <View style={{ flexDirection: 'row' }}>
+                <View>
+                    <DropDownPicker
+                        style={styles.dropdown}
+                        textStyle={styles.dropdownText}
+                        dropDownContainerStyle={styles.dropdownBox}
+                        open={expirationTimeOpen}
+                        value={expirationValue}
+                        items={expirationTimes}
+                        setOpen={setExpirationTimeOpen}
+                        setValue={setExpirationValue}
+                    />
+                </View>
+                <View>
+                    <DropDownPicker
+                        style={styles.dropdown}
+                        textStyle={styles.dropdownText}
+                        dropDownContainerStyle={styles.dropdownBox}
+                        open={expirationUnitsOpen}
+                        value={expirationUnitsValue}
+                        items={expirationUnits}
+                        setOpen={setExpirationUnitsOpen}
+                        setValue={setExpirationUnitsValue}
+                    />
+                </View>
+            </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <TouchableHighlight 
@@ -107,5 +179,19 @@ const styles = StyleSheet.create({
     text: {
         textAlign: 'center',
         color: 'white',
+    },
+    dropdown: {
+        height: 50, 
+        width: 200,
+        borderWidth: 0,
+        backgroundColor: 'lightgreen',
+    },
+    dropdownBox: {
+        borderRadius: 12,
+        backgroundColor: 'white',
+    },
+    dropdownText : {
+        fontSize: 20,
+        color: 'black',
     },
 });

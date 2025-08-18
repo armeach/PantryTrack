@@ -1,11 +1,12 @@
 const randomId = () => Math.random().toString(); 
 
-const createItem = ({ title, quantity=1, unit='unit', dateAdded = new Date() }) => ({ 
+const createItem = ({ title, quantity=1, unit='unit', dateAdded = new Date(), expirationDate }) => ({ 
     id: randomId(), 
     title,
     quantity,
     unit,
     dateAdded,
+    expirationDate : expirationDate || new Date(),
 });
 
 const types = {

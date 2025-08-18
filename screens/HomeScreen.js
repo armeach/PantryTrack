@@ -36,7 +36,7 @@ export const HomeScreenWrapper = ({ navigation, route }) => {
                     <TextInput
                         style={styles.input}
                         value={search}
-                        placeholder='Type Here!'
+                        placeholder='Search...'
                         onChangeText={setSearch}
                     />
                  
