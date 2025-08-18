@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import NavBar from '../components/NavBar';
 
+import filterItems from '../utils/filterItems';
+
 import PantryList from '../components/PantryList';
 import { actionCreators, reducer, initialState } from '../components/pantry';
 import { PantryContext } from '../components/PantryProvider'
@@ -22,10 +24,6 @@ export const HomeScreenWrapper = ({ navigation, route }) => {
     const [search, setSearch] = useState('');
     const { state, dispatch } = useContext(PantryContext); 
 
-    const filteredItems = state.items.filter(item => 
-        item.title.toLowerCase().includes(search.toLowerCase())
-    );
-
     return (
         <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom }]}>
             <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center' }}> 
@@ -41,7 +39,7 @@ export const HomeScreenWrapper = ({ navigation, route }) => {
                     />
                  
                     <PantryList
-                        items={filteredItems}
+                        items={filterItems(state.items, search)}
                         onPressItem={(id) => dispatch(actionCreators.remove(id))}
                         route = {route}
                     />
