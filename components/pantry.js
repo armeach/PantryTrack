@@ -1,6 +1,6 @@
 const randomId = () => Math.random().toString(); 
 
-const createItem = ({ title, quantity=1, unit='unit', category='misc.', dateAdded = new Date(), expirationDate }) => ({ 
+const createItem = ({ title, quantity=1, unit='units', category='misc.', dateAdded = new Date(), expirationDate }) => ({ 
     id: randomId(), 
     title,
     quantity,
@@ -22,8 +22,8 @@ export const actionCreators = {
 
 export const initialState = {
     items: [
-        createItem({ title: 'Soy Sauce' }),
-        createItem({ title : 'Garlic' }),
+        createItem({ title: 'Soy Sauce', unit: 'bottles', category: 'dry goods'}),
+        createItem({ title : 'Garlic', category: 'produce'}),
     ]
 };
 

@@ -30,11 +30,11 @@ function getItemColor (item) {
 
     switch(true) { 
         case daysToExpiration < 0: 
-            return 'red';
+            return '#f04141ff';
         case daysToExpiration < 2: 
-            return 'orange';
+            return '#efb631ff';
         default: 
-            return 'blue';
+            return '#3f9af0ff';
     };
 };
 
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 2,
         borderRadius: 12,
-        // backgroundColor: 'gray'
     },
     title: {
         color: 'white',

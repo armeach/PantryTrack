@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     container: { 
         flex: 1, 
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0,
-        backgroundColor: 'lightgreen',
+        backgroundColor: '#40e46fff',
     },
     title: {
         textAlign: 'center', 

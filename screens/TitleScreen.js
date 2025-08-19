@@ -1,5 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TitleScreen({ titleText }) {
     return (
@@ -9,26 +11,48 @@ export default function TitleScreen({ titleText }) {
     );
 };
 
-export const TitleScreenWrapper = ({ navigation }) => (
-    <View style={styles.screen}>
-        <TitleScreen titleText="PantryTrack" splashText="Tap to Enter"/>
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-                navigation.push('Home');
-            }}
+export const TitleScreenWrapper = ({ navigation }) => {
+    const opacity = useRef(new Animated.Value(1)).current;
+    
+    useEffect(() => {
+        const animation = Animated.loop(
+        Animated.sequence([
+            Animated.timing(opacity, { toValue: 0.3, duration: 1200, useNativeDriver: true }),
+            Animated.timing(opacity, { toValue: 1, duration: 1600, useNativeDriver: true }),
+        ]));
+
+        animation.start();
+    }, [opacity])
+
+    return (
+        // <View 
+        //     style={styles.screen}
+        // >
+        <LinearGradient
+            style={styles.screen}
+            colors={['#40e46fff', '#076e0cff']}
         >
-            <Text style={styles.text}>Tap to Enter</Text>
-        </TouchableOpacity>
-    </View>
-);
+            <TitleScreen titleText="PantryTrack"/>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                    navigation.push('Home');
+                }}
+            >
+                <Animated.Text style={[styles.text, { opacity }]}>
+                    Tap to Enter
+                </Animated.Text>
+            </TouchableOpacity>
+        </LinearGradient> 
+        // </View>
+    );
+};
 
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgreen',
     },
     title: { 
         textAlign: 'center',

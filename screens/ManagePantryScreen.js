@@ -32,6 +32,7 @@ export const ManageScreenWrapper = ({ navigation, route }) => {
                 <View style={{ flex: 1 }}>
                     <ManagePantryScreen/>
                     <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} />
+                    
                     <PantryList
                         items={state.items}
                         onPressItem={(id) => dispatch(actionCreators.remove(id))}
@@ -50,13 +51,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0,
-        backgroundColor: 'lightgreen',
+        backgroundColor: '#40e46fff',
     },
     screen: { 
         flex: 1, 
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lightgreen',
+        backgroundColor: '#40e46fff',
     },  
     title: {
         textAlign: 'center', 

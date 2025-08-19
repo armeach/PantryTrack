@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         height: 50, 
         width: 200,
         borderWidth: 0,
-        backgroundColor: 'lightgreen',
+        backgroundColor: '#40e46fff',
         zIndex: 1000,
     },
     dropdownBox: {
