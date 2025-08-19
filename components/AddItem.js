@@ -6,6 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import NavButton from './NavButton';
 import UnitSelector from './UnitSelector';
 import DateSelector from './DateSelector';
+import { categories, autoDetectCategory } from '../utils/categories';
 
 const getExpirationDate = (dateAdded, value, unit) => {
     const date = new Date(dateAdded);
@@ -51,6 +52,9 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
     const [expirationUnitsOpen, setExpirationUnitsOpen] = useState(false);
     const [expirationUnitsValue, setExpirationUnitsValue] = useState('days');
 
+    const [categoriesOpen, setCategoriesOpen] = useState(false); 
+    const [categoryValue, setCategoryValue] = useState('misc.');
+
     const handleSubmit = () => {
         if (!text) return; 
 
@@ -58,6 +62,7 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
             title: text,
             quantity: quantity || 1,
             unit: unit,
+            category: categoryValue,
             dateAdded: date,
             expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
         });
@@ -75,7 +80,10 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                     style={styles.input}
                     value={text}
                     placeholder="Input an item"
-                    onChangeText={setText}
+                    onChangeText={(val) => {
+                        setText(val);
+                        setCategoryValue(autoDetectCategory(val));
+                    }}
                 />
                 
                 <TextInput
@@ -88,7 +96,19 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                 <Text style={{ fontSize: 20 }}>Select Units: </Text>
                 <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit}/>
                 
-                <Text style={{fontSize: 20}}>Select Date:</Text>
+                <Text style={{ fontSize: 20 }}>Category: </Text>
+                <DropDownPicker
+                    style={styles.dropdown}
+                    textStyle={styles.dropdownText}
+                    dropDownContainerStyle={styles.dropdownBox}
+                    open={categoriesOpen}
+                    value={categoryValue}
+                    items={categories}
+                    setOpen={setCategoriesOpen}
+                    setValue={setCategoryValue}
+                />
+
+                <Text style={{fontSize: 20}}>Select Date Added:</Text>
                 <TouchableOpacity
                     style={styles.dateButton}
                     onPress={() => {
@@ -104,6 +124,7 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                         setShowDatePicker={setShowDatePicker}
                     />
                 )}
+            
             </View>
 
             <Text style={{ fontSize: 20 }}>Expiration:</Text>
@@ -185,10 +206,12 @@ const styles = StyleSheet.create({
         width: 200,
         borderWidth: 0,
         backgroundColor: 'lightgreen',
+        zIndex: 1000,
     },
     dropdownBox: {
         borderRadius: 12,
         backgroundColor: 'white',
+        zIndex: 2000,
     },
     dropdownText : {
         fontSize: 20,

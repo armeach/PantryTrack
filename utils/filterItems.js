@@ -15,6 +15,15 @@ export default function filterItems(items, query) {
         });
     };
 
+    // category:(text)
+    if (query.startsWith('category:')) { 
+        const queryCategory = query.slice('category:'.length).trim();
+
+        return items.filter(item => 
+            item.category.toLowerCase().includes(queryCategory)
+        );
+    };
+
     // default functionality: text search
     return items.filter(item => 
         item.title.toLowerCase().includes(query.toLowerCase())

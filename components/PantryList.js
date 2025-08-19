@@ -16,7 +16,7 @@ export default function PantryList({ items, onPressItem, route }) {
                         };
                     }}
                 >
-                    <Text style={styles.title}>{item.title}, {item.quantity} {item.unit}, {item.dateAdded.toLocaleDateString()}, {item.expirationDate.toLocaleDateString()}</Text>
+                    <Text style={styles.title}>{item.title}, {item.quantity} {item.unit}, {item.category}, {item.dateAdded.toLocaleDateString()}, {item.expirationDate.toLocaleDateString()}</Text>
                 </TouchableOpacity>
             )}
         />
