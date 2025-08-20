@@ -4,9 +4,9 @@ import { SafeAreaView, Platform, StatusBar } from 'react-native';
 
 import NavBar from '../components/NavBar';
 
-import PantryList from '../components/PantryList';
-import AddItem from '../components/AddItem';
-import { actionCreators, reducer, initialState } from '../components/pantry';
+// import PantryList from '../components/PantryList';
+// import AddItem from '../components/AddItem';
+// import { actionCreators, reducer, initialState } from '../utils/items';
 
 export default function ScanScreen() {
     return (

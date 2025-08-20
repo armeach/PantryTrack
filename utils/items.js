@@ -12,7 +12,7 @@ const createItem = ({ title, quantity=1, unit='units', category='misc.', dateAdd
 
 const types = {
     ADD: 'ADD',
-    REMOVE: 'REMOVE'
+    REMOVE: 'REMOVE',
 };
 
 export const actionCreators = {
@@ -24,6 +24,10 @@ export const initialState = {
     items: [
         createItem({ title: 'Soy Sauce', unit: 'bottles', category: 'dry goods'}),
         createItem({ title : 'Garlic', category: 'produce'}),
+        createItem({ title: 'Olive Oil', unit: 'bottles', category: 'dry goods' }),
+        createItem({ title: 'Eggs', unit: 'dozen', category: 'dairy' }),
+        createItem({ title: 'Spinach', unit: 'bags', category: 'produce' }),
+        createItem({ title: 'Rice', unit: 'bags', category: 'grains' }),
     ]
 };
 

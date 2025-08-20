@@ -1,5 +1,5 @@
-import React, { useContext, useReducer } from 'react';
-import {StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,9 +7,7 @@ import NavButton from '../components/NavButton';
 import NavBar from '../components/NavBar';
 
 import PantryList from '../components/PantryList';
-import AddItem from '../components/AddItem';
-import { actionCreators, reducer, initialState } from '../components/pantry'
-import { PantryContext } from '../components/PantryProvider'
+// import { usePantry } from '../context/PantryProvider';
 
 export default function ManagePantryScreen() {
     return (
@@ -22,8 +20,7 @@ export default function ManagePantryScreen() {
 export const ManageScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets(); 
 
-    // const [state, dispatch] = useReducer(reducer, initialState);
-    const { state, dispatch } = useContext(PantryContext); 
+    // const { items, addItem, removeItem } = usePantry(); 
 
     return (
         <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom }]}>
@@ -31,17 +28,17 @@ export const ManageScreenWrapper = ({ navigation, route }) => {
                 {/*Top Content*/}
                 <View style={{ flex: 1 }}>
                     <ManagePantryScreen/>
-                    <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} />
                     
-                    <PantryList
-                        items={state.items}
-                        onPressItem={(id) => dispatch(actionCreators.remove(id))}
-                        route = {route}
-                    />
+                    <View style={{ flexDirection: 'row' }}>
+                        <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} />
+                        <NavButton title="Scan Item" destination='Scan' navigation={navigation} route={route}/>
+                    </View>
+                    
+                    <PantryList/>
                 </View>
                 
                 {/*Navigation Buttons*/}
-                <NavBar navigation={navigation} route={route}/>
+                <NavBar navigation={navigation} route={route} />
             </View>
         </SafeAreaView>
     );

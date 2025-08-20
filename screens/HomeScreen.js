@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,8 +8,7 @@ import NavBar from '../components/NavBar';
 import filterItems from '../utils/filterItems';
 
 import PantryList from '../components/PantryList';
-import { actionCreators, reducer, initialState } from '../components/pantry';
-import { PantryContext } from '../components/PantryProvider'
+import { usePantry } from '../context/PantryProvider'
 
 export default function HomeScreen( { homeText } ) {
     return (
@@ -22,7 +21,7 @@ export default function HomeScreen( { homeText } ) {
 export const HomeScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets(); 
     const [search, setSearch] = useState('');
-    const { state, dispatch } = useContext(PantryContext); 
+    const { items, addItem, removeItem } = usePantry(); 
 
     return (
         <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom }]}>
@@ -39,9 +38,9 @@ export const HomeScreenWrapper = ({ navigation, route }) => {
                     />
                  
                     <PantryList
-                        items={filterItems(state.items, search)}
-                        onPressItem={(id) => dispatch(actionCreators.remove(id))}
+                        items={filterItems(items, search)}
                         route = {route}
+                        enableSwipe = {false}
                     />
                 </View>
                 

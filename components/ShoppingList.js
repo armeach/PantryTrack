@@ -3,11 +3,11 @@ import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import SwipeableListItem from './SwipeableListItem';
 
-import { usePantry } from '../context/PantryProvider';
+import { useShoppingList } from '../context/ShoppingProvider';
 
-export default function PantryList({ enableSwipe = true}) {  
-    const { items, addItem, removeItem } = usePantry(); 
-
+export default function ShoppingList({ enableSwipe = true }) {
+    const { items, addItem, removeItem } = useShoppingList(); 
+    
     return (
         <FlatList
             style={styles.container}
@@ -18,7 +18,7 @@ export default function PantryList({ enableSwipe = true}) {
                 
                 const content = (
                     <Text
-                        style={[styles.item, { backgroundColor: getItemColor(item) }]}
+                        style={[styles.item, { backgroundColor: '#3f9af0ff' }]}
                     >
                         {textContent}
                     </Text> 
@@ -28,7 +28,7 @@ export default function PantryList({ enableSwipe = true}) {
                     enableSwipe ? (
                         <SwipeableListItem 
                             textContent={textContent}
-                            itemColor={getItemColor(item)}
+                            itemColor={'#3f9af0ff'}
                             onSwipeRight={() => removeItem(item.id)}
                         />
                     ) : (
@@ -40,31 +40,8 @@ export default function PantryList({ enableSwipe = true}) {
     );
 };
 
-function getItemColor (item) {
-    const now = new Date(); 
-    const diff = item.expirationDate - now; // difference between now and item expiration (ms)
-    const daysToExpiration = diff / (1000 * 60 * 60 * 24); // compute time to expiration in days
-
-    switch(true) { 
-        case daysToExpiration < 0: 
-            return '#f04141ff';
-        case daysToExpiration < 2: 
-            return '#efb631ff';
-        default: 
-            return '#3f9af0ff';
-    };
-};
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    item: {
-        padding: 15,
-        marginBottom: 2,
-        borderRadius: 12,
-    },
-    title: {
-        color: 'white',
     },
 });

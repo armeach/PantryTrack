@@ -4,8 +4,7 @@ import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AddItem from '../components/AddItem';
-import { actionCreators, reducer, initialState } from '../components/pantry'
-import { PantryContext } from '../components/PantryProvider'
+import { usePantry } from '../context/PantryProvider'
 
 export default function AddPantryItemScreen() {
     return (
@@ -18,7 +17,7 @@ export default function AddPantryItemScreen() {
 export const AddItemScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets();
 
-    const { state, dispatch } = useContext(PantryContext);
+    const { addItem } = usePantry(); 
 
     return(
         <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom}]}>
@@ -28,7 +27,7 @@ export const AddItemScreenWrapper = ({ navigation, route }) => {
                     <AddItem
                         navigation={navigation}
                         route={route}
-                        onSubmitEditing={(item) => dispatch(actionCreators.add(item))}
+                        onSubmitEditing={(item) => addItem(item)}
                     />
                 </View>
             </View>
