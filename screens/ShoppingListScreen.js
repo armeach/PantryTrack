@@ -6,7 +6,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import NavBar from '../components/NavBar';
 
 import ShoppingList from '../components/ShoppingList';
-import { useShoppingList } from '../context/ShoppingProvider';
 
 export default function ShoppingListScreen() {
     return (
@@ -19,8 +18,6 @@ export default function ShoppingListScreen() {
 
 export const ShoppingListScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets(); 
-
-    const { items, addItem, removeItem } = useShoppingList(); 
     
     return(
         <SafeAreaView style={[styles.container, {paddingBottom: insets.bottom }]}>

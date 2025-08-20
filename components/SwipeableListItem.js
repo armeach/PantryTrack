@@ -12,7 +12,7 @@ function RightAction({ prog, dragX }) {
 
     return (
         <Reanimated.View style={styleAnimation}>
-            <Text style={styles.rightAction}>MOVE TO SHOPPING LIST NOT IMPLEMENTED</Text>
+            <Text style={styles.rightAction}>Move to Shopping List</Text>
         </Reanimated.View>
     );
 };
@@ -29,7 +29,7 @@ function LeftAction({ prog, dragX }) {
     );
 };
 
-export default function SwipeableListItem({ textContent, itemColor, onSwipeRight }) { 
+export default function SwipeableListItem({ textContent, itemColor, onSwipeRight = () => {}, onSwipeLeft = () => {} }) { 
     const content = <Text>{textContent}</Text>;
 
     return (
@@ -42,6 +42,10 @@ export default function SwipeableListItem({ textContent, itemColor, onSwipeRight
                 onSwipeableWillOpen={(direction) => {
                     if (direction === 'right') {
                         onSwipeRight(); 
+                    };
+
+                    if (direction === 'left') {
+                        onSwipeLeft(); 
                     };
                 }}
 

@@ -7,7 +7,6 @@ import NavButton from '../components/NavButton';
 import NavBar from '../components/NavBar';
 
 import PantryList from '../components/PantryList';
-// import { usePantry } from '../context/PantryProvider';
 
 export default function ManagePantryScreen() {
     return (
@@ -19,8 +18,6 @@ export default function ManagePantryScreen() {
 
 export const ManageScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets(); 
-
-    // const { items, addItem, removeItem } = usePantry(); 
 
     return (
         <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom }]}>

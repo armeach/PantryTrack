@@ -4,9 +4,11 @@ import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import SwipeableListItem from './SwipeableListItem';
 
 import { usePantry } from '../context/PantryProvider';
+import { useShoppingList } from '../context/ShoppingProvider';
 
 export default function PantryList({ enableSwipe = true}) {  
     const { items, addItem, removeItem } = usePantry(); 
+    const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem } = useShoppingList(); 
 
     return (
         <FlatList
@@ -30,6 +32,10 @@ export default function PantryList({ enableSwipe = true}) {
                             textContent={textContent}
                             itemColor={getItemColor(item)}
                             onSwipeRight={() => removeItem(item.id)}
+                            onSwipeLeft={() => {
+                                addShoppingItem(item);
+                                removeItem(item.id);
+                            }}
                         />
                     ) : (
                         content
