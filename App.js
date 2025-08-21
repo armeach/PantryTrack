@@ -8,7 +8,7 @@
   import TitleScreen, { TitleScreenWrapper } from './screens/TitleScreen';
   import HomeScreen, { HomeScreenWrapper } from './screens/HomeScreen';
   import ManagePantryScreen, { ManageScreenWrapper } from './screens/ManagePantryScreen';
-  import AddPantryItemScreen, { AddItemScreenWrapper } from './screens/AddPantryItemScreen';
+  import AddItem, { AddItemScreenWrapper } from './screens/AddItemScreen';
   import ShoppingListScreen, { ShoppingListScreenWrapper } from './screens/ShoppingListScreen';
   import ScanScreen, { ScanScreenWrapper } from './screens/ScanScreen'
 import { ShoppingProvider } from './context/ShoppingProvider';
@@ -23,7 +23,7 @@ import { ShoppingProvider } from './context/ShoppingProvider';
             <Root.Navigator screenOptions={{ headerShown: false }}>
               <Root.Screen name='Title' component={TitleScreenWrapper} />
               <Root.Screen name='Home' component={HomeScreenWrapper} />
-              <Root.Screen name='Manage' component={ManageScreenWrapper} />
+              <Root.Screen name='ManagePantry' component={ManageScreenWrapper} />
               <Root.Screen name='AddItem' component={AddItemScreenWrapper} />
               <Root.Screen name='ShoppingList' component={ShoppingListScreenWrapper} />
               <Root.Screen name='Scan' component={ScanScreenWrapper} />

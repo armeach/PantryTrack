@@ -29,8 +29,8 @@ function LeftAction({ prog, dragX }) {
     );
 };
 
-export default function SwipeableListItem({ textContent, itemColor, onSwipeRight = () => {}, onSwipeLeft = () => {} }) { 
-    const content = <Text>{textContent}</Text>;
+export default function SwipeableListItem({ textContent, itemColor, onSwipeRight = () => {}, onSwipeLeft = () => {}, children }) { 
+    const content = children || <Text>{textContent}</Text>;
 
     return (
         <GestureHandlerRootView style={styles.viewStyle}>

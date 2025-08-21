@@ -4,9 +4,10 @@ import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AddItem from '../components/AddItem';
-import { usePantry } from '../context/PantryProvider'
+import { usePantry } from '../context/PantryProvider';
+import { useShoppingList } from '../context/ShoppingProvider';
 
-export default function AddPantryItemScreen() {
+export default function AddItemScreen() {
     return (
         <View>
             <Text style={styles.title}>ITEM INPUT SCREEN</Text>
@@ -17,7 +18,12 @@ export default function AddPantryItemScreen() {
 export const AddItemScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets();
 
-    const { addItem } = usePantry(); 
+    const state = navigation.getState(); 
+    const previousRoute = state.routes[state.index -1]?.name;
+
+    const addItem = previousRoute === 'ManagePantry'
+        ? usePantry().addItem
+        : useShoppingList().addItem;
 
     return(
         <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom}]}>

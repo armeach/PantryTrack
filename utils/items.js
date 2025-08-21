@@ -13,11 +13,13 @@ const createItem = ({ title, quantity=1, unit='units', category='misc.', dateAdd
 const types = {
     ADD: 'ADD',
     REMOVE: 'REMOVE',
+    TOGGLE_CHECKED: 'TOGGLE_CHECKED',
 };
 
 export const actionCreators = {
     add: (item) => ({ type: types.ADD, payload: createItem(item) }),
     remove: (id) => ({ type: types.REMOVE, payload: id }),
+    toggleChecked: (id) => ({ type: types.TOGGLE_CHECKED, payload: id }),
 };
 
 export const initialState = {
@@ -40,5 +42,14 @@ export function reducer(state, action) {
                 ...state,
                 items: state.items.filter((item) => item.id !== action.payload),
             };
+        case types.TOGGLE_CHECKED: 
+            return{
+                ...state,
+                items: state.items.map(i => 
+                    i.id === action.payload ? { ...i, checked: !i.checked } : i
+                ),
+            };
+        default: 
+            return state;
     };
 };

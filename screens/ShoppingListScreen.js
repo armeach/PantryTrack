@@ -3,9 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import NavButton from '../components/NavButton';
 import NavBar from '../components/NavBar';
 
 import ShoppingList from '../components/ShoppingList';
+import AddPurchasedButton from '../components/AddPurchasedButton';
 
 export default function ShoppingListScreen() {
     return (
@@ -23,7 +25,10 @@ export const ShoppingListScreenWrapper = ({ navigation, route }) => {
         <SafeAreaView style={[styles.container, {paddingBottom: insets.bottom }]}>
             <View style={{ flex: 1 }}>
                 <ShoppingListScreen/>
-
+                <View style={{ flexDirection: 'row' }}>
+                    <NavButton title="Add Item to Shopping List" destination="AddItem" navigation={navigation} route={route} />
+                    <AddPurchasedButton navigation={navigation} />
+                </View>
                 <ShoppingList/>
             </View>
 

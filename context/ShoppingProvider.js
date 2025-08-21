@@ -9,9 +9,10 @@ export function ShoppingProvider({ children }) {
 
     const addItem = (item) => dispatch(actionCreators.add(item)); 
     const removeItem = (id) => dispatch(actionCreators.remove(id)); 
+    const toggleChecked = (id) => dispatch(actionCreators.toggleChecked(id));
 
     return (
-        <ShoppingListContext.Provider value={{ items: state.items, addItem, removeItem }}>
+        <ShoppingListContext.Provider value={{ items: state.items, addItem, removeItem, toggleChecked }}>
             {children}
         </ShoppingListContext.Provider>
     );

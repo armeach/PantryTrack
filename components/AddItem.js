@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import NavButton from './NavButton';
 import UnitSelector from './UnitSelector';
 import DateSelector from './DateSelector';
 import { categories, autoDetectCategory } from '../utils/categories';
@@ -167,7 +166,16 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                 >
                     <Text style={styles.text}>Submit</Text>
                 </TouchableHighlight>
-                <NavButton title='Cancel' destination='Manage' navigation={navigation} route={route}/>
+                {/* <NavButton title='Cancel' destination='Manage' navigation={navigation} route={route}/> */}
+                <TouchableHighlight
+                    style={styles.button}
+                    underlayColor='lightgray'
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                >
+                    <Text style={styles.text}>Cancel</Text>
+                </TouchableHighlight>
             </View>
 
         </View>
