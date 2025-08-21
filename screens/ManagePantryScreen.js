@@ -4,49 +4,32 @@ import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import NavButton from '../components/NavButton';
-import NavBar from '../components/NavBar';
 
 import PantryList from '../components/PantryList';
 
-export default function ManagePantryScreen() {
-    return (
-        <View>
-            <Text style={styles.title}>Modify Pantry</Text>
-        </View>
-    );
-};
+import ScreenStyles from '../styles/ScreenStyles';
 
-export const ManageScreenWrapper = ({ navigation, route }) => {
+export default function ManagePantryScreen({ navigation, route }) {
     const insets = useSafeAreaInsets(); 
 
     return (
-        <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom }]}>
+        <SafeAreaView style={ScreenStyles.container}>
             <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center'}}> 
-                {/*Top Content*/}
                 <View style={{ flex: 1 }}>
-                    <ManagePantryScreen/>
-                    
+
                     <View style={{ flexDirection: 'row' }}>
-                        <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} />
+                        <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} params={{ listType: 'pantry' }} />
                         <NavButton title="Scan Item" destination='Scan' navigation={navigation} route={route}/>
                     </View>
                     
                     <PantryList/>
                 </View>
-                
-                {/*Navigation Buttons*/}
-                <NavBar navigation={navigation} route={route} />
             </View>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0,
-        backgroundColor: '#40e46fff',
-    },
     screen: { 
         flex: 1, 
         justifyContent: 'center',

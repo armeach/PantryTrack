@@ -9,41 +9,25 @@ import NavBar from '../components/NavBar';
 import ShoppingList from '../components/ShoppingList';
 import AddPurchasedButton from '../components/AddPurchasedButton';
 
-export default function ShoppingListScreen() {
-    return (
-        <View>
-            <Text style={styles.title}>Shopping List</Text>
-        </View>
+import ScreenStyles from '../styles/ScreenStyles';
 
-    );
-};
-
-export const ShoppingListScreenWrapper = ({ navigation, route }) => {
+export default function ShoppingListScreen({ navigation, route }) {
     const insets = useSafeAreaInsets(); 
     
     return(
-        <SafeAreaView style={[styles.container, {paddingBottom: insets.bottom }]}>
+        <SafeAreaView style={ScreenStyles.container}>
             <View style={{ flex: 1 }}>
-                <ShoppingListScreen/>
                 <View style={{ flexDirection: 'row' }}>
-                    <NavButton title="Add Item to Shopping List" destination="AddItem" navigation={navigation} route={route} />
+                    <NavButton title="Add Item to Shopping List" destination="AddItem" navigation={navigation} route={route} params={{ listType: 'shopping' }} />
                     <AddPurchasedButton navigation={navigation} />
                 </View>
                 <ShoppingList/>
             </View>
-
-            {/*Navigation Buttons*/}
-            <NavBar navigation={navigation} route={route} />
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight: 0,
-        backgroundColor: '#40e46fff',
-    },
     title: {
         textAlign: 'center', 
         color: 'white',

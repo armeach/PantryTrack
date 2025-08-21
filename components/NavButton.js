@@ -1,13 +1,13 @@
 import { StyleSheet, Text, TouchableHighlight } from 'react-native'
 
-export default function NavButton ({ title, destination, navigation, route }) {
+export default function NavButton ({ title, destination, navigation, route, params }) {
     return (
         <TouchableHighlight
             style={styles.button}
             underlayColor='lightgray'
             onPress={() => {
                 if (route.name !== destination) {
-                    navigation.push(destination);
+                    navigation.push(destination, params);
                 };
             }}
         >

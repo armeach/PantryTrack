@@ -36,7 +36,7 @@ export const TitleScreenWrapper = ({ navigation }) => {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    navigation.push('Home');
+                    navigation.navigate('MainTabs');
                 }}
             >
                 <Animated.Text style={[styles.text, { opacity }]}>

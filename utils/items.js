@@ -27,7 +27,7 @@ export const initialState = {
         createItem({ title: 'Soy Sauce', unit: 'bottles', category: 'dry goods'}),
         createItem({ title : 'Garlic', category: 'produce'}),
         createItem({ title: 'Olive Oil', unit: 'bottles', category: 'dry goods' }),
-        createItem({ title: 'Eggs', unit: 'dozen', category: 'dairy' }),
+        createItem({ title: 'Eggs', unit: 'package', category: 'dairy' }),
         createItem({ title: 'Spinach', unit: 'bags', category: 'produce' }),
         createItem({ title: 'Rice', unit: 'bags', category: 'grains' }),
     ]

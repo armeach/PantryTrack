@@ -18,10 +18,8 @@ export default function AddItemScreen() {
 export const AddItemScreenWrapper = ({ navigation, route }) => {
     const insets = useSafeAreaInsets();
 
-    const state = navigation.getState(); 
-    const previousRoute = state.routes[state.index -1]?.name;
-
-    const addItem = previousRoute === 'ManagePantry'
+    const listType = route.params?.listType;
+    const addItem = listType === 'pantry'
         ? usePantry().addItem
         : useShoppingList().addItem;
 

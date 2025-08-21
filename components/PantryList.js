@@ -16,7 +16,7 @@ export default function PantryList({ enableSwipe = true}) {
             data={items}
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => {
-                const textContent = `${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`
+                const textContent = `${item.id} ${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`
                 
                 const content = (
                     <Text

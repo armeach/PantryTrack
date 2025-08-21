@@ -1,15 +1,47 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import NavButton from './NavButton';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-export default function NavBar({ navigation, route }) { 
+import { Ionicons } from '@expo/vector-icons';
+
+import HomeScreen from '../screens/HomeScreen';
+import ManagePantryScreen from '../screens/ManagePantryScreen';
+import ShoppingListScreen from '../screens/ShoppingListScreen';
+
+const Tab = createBottomTabNavigator();
+
+export default function NavBar({ navigation, route }) {
     return (
-        <View style={styles.buttonView}>
-            <NavButton title="Pantry Contents" destination='Home' navigation={navigation} route={route} />
-            <NavButton title="Manage Pantry" destination='ManagePantry' navigation={navigation} route={route} />
-            <NavButton title="Shopping List" destination='ShoppingList' navigation={navigation} route={route} />
-            {/* <NavButton title="Scanner" destination="Scan" navigation={navigation} route={route} /> */}
-        </View>
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ color, size }) => {
+                    let iconName;
+
+                    if (route.name === 'Home') {
+                        iconName = 'home-outline';
+                    } else if (route.name === 'Manage Pantry') { 
+                        iconName = 'cube-outline';
+                    } else if (route.name === 'Shopping List') {
+                        iconName = 'cart-outline';
+                    };
+
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+
+                // headerStyle: styles.tabStyle,
+                // headerTitleStyle: { color: 'white'},
+
+                headerShown: false,
+
+                tabBarStyle: styles.tabStyle,
+                tabBarActiveTintColor: '#F5F5DC',
+                tabBarInactiveTintColor: '#D9D9C6',   
+            })}
+        >
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Manage Pantry" component={ManagePantryScreen} />
+            <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
+        </Tab.Navigator>
     );
 };
 
@@ -18,4 +50,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
     },  
+    tabStyle: {
+        backgroundColor: '#8AA29E',
+    },
 });

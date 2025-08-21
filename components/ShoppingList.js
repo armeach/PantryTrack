@@ -10,7 +10,7 @@ export default function ShoppingList({ enableSwipe = true }) {
     const { items, addItem, removeItem, toggleChecked } = useShoppingList(); 
     
     const CheckBoxListItem = ({ item }) => {
-        const content = `${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`;
+        const content = `${item.id} ${item.title}, ${item.quantity} ${item.unit}`;//, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`;
                 
         return(
             <ListItem style={styles.item}> 
