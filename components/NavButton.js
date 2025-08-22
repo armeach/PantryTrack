@@ -1,32 +1,21 @@
-import { StyleSheet, Text, TouchableHighlight } from 'react-native'
+import { TouchableHighlight } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
 
-export default function NavButton ({ title, destination, navigation, route, params }) {
+import ButtonStyles from '../styles/ButtonStyles';
+
+export default function NavButton ({ icon, iconSize=24, destination, navigation, route, params, onPressCustom }) {
     return (
         <TouchableHighlight
-            style={styles.button}
+            style={ButtonStyles.navButton}
             underlayColor='lightgray'
             onPress={() => {
+                if (onPressCustom) onPressCustom();
                 if (route.name !== destination) {
                     navigation.push(destination, params);
                 };
             }}
         >
-            <Text style={styles.text}>{title}</Text>
+            <Ionicons name={icon} size={iconSize} />
         </TouchableHighlight>
     )
 };
-
-const styles = StyleSheet.create({
-    button: {
-        flex: 1,
-        margin: 5,
-        padding: 20, 
-        borderRadius: 12,
-        alignItems: 'center',
-        backgroundColor: 'gray'
-    },
-    text: {
-        textAlign: 'center',
-        color: 'white',
-    },
-});

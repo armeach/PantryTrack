@@ -1,48 +1,53 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { CheckBox, ListItem } from 'react-native-elements';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CheckBox } from 'react-native-elements';
 
 import SwipeableListItem from './SwipeableListItem';
 
 import { useShoppingList } from '../context/ShoppingProvider';
 
+import ListStyles from '../styles/ListStyles';
+
 export default function ShoppingList({ enableSwipe = true }) {
     const { items, addItem, removeItem, toggleChecked } = useShoppingList(); 
     
-    const CheckBoxListItem = ({ item }) => {
-        const content = `${item.id} ${item.title}, ${item.quantity} ${item.unit}`;//, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`;
+    const CheckBoxListItem = ({ item, itemColor }) => {
+        // const content = `${item.id} ${item.title}, ${item.quantity} ${item.unit}`;//, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`;
+        const content = `${item.title}, ${item.quantity} ${item.unit}`;
                 
         return(
-            <ListItem style={styles.item}> 
-                <ListItem.Content>
-                    <Text>{content}</Text>
-                </ListItem.Content>
+            <View style={[ListStyles.item, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: itemColor }]}>
+                <Text>{content}</Text>
                 <CheckBox
+                    containerStyle={{ padding: 0, margin: 0 }}
                     checked={item.checked}
                     onPress={() => toggleChecked(item.id)}
                 />
-            </ListItem>
+            </View>
         );
     };
 
     return (
         <FlatList
             style={styles.container}
+            contentContainerStyle={{ paddingHorizontal: 20 }}
             data={items}
             keyExtractor={(item) => item.id}
 
             renderItem={({ item, index }) => {    
+                const itemColor = item.checked ? '#C6E2B3' : '#F9F7F3';
+
                 return (
                     enableSwipe ? (
                         <SwipeableListItem 
                             key={item.id}
-                            itemColor={'#3f9af0ff'}
+                            itemColor={itemColor}
                             onSwipeRight={() => removeItem(item.id)}
                         >
-                            <CheckBoxListItem item={item} />
+                            <CheckBoxListItem item={item} itemColor={itemColor} />
                         </SwipeableListItem>
                     ) : (
-                        <CheckBoxListItem item={item} />
+                        <CheckBoxListItem item={item} itemColor={itemColor} />
                     )
                 );
             }}

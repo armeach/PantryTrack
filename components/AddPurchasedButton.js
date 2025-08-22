@@ -1,34 +1,31 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function AddPurchasedButton({ navigation }) {
+import { Ionicons } from '@expo/vector-icons';
+
+import ButtonStyles from '../styles/ButtonStyles';
+
+export default function AddPurchasedButton({ icon, navigation }) {
     return (
         <View>
             <TouchableOpacity
-                style={styles.button}
+                style={ButtonStyles.addItemsButton}
                 underlayColor='lightgray'
                 onPress={() => {
                     navigation.pop();
                 }}
             >  
-                <Text style={styles.text}>
+                {/* <Text style={styles.text}>
                     Batch Move to Pantry {'\n'} 
                     (not yet working)
-                </Text>
+                </Text> */}
+                <Ionicons name={icon} size={24} />
             </TouchableOpacity>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    button: {
-        flex: 1, 
-        margin: 5, 
-        padding: 20, 
-        borderRadius: 12,
-        alignItems: 'center',
-        backgroundColor: 'gray',
-    },  
     text: {
         textAlign: 'center',
         color: 'white',

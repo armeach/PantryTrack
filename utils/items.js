@@ -22,7 +22,7 @@ export const actionCreators = {
     toggleChecked: (id) => ({ type: types.TOGGLE_CHECKED, payload: id }),
 };
 
-export const initialState = {
+export const createInitialState = () => ({
     items: [
         createItem({ title: 'Soy Sauce', unit: 'bottles', category: 'dry goods'}),
         createItem({ title : 'Garlic', category: 'produce'}),
@@ -31,7 +31,7 @@ export const initialState = {
         createItem({ title: 'Spinach', unit: 'bags', category: 'produce' }),
         createItem({ title: 'Rice', unit: 'bags', category: 'grains' }),
     ]
-};
+});
 
 export function reducer(state, action) {
     switch (action.type) {

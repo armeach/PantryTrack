@@ -7,15 +7,10 @@ import AddItem from '../components/AddItem';
 import { usePantry } from '../context/PantryProvider';
 import { useShoppingList } from '../context/ShoppingProvider';
 
-export default function AddItemScreen() {
-    return (
-        <View>
-            <Text style={styles.title}>ITEM INPUT SCREEN</Text>
-        </View>
-    );
-};
+import BackButton from '../components/BackButton';
+import ScreenStyles from '../styles/ScreenStyles';
 
-export const AddItemScreenWrapper = ({ navigation, route }) => {
+export default function AddItemScreen({ navigation, route }) {
     const insets = useSafeAreaInsets();
 
     const listType = route.params?.listType;
@@ -24,10 +19,13 @@ export const AddItemScreenWrapper = ({ navigation, route }) => {
         : useShoppingList().addItem;
 
     return(
-        <SafeAreaView style={[styles.container, { paddingBottom: insets.bottom}]}>
+        <SafeAreaView style={ScreenStyles.container}>
             <View style={[styles.view, { paddingBottom: insets.bottom+20}]}>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '100%' }}>
+                    <BackButton navigation={navigation} route={route} />
+                </View>
+                
                 <View>
-                    <Text style={styles.title}>Add Item</Text>
                     <AddItem
                         navigation={navigation}
                         route={route}

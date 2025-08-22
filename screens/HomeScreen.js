@@ -16,23 +16,26 @@ export default function HomeScreen({ navigation, route })  {
     const { items, addItem, removeItem } = usePantry(); 
 
     return (
-        <SafeAreaView style={ScreenStyles.container}>
-            <View style={{ flex: 1, alignItems: 'center', marginTop: 10 }}> 
+        <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+            <View style={{ flex: 1, marginTop: 10 }}> 
                 
-                <View style={styles.searchWrapper}> 
-                    <TextInput
-                        style={styles.input}
-                        value={search}
-                        placeholder='Search...'
-                        onChangeText={setSearch}
-                    />
+                <View style={{ alignItems: 'center' }}>
+                    <View style={styles.searchWrapper}> 
+                        <TextInput
+                            style={styles.input}
+                            value={search}
+                            placeholder='Search...'
+                            onChangeText={setSearch}
+                        />
+                    </View>
                 </View>
                 
-                <View style={{ paddingHorizontal: 20 }}>
+                <View style={{ flex: 1, width: '100%' }}>
                     <PantryList
-                        items={filterItems(items, search)}
+                        items={items}
                         route = {route}
                         enableSwipe = {false}
+                        filter={filterItems(items, search)}
                     />
                 </View>
             </View>
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 5, 
         marginBottom: 10,
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,

@@ -28,11 +28,7 @@ export default function NavBar({ navigation, route }) {
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
 
-                // headerStyle: styles.tabStyle,
-                // headerTitleStyle: { color: 'white'},
-
                 headerShown: false,
-
                 tabBarStyle: styles.tabStyle,
                 tabBarActiveTintColor: '#F5F5DC',
                 tabBarInactiveTintColor: '#D9D9C6',   
@@ -52,5 +48,6 @@ const styles = StyleSheet.create({
     },  
     tabStyle: {
         backgroundColor: '#8AA29E',
+        height: 60,
     },
 });

@@ -1,26 +1,32 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import SwipeableListItem from './SwipeableListItem';
 
 import { usePantry } from '../context/PantryProvider';
 import { useShoppingList } from '../context/ShoppingProvider';
 
-export default function PantryList({ enableSwipe = true}) {  
+import ListStyles from '../styles/ListStyles';
+
+export default function PantryList({ enableSwipe = true, filter}) {  
     const { items, addItem, removeItem } = usePantry(); 
     const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem } = useShoppingList(); 
+
+    const dataToRender = filter || items;
 
     return (
         <FlatList
             style={styles.container}
-            data={items}
+            contentContainerStyle={{ paddingHorizontal: 20 }}
+            data={dataToRender}
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => {
-                const textContent = `${item.id} ${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`
+                // const textContent = `${item.id} ${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`
+                const textContent = `${item.title}, ${item.quantity} ${item.unit}`;
                 
                 const content = (
                     <Text
-                        style={[styles.item, { backgroundColor: getItemColor(item) }]}
+                        style={[ListStyles.listItem, { backgroundColor: getItemColor(item) }]}
                     >
                         {textContent}
                     </Text> 
@@ -53,11 +59,11 @@ function getItemColor (item) {
 
     switch(true) { 
         case daysToExpiration < 0: 
-            return '#f04141ff';
+            return '#FFB3B3';
         case daysToExpiration < 2: 
-            return '#efb631ff';
+            return '#FFF5BA';
         default: 
-            return '#3f9af0ff';
+            return '#BFFCC6';
     };
 };
 

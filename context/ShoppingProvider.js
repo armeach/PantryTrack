@@ -1,11 +1,11 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
-import { reducer, initialState, actionCreators } from '../utils/items';
+import { reducer, createInitialState, actionCreators } from '../utils/items';
 
 const ShoppingListContext = createContext(); 
 
 export function ShoppingProvider({ children }) {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, createInitialState());
 
     const addItem = (item) => dispatch(actionCreators.add(item)); 
     const removeItem = (id) => dispatch(actionCreators.remove(id)); 

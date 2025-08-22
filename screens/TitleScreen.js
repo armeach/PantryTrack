@@ -25,9 +25,6 @@ export const TitleScreenWrapper = ({ navigation }) => {
     }, [opacity])
 
     return (
-        // <View 
-        //     style={styles.screen}
-        // >
         <LinearGradient
             style={styles.screen}
             colors={['#40e46fff', '#076e0cff']}
@@ -44,7 +41,6 @@ export const TitleScreenWrapper = ({ navigation }) => {
                 </Animated.Text>
             </TouchableOpacity>
         </LinearGradient> 
-        // </View>
     );
 };
 

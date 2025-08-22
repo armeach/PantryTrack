@@ -1,9 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView, Platform, StatusBar } from 'react-native';
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import NavButton from '../components/NavButton';
+import PopoverMenuPantryManage from '../components/PopoverMenuPantryManage';
 
 import PantryList from '../components/PantryList';
 
@@ -13,48 +12,18 @@ export default function ManagePantryScreen({ navigation, route }) {
     const insets = useSafeAreaInsets(); 
 
     return (
-        <SafeAreaView style={ScreenStyles.container}>
-            <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center'}}> 
+        <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+            <View style={{ flex: 1, marginTop: 10 }}> 
+                
                 <View style={{ flex: 1 }}>
-
-                    <View style={{ flexDirection: 'row' }}>
-                        <NavButton title="Add Item to Pantry" destination='AddItem' navigation={navigation} route={route} params={{ listType: 'pantry' }} />
-                        <NavButton title="Scan Item" destination='Scan' navigation={navigation} route={route}/>
-                    </View>
-                    
                     <PantryList/>
                 </View>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 20, paddingVertical: 20 }}>
+                        <PopoverMenuPantryManage navigation={navigation} route={route}/>
+                </View>
+
             </View>
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    screen: { 
-        flex: 1, 
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#40e46fff',
-    },  
-    title: {
-        textAlign: 'center', 
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 52,
-    },
-    text: {
-        textAlign: 'center',
-        color: 'white',
-        fontSize: 28,
-    },
-    navButton: {
-        padding: 40,
-        borderRadius: 4, 
-    },
-    button: {
-        padding: 40, 
-        borderRadius: 4,
-        alignItems: 'center',
-        backgroundColor: 'gray'
-    },
-});

@@ -5,14 +5,20 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, { useAnimatedStyle } from 'react-native-reanimated';
 
+import { Ionicons } from '@expo/vector-icons';
+
+import ListStyles from '../styles/ListStyles';
+
 function RightAction({ prog, dragX }) { 
     const styleAnimation = useAnimatedStyle(() => ({
         transform: [{ translateX: dragX.value+50 }],
     }));
 
     return (
-        <Reanimated.View style={styleAnimation}>
-            <Text style={styles.rightAction}>Move to Shopping List</Text>
+        <Reanimated.View style={[styleAnimation, { justifyContent: 'center', alignItems: 'center' }]}>
+            {/* <Text style={styles.rightAction}>Move to Shopping List</Text> */}
+            <Ionicons name={'bag-add-outline'} size={24} color="white" />
+            {/* <Ionicons name={'cart-plus-outline'} size={24} color="white" /> */}
         </Reanimated.View>
     );
 };
@@ -23,8 +29,8 @@ function LeftAction({ prog, dragX }) {
     }));
 
     return (
-        <Reanimated.View style={styleAnimation}>
-            <Text style={styles.rightAction}>Delete?</Text>
+        <Reanimated.View style={[styleAnimation, { justifyContent: 'center', alignItems: 'center' }]}>
+            <Ionicons name={'trash-outline'} size={24} color="white" />
         </Reanimated.View>
     );
 };
@@ -35,7 +41,7 @@ export default function SwipeableListItem({ textContent, itemColor, onSwipeRight
     return (
         <GestureHandlerRootView style={styles.viewStyle}>
             <ReanimatedSwipeable
-                containerStyle={[styles.swipeable, { backgroundColor: itemColor }]}
+                containerStyle={[ListStyles.listItem, { backgroundColor: itemColor }]}
                 friction={2}
                 rightThreshold={80}
                 leftThreshold={80}
@@ -69,11 +75,6 @@ const styles = StyleSheet.create({
     viewStyle: {
         flex: 1,
         justifyContent: 'center',
-    },
-    swipeable: {
-        padding: 15, 
-        marginBottom: 2, 
-        borderRadius: 12,
     },
     rightAction: {
         // width: 50,
