@@ -7,6 +7,8 @@ import UnitSelector from './UnitSelector';
 import DateSelector from './DateSelector';
 import { categories, autoDetectCategory } from '../utils/categories';
 
+import InteractionStyles from '../styles/InteractionStyles.js';
+
 const getExpirationDate = (dateAdded, value, unit) => {
     const date = new Date(dateAdded);
 
@@ -26,6 +28,21 @@ const getExpirationDate = (dateAdded, value, unit) => {
     };
 
     return date;
+};
+
+export function SubmitButton({ handleSubmit, navigation }) {
+    return (
+        <TouchableHighlight 
+            style={InteractionStyles.navButton} 
+            underlayColor='lightgray'
+            onPress={() => {
+                handleSubmit();
+                navigation.goBack();
+            }}
+        >
+            <Ionicons name={'checkmark'} size={36} />
+        </TouchableHighlight>
+    );
 };
 
 export default function AddItem({ navigation, route, onSubmitEditing }) {
@@ -72,157 +89,129 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, width: '100%' }}>
             
-            <View>
-                <TextInput
-                    style={styles.input}
-                    value={text}
-                    placeholder="Input an item"
-                    onChangeText={(val) => {
-                        setText(val);
-                        setCategoryValue(autoDetectCategory(val));
-                    }}
-                />
-                
-                <TextInput
-                    style={styles.input}
-                    value={quantity}
-                    placeholder="Input a quantity"
-                    keyboardType="numeric"
-                    onChangeText={setQuantity}
-                />
-                <Text style={{ fontSize: 20 }}>Select Units: </Text>
-                <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit}/>
-                
-                <Text style={{ fontSize: 20 }}>Category: </Text>
-                <DropDownPicker
-                    style={styles.dropdown}
-                    textStyle={styles.dropdownText}
-                    dropDownContainerStyle={styles.dropdownBox}
-                    open={categoriesOpen}
-                    value={categoryValue}
-                    items={categories}
-                    setOpen={setCategoriesOpen}
-                    setValue={setCategoryValue}
-                />
+            
+            <View style={{ marginBottom: 20 }}>
 
+                {/* Input for Item */}
+                <View style={InteractionStyles.inputWrapper}>
+                    <TextInput
+                        style={InteractionStyles.inputText}
+                        value={text}
+                        placeholder="Input item..."
+                        onChangeText={(val) => {
+                            setText(val);
+                            setCategoryValue(autoDetectCategory(val));
+                        }}
+                    />
+                </View>
+
+                { /* Input for Quantity */}
+                <View style={InteractionStyles.inputWrapper}>
+                    <TextInput
+                        style={InteractionStyles.inputText}
+                        value={quantity}
+                        placeholder="Input quantity..."
+                        keyboardType="numeric"
+                        onChangeText={setQuantity}
+                    />
+                </View>
+                
+            </View>
+
+            <View>
+                {/* Input for Units */}
+                <View style={{ justifyContent: 'center', marginBottom: 60 }}>
+                    <Text style={{ fontSize: 20, marginBottom: 10 }}>Select Units: </Text>
+                    <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit} />
+                </View>
+            </View>
+
+            <View>
+                {/* Input for Category */}
+                <View style={{ justifyContent: 'center', marginBottom: 20 }}>
+                    <Text style={{ fontSize: 20 }}>Category: </Text>
+                    <DropDownPicker
+                        style={InteractionStyles.dropdownPicker}
+                        textStyle={InteractionStyles.dropdownText}
+                        dropDownContainerStyle={InteractionStyles.dropdownWindow}
+                        open={categoriesOpen}
+                        value={categoryValue}
+                        items={categories}
+                        setOpen={setCategoriesOpen}
+                        setValue={setCategoryValue}
+                    />
+                </View>
+            </View>
+
+            {/* Input for Date */}
+            <View style={{ justifyContent: 'center', marginBottom: 20}}>
                 <Text style={{fontSize: 20}}>Select Date Added:</Text>
                 <TouchableOpacity
-                    style={styles.dateButton}
+                    style={InteractionStyles.dateButton}
                     onPress={() => {
                         setShowDatePicker(true);
                     }}
                 >
-                    <Text style={styles.buttonText}>{date.toISOString().slice(0, 10)}</Text>
+                    <Text style={InteractionStyles.dateButtonText}>{date.toLocaleDateString()}</Text>
                 </TouchableOpacity>
+                
                 {showDatePicker && (
                     <DateSelector 
                         date={date} 
                         setDate={setDate} 
                         setShowDatePicker={setShowDatePicker}
+                
                     />
                 )}
-            
             </View>
 
-            <Text style={{ fontSize: 20 }}>Expiration:</Text>
+            {/* Input for Expiration */}
+            <View style={{ marginBottom: 20}}>
+                <Text style={{ fontSize: 20 }}>Expiration:</Text>
 
-            <View style={{ flexDirection: 'row' }}>
-                <View>
-                    <DropDownPicker
-                        style={styles.dropdown}
-                        textStyle={styles.dropdownText}
-                        dropDownContainerStyle={styles.dropdownBox}
-                        open={expirationTimeOpen}
-                        value={expirationValue}
-                        items={expirationTimes}
-                        setOpen={setExpirationTimeOpen}
-                        setValue={setExpirationValue}
-                    />
-                </View>
-                <View>
-                    <DropDownPicker
-                        style={styles.dropdown}
-                        textStyle={styles.dropdownText}
-                        dropDownContainerStyle={styles.dropdownBox}
-                        open={expirationUnitsOpen}
-                        value={expirationUnitsValue}
-                        items={expirationUnits}
-                        setOpen={setExpirationUnitsOpen}
-                        setValue={setExpirationUnitsValue}
-                    />
+                <View style={{ flexDirection: 'row' }}>
+                    <View>
+                        <DropDownPicker
+                            style={InteractionStyles.dropdownPicker}
+                            textStyle={InteractionStyles.dropdownText}
+                            dropDownContainerStyle={InteractionStyles.dropdownWindow}
+                            open={expirationTimeOpen}
+                            value={expirationValue}
+                            items={expirationTimes}
+                            setOpen={setExpirationTimeOpen}
+                            setValue={setExpirationValue}
+                        />
+                    </View>
+                    <View>
+                        <DropDownPicker
+                            style={InteractionStyles.dropdownPicker}
+                            textStyle={InteractionStyles.dropdownText}
+                            dropDownContainerStyle={InteractionStyles.dropdownWindow}
+                            open={expirationUnitsOpen}
+                            value={expirationUnitsValue}
+                            items={expirationUnits}
+                            setOpen={setExpirationUnitsOpen}
+                            setValue={setExpirationUnitsValue}
+                        />
+                    </View>
                 </View>
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <View style={{ }}>
                 <TouchableHighlight 
-                    style={styles.button} 
+                    style={[InteractionStyles.navButton]} 
                     underlayColor='lightgray'
                     onPress={() => {
                         handleSubmit();
                         navigation.goBack();
                     }}
                 >
-                    <Text style={styles.text}>Submit</Text>
-                </TouchableHighlight>
-                {/* <NavButton title='Cancel' destination='Manage' navigation={navigation} route={route}/> */}
-                <TouchableHighlight
-                    style={styles.button}
-                    underlayColor='lightgray'
-                    onPress={() => {
-                        navigation.goBack();
-                    }}
-                >
-                    <Text style={styles.text}>Cancel</Text>
+                    <Text style={InteractionStyles.dateButtonText}>Submit</Text>
                 </TouchableHighlight>
             </View>
 
-        </View>
+        </View>        
     );
-};
-
-const styles = StyleSheet.create({
-    input: {
-        padding: 10, 
-        height: 50,
-        fontSize: 20,
-    },
-    button: {
-        flex: 1,
-        margin: 5,
-        padding: 20, 
-        borderRadius: 12,
-        alignItems: 'center',
-        backgroundColor: 'gray'
-    },
-    dateButton: {
-        height: 50,
-        paddingHorizontal: 10,
-    },
-    buttonText: {
-        fontSize: 20, 
-        textAlign: 'left',
-        color: 'black',
-    },
-    text: {
-        textAlign: 'center',
-        color: 'white',
-    },
-    dropdown: {
-        height: 50, 
-        width: 200,
-        borderWidth: 0,
-        backgroundColor: '#40e46fff',
-        zIndex: 1000,
-    },
-    dropdownBox: {
-        borderRadius: 12,
-        backgroundColor: 'white',
-        zIndex: 2000,
-    },
-    dropdownText : {
-        fontSize: 20,
-        color: 'black',
-    },
-});
+}; 

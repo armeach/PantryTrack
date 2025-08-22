@@ -3,13 +3,13 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import ButtonStyles from '../styles/ButtonStyles';
+import InteractionStyles from '../styles/InteractionStyles';
 
 export default function AddPurchasedButton({ icon, navigation }) {
     return (
         <View>
             <TouchableOpacity
-                style={ButtonStyles.addItemsButton}
+                style={InteractionStyles.addItemsButton}
                 underlayColor='lightgray'
                 onPress={() => {
                     navigation.pop();

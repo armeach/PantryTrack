@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
+
+import InteractionStyles from '../styles/InteractionStyles';
 
 const units = [
     { label: 'package', value: 'pkgs' }, 
@@ -18,30 +20,14 @@ export default function UnitSelector({ selectedUnit, setSelectedUnit }) {
     
     return (
         <DropDownPicker
-            style={styles.dropdown}
-            textStyle={styles.text}
-            dropDownContainerStyle={styles.dropdownBox}
+            style={[InteractionStyles.dropdownPicker, { flex: 1 }]}
+            textStyle={InteractionStyles.dropdownText}
+            dropDownContainerStyle={InteractionStyles.dropdownWindow}
             open={open}
             value={selectedUnit}
             items={units}
             setOpen={setOpen}
             setValue={setSelectedUnit}
-        />
+        />            
     );
 };
-
-const styles = StyleSheet.create({
-    dropdown: {
-        height: 50, 
-        width: 200,
-        borderWidth: 0,
-        backgroundColor: '#40e46fff',
-    },
-    dropdownBox: {
-        borderRadius: 12,
-        backgroundColor: 'white',
-    },
-    text: {
-        fontSize: 20,
-    },
-});

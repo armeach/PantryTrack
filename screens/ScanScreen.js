@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ScreenStyles from '../styles/ScreenStyles';
 
@@ -13,8 +14,9 @@ export default function ScanScreen() {
 };
 
 export const ScanScreenWrapper = ({ navigation, route }) => {
+    const insets = useSafeAreaInsets();
     return (
-        <SafeAreaView style={ScreenStyles.container}>
+        <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             {/*Top Content*/}
             <ScanScreen/>
         </SafeAreaView>

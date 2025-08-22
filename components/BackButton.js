@@ -1,18 +1,18 @@
 import { StyleSheet, TouchableHighlight } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import ButtonStyles from '../styles/ButtonStyles';
+import InteractionStyles from '../styles/InteractionStyles.js';
 
 export default function BackButton ({ navigation, route }) {
     return (
         <TouchableHighlight
-            style={ButtonStyles.backButton}
+            style={InteractionStyles.backButton}
             underlayColor='lightgray'
             onPress={() => {
                 navigation.pop();
             }}
         >
-            <Ionicons name={'chevron-back-outline'} size={24} color='black'/>
+            <Ionicons name={'chevron-back-outline'} size={36} color='black'/>
         </TouchableHighlight>
     );
 };

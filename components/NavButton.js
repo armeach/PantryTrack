@@ -1,12 +1,12 @@
 import { TouchableHighlight } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
-import ButtonStyles from '../styles/ButtonStyles';
+import InteractionStyles from '../styles/InteractionStyles';
 
 export default function NavButton ({ icon, iconSize=24, destination, navigation, route, params, onPressCustom }) {
     return (
         <TouchableHighlight
-            style={ButtonStyles.navButton}
+            style={InteractionStyles.navButton}
             underlayColor='lightgray'
             onPress={() => {
                 if (onPressCustom) onPressCustom();

@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TextInput, View}  from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableHighlight, View}  from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import AddItem from '../components/AddItem';
+import { Ionicons } from '@expo/vector-icons';
+
+import AddItem, {SubmitButton } from '../components/AddItem';
 import { usePantry } from '../context/PantryProvider';
 import { useShoppingList } from '../context/ShoppingProvider';
 
 import BackButton from '../components/BackButton';
 import ScreenStyles from '../styles/ScreenStyles';
+import InteractionStyles from '../styles/InteractionStyles.js';
 
 export default function AddItemScreen({ navigation, route }) {
     const insets = useSafeAreaInsets();
@@ -19,9 +22,10 @@ export default function AddItemScreen({ navigation, route }) {
         : useShoppingList().addItem;
 
     return(
-        <SafeAreaView style={ScreenStyles.container}>
+        <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <View style={[styles.view, { paddingBottom: insets.bottom+20}]}>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', width: '100%' }}>
+                
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: '100%', paddingBottom: 10 }}>
                     <BackButton navigation={navigation} route={route} />
                 </View>
                 
@@ -32,6 +36,7 @@ export default function AddItemScreen({ navigation, route }) {
                         onSubmitEditing={(item) => addItem(item)}
                     />
                 </View>
+
             </View>
         </SafeAreaView>
     );

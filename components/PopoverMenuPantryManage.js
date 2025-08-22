@@ -6,8 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import NavButton from './NavButton';
 
-import ButtonStyles from '../styles/ButtonStyles';
-
 export default function PopoverMenuPantryManage({ navigation, route }) {
     const [showPopover, setShowPopover] = useState(false);
     const anchorRef = useRef();
