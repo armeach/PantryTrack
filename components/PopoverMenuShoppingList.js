@@ -5,6 +5,7 @@ import Popover from 'react-native-popover-view';
 import { Ionicons } from '@expo/vector-icons';
 
 import NavButton from './NavButton';
+import AddPurchasedButton from './AddPurchasedButton';
 
 export default function PopoverMenuShoppingList({ navigation, route }) {
     const [showPopover, setShowPopover] = useState(false);
@@ -48,6 +49,13 @@ export default function PopoverMenuShoppingList({ navigation, route }) {
                         route={route} 
                         onPressCustom={() => {
                             setShowPopover(false);
+                        }}
+                    />
+                    <AddPurchasedButton 
+                        icon='arrow-forward-circle'
+                        iconSize={40}
+                        onPressCustom={() => {
+                            setShowPopover(false)
                         }}
                     />
                 </View>

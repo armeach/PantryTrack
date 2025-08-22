@@ -9,7 +9,6 @@ export default StyleSheet.create({
         backgroundColor: '#8AA29E',
     },
     addItemsButton: {
-        flex: 1,
         margin: 5,
         padding: 20,
         borderRadius: 12, 

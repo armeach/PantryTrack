@@ -20,7 +20,7 @@ export default function ManagePantryScreen({ navigation, route }) {
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 20, paddingVertical: 20 }}>
-                        <PopoverMenuPantryManage navigation={navigation} route={route}/>
+                        <PopoverMenuPantryManage navigation={navigation} route={route} />
                 </View>
 
             </View>
