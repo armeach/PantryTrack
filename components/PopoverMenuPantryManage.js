@@ -47,6 +47,7 @@ export default function PopoverMenuPantryManage({ navigation, route }) {
                         destination='Scan' 
                         navigation={navigation} 
                         route={route}
+                        params={{ listType: 'pantry' }} 
                         onPressCustom={() => {
                             setShowPopover(false);
                         }}

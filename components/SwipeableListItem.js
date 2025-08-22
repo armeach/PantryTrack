@@ -16,9 +16,7 @@ function RightAction({ prog, dragX }) {
 
     return (
         <Reanimated.View style={[styleAnimation, { justifyContent: 'center', alignItems: 'center' }]}>
-            {/* <Text style={styles.rightAction}>Move to Shopping List</Text> */}
             <Ionicons name={'bag-add-outline'} size={24} color="white" />
-            {/* <Ionicons name={'cart-plus-outline'} size={24} color="white" /> */}
         </Reanimated.View>
     );
 };
