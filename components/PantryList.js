@@ -1,26 +1,68 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import SwipeableListItem from './SwipeableListItem';
 
 import { usePantry } from '../context/PantryProvider';
 import { useShoppingList } from '../context/ShoppingProvider';
 
+import { categories } from '../utils/categories';
+import { capitalizeWords } from '../utils/capitalizeWords';
+
 import ListStyles from '../styles/ListStyles';
 
-export default function PantryList({ enableSwipe = true, filter}) {  
+export default function PantryList({ enableSwipe = true, filter, isSearching}) {  
     const { items, addItem, removeItem } = usePantry(); 
     const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem } = useShoppingList(); 
 
     const dataToRender = filter || items;
 
+    const sections = categories.map(cat => ({
+        title: capitalizeWords(cat.label),
+        data: dataToRender.filter(item => 
+            item.category ? item.category === cat.value : categories.value === 'Misc.'
+        )
+    }))
+
+    const [expandedSections, setExpandedSections] = useState({}); 
+    const toggleSection = (value) => {
+        setExpandedSections(prev => ({
+            ...prev,
+            [value]: !prev[value],
+        }));
+    };
+
     return (
-        <FlatList
-            style={styles.container}
-            contentContainerStyle={{ paddingHorizontal: 20 }}
-            data={dataToRender}
+        <SectionList
+            style={{ flex: 1 }}
+            sections={sections}
             keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => {
+            renderSectionHeader={({ section }) => {
+                const category = categories.find(cat => cat.value === section.title.toLowerCase());
+                const iconName = category?.icon || 'ellipsis-horizontal'
+
+                return (
+                    <View style={ListStyles.listSection}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                toggleSection(section.title);
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row' }}>
+                                <Ionicons name={iconName} size={24} style={{ marginRight: 10 }} />
+                                <Text>{section.title}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    
+                );
+            }}
+
+            renderItem={({ item, section }) => {
+                if (!isSearching && !expandedSections[section.title]) return null; // If we haven't expanded the section don't show it
+
                 // const textContent = `${item.id} ${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`
                 const textContent = `${item.title}, ${item.quantity} ${item.unit}`;
                 
@@ -66,17 +108,3 @@ function getItemColor (item) {
             return '#BFFCC6';
     };
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    item: {
-        padding: 15,
-        marginBottom: 2,
-        borderRadius: 12,
-    },
-    title: {
-        color: 'white',
-    },
-});

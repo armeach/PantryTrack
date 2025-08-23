@@ -1,10 +1,15 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { FlatList, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import SwipeableListItem from './SwipeableListItem';
 
 import { useShoppingList } from '../context/ShoppingProvider';
+
+import { categories } from '../utils/categories';
+import { capitalizeWords } from '../utils/capitalizeWords';
 
 import ListStyles from '../styles/ListStyles';
 
@@ -27,15 +32,50 @@ export default function ShoppingList({ enableSwipe = true }) {
         );
     };
 
-    return (
-        <FlatList
-            style={styles.container}
-            contentContainerStyle={{ paddingHorizontal: 20 }}
-            data={items}
-            keyExtractor={(item) => item.id}
+    const sections = categories.map(cat => ({
+        title: capitalizeWords(cat.label),
+        data: items.filter(item => 
+            item.category ? item.category === cat.value : categories.value === 'Misc.'
+        )
+    }))
 
-            renderItem={({ item, index }) => {    
+    const [expandedSections, setExpandedSections] = useState({});
+    const toggleSection = (value) => {
+        setExpandedSections(prev => ({
+            ...prev,
+            [value]: !prev[value],
+        }))
+    }
+
+    return (
+        <SectionList
+            style={{ flex: 1 }}
+            sections={sections}
+            keyExtractor={(item) => item.id}
+            renderSectionHeader={({ section }) => {
+                const category = categories.find(cat => cat.value === section.title.toLowerCase());
+                const iconName = category?.icon || 'ellipsis-horizontal'
+
+                return (
+                    <View style={ListStyles.listSection}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                toggleSection(section.title);
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row' }}>
+                                <Ionicons name={iconName} size={24} style={{ marginRight: 10 }} />
+                                <Text>{section.title}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                );
+            }}
+
+            renderItem={({ item, section }) => {    
                 const itemColor = item.checked ? '#C6E2B3' : '#F9F7F3';
+                if (!expandedSections[section.title]) return null; // If we haven't expanded the section don't show it
+
 
                 return (
                     enableSwipe ? (
@@ -54,15 +94,3 @@ export default function ShoppingList({ enableSwipe = true }) {
         />
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    item: {
-        padding: 15,
-        marginBottom: 2,
-        borderRadius: 12,
-        backgroundColor: '#3f9af0ff',
-    },
-});

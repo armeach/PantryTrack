@@ -36,6 +36,7 @@ export default function HomeScreen({ navigation, route })  {
                         route = {route}
                         enableSwipe = {false}
                         filter={filterItems(items, search)}
+                        isSearching={search.length > 0}
                     />
                 </View>
             </View>
