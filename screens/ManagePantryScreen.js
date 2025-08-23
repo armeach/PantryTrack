@@ -19,7 +19,18 @@ export default function ManagePantryScreen({ navigation, route }) {
                     <PantryList/>
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 20, paddingVertical: 20 }}>
+                <View style={{ 
+                        flexDirection: 'row', 
+                        justifyContent: 'flex-end', 
+                        paddingHorizontal: 20, 
+                        paddingVertical: 20, 
+                        backgroundColor: 'transparent',
+
+                        position: 'absolute',
+                        bottom: 2,
+                        right: 2,
+                        zIndex: 10,
+                    }} >
                         <PopoverMenuPantryManage navigation={navigation} route={route} />
                 </View>
 
