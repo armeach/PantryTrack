@@ -35,9 +35,13 @@ function autoDetectCategory(itemName) {
     const name = itemName.toLowerCase(); 
     for (let category of categories) {
         for (let seed of category.seeds) { 
-            if (name.includes(seed.toLowerCase())) return category.value;
+            if (name.includes(seed.toLowerCase())){
+                // console.log(category.value);
+                return category.value;
+            };
         };
     };
+    return 'misc.';
 };
 
 export { categories, autoDetectCategory };

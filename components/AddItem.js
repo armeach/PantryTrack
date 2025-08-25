@@ -118,7 +118,7 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
                         dropDownContainerStyle={InteractionStyles.dropdownWindow}
                         open={categoriesOpen}
                         value={categoryValue}
-                        items={categories}
+                        items={categories.map(cat => ({ label: cat.label, value: cat.value }))}
                         setOpen={setCategoriesOpen}
                         setValue={setCategoryValue}
                     />

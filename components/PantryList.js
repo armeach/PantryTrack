@@ -21,10 +21,10 @@ export default function PantryList({ enableSwipe = true, filter, isSearching}) {
 
     const sections = categories.map(cat => ({
         title: capitalizeWords(cat.label),
-        data: dataToRender.filter(item => 
+        data: (dataToRender || []).filter(item => 
             item.category ? item.category === cat.value : categories.value === 'Misc.'
         )
-    }))
+    }));
 
     const [expandedSections, setExpandedSections] = useState({}); 
     const toggleSection = (value) => {
@@ -41,7 +41,7 @@ export default function PantryList({ enableSwipe = true, filter, isSearching}) {
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {
                 const category = categories.find(cat => cat.value === section.title.toLowerCase());
-                const iconName = category?.icon || 'ellipsis-horizontal'
+                const iconName = category?.icon || 'ellipsis-horizontal';
 
                 return (
                     <View style={ListStyles.listSection}>
