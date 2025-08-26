@@ -13,9 +13,9 @@ import { capitalizeWords } from '../utils/capitalizeWords';
 
 import ListStyles from '../styles/ListStyles';
 
-export default function PantryList({ enableSwipe = true, filter, isSearching}) {  
-    const { items, addItem, removeItem } = usePantry(); 
-    const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem } = useShoppingList(); 
+export default function PantryList({ enableSwipe = true, filter, isSearching, navigation}) {  
+    const { items, addItem, removeItem, editItem } = usePantry(); 
+    const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem, editItem: editShoppingItem } = useShoppingList(); 
 
     const dataToRender = filter || items;
 
@@ -63,7 +63,6 @@ export default function PantryList({ enableSwipe = true, filter, isSearching}) {
             renderItem={({ item, section }) => {
                 if (!isSearching && !expandedSections[section.title]) return null; // If we haven't expanded the section don't show it
 
-                // const textContent = `${item.id} ${item.title}, ${item.quantity} ${item.unit}, ${item.category}, ${item.dateAdded.toLocaleDateString()}, ${item.expirationDate.toLocaleDateString()}`
                 const textContent = `${item.title}, ${item.quantity} ${item.unit}`;
                 
                 const content = (
@@ -84,6 +83,7 @@ export default function PantryList({ enableSwipe = true, filter, isSearching}) {
                                 addShoppingItem(item);
                                 removeItem(item.id);
                             }}
+                            onPress={() => navigation.push('EditItem', { item, listType: 'pantry' })}
                         />
                     ) : (
                         content

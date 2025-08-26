@@ -4,7 +4,8 @@
 
   import TitleScreen, { TitleScreenWrapper } from './screens/TitleScreen';
   import AddItemScreen from './screens/AddItemScreen';
-  import ScanScreen, { ScanScreenWrapper } from './screens/ScanScreen'
+  import EditItemScreen from './screens/EditItemScreen';
+  import ScanScreen, { ScanScreenWrapper } from './screens/ScanScreen';
 
   import NavBar from './components/NavBar';
 
@@ -16,6 +17,10 @@
 
   const Root = createStackNavigator(); 
 
+  // TO CLEAR CACHE
+  // import AsyncStorage from '@react-native-async-storage/async-storage';
+  // AsyncStorage.clear().then(() => console.log('AsyncStorage cleared'));
+
   export default function App() { 
     return (
       <PantryProvider> 
@@ -25,6 +30,7 @@
               <Root.Screen name='Title' component={TitleScreenWrapper} />
               <Root.Screen name="MainTabs" component={NavBar} />
               <Root.Screen name='AddItem' component={AddItemScreen} />
+              <Root.Screen name='EditItem' component={EditItemScreen} />
               <Root.Screen name='Scan' component={ScanScreenWrapper} />
             </Root.Navigator>
           </NavigationContainer>

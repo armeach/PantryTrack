@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
@@ -33,7 +33,7 @@ function LeftAction({ prog, dragX }) {
     );
 };
 
-export default function SwipeableListItem({ textContent, itemColor, onSwipeRight = () => {}, onSwipeLeft = () => {}, children }) { 
+export default function SwipeableListItem({ textContent, itemColor, onSwipeRight = () => {}, onSwipeLeft = () => {}, onPress, children }) { 
     const content = children || <Text>{textContent}</Text>;
 
     return (
@@ -62,7 +62,9 @@ export default function SwipeableListItem({ textContent, itemColor, onSwipeRight
                 )}
                 
             >
-                {content}
+                <TouchableOpacity onPress={onPress}>
+                    {content}
+                </TouchableOpacity>
             </ReanimatedSwipeable>
             
         </GestureHandlerRootView>

@@ -16,7 +16,7 @@ export default function ManagePantryScreen({ navigation, route }) {
             <View style={{ flex: 1, marginTop: 10 }}> 
                 
                 <View style={{ flex: 1 }}>
-                    <PantryList/>
+                    <PantryList navigation={navigation}/>
                 </View>
 
                 <View style={{ 

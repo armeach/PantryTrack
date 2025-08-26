@@ -14,12 +14,12 @@ export default function ShoppingListScreen({ navigation, route }) {
     const insets = useSafeAreaInsets();
     return(
         <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginTop: 10 }}>
                 {/* <View style={{ flexDirection: 'row' }}>
                     <NavButton icon='add-circle-outline' destination="AddItem" navigation={navigation} route={route} params={{ listType: 'shopping' }} />
                     <AddPurchasedButton icon='cube' navigation={navigation} />
                 </View> */}
-                <ShoppingList/>
+                <ShoppingList navigation={navigation}/>
             </View>
 
             <View style={{ 

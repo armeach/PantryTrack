@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -11,7 +11,7 @@ import DateSelector from './DateSelector';
 import { categories, autoDetectCategory } from '../utils/categories';
 import { getExpirationDate } from '../utils/getExpirationDate.js';
 
-import InteractionStyles from '../styles/InteractionStyles.js';
+import InteractionStyles from '../styles/InteractionStyles';
 
 export function SubmitButton({ handleSubmit, navigation }) {
     return (
@@ -28,15 +28,15 @@ export function SubmitButton({ handleSubmit, navigation }) {
     );
 };
 
-export default function AddItem({ navigation, onSubmitEditing }) {
-    const [text, setText] = useState('');
-    const [quantity, setQuantity] = useState(''); 
-    const [unit, setUnit] = useState('pkgs')
-    const [date, setDate] = useState(new Date()); // default to today
+export default function EditItem({ item, navigation, onSubmitEditing }) {
+    const [text, setText] = useState(item.title);
+    const [quantity, setQuantity] = useState(item.quantity);
+    const [unit, setUnit] = useState(item.unit);
+    const [date, setDate] = useState(new Date(item.dateAdded)); 
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     const [categoriesOpen, setCategoriesOpen] = useState(false); 
-    const [categoryValue, setCategoryValue] = useState('misc.');
+    const [categoryValue, setCategoryValue] = useState(item.category);
 
     const expirationTimes = Array.from({ length: 30 }, (_, i) => (
         { label: String(i+1), value: i+1 }
@@ -49,13 +49,16 @@ export default function AddItem({ navigation, onSubmitEditing }) {
     ];
 
     const [expirationTimeOpen, setExpirationTimeOpen] = useState(false);
-    const [expirationValue, setExpirationValue] = useState(1);
+    const [expirationValue, setExpirationValue] = useState(item.expirationValue);
 
     const [expirationUnitsOpen, setExpirationUnitsOpen] = useState(false);
-    const [expirationUnitsValue, setExpirationUnitsValue] = useState('days');
+    const [expirationUnitsValue, setExpirationUnitsValue] = useState(item.expirationUnitsValue);
 
     const handleSubmit = () => {
-        if (!text) return; 
+        console.log('handleSubmit called');
+        if (!text) return;
+        
+        console.log('onSubmitEditing is:', onSubmitEditing);
 
         onSubmitEditing({
             title: text,
@@ -67,19 +70,14 @@ export default function AddItem({ navigation, onSubmitEditing }) {
             expirationUnitsValue: expirationUnitsValue,
             expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
         });
-
-        setText('');
-        setQuantity('');
-        setUnit('pkgs');
     };
 
     return (
         <View style={{ flex: 1, width: '100%' }}>
             
-            
             <View style={{ marginBottom: 20, alignItems: 'center', paddingHorizontal: 20 }}>
 
-                {/* Input for Item */}
+                {/* Edit Item */}
                 <View style={InteractionStyles.inputWrapper}>
                     <TextInput
                         style={InteractionStyles.inputText}
@@ -92,11 +90,11 @@ export default function AddItem({ navigation, onSubmitEditing }) {
                     />
                 </View>
 
-                { /* Input for Quantity */}
+                {/* Edit Quantity */}
                 <View style={InteractionStyles.inputWrapper}>
                     <TextInput
                         style={InteractionStyles.inputText}
-                        value={quantity}
+                        value={String(quantity)}
                         placeholder="Input quantity..."
                         keyboardType="numeric"
                         onChangeText={setQuantity}
@@ -106,17 +104,17 @@ export default function AddItem({ navigation, onSubmitEditing }) {
             </View>
 
             <View>
-                {/* Input for Units */}
+                {/* Edit Units */}
                 <View style={{ justifyContent: 'center', marginBottom: 60, paddingHorizontal: 40 }}>
-                    <Text style={{ fontSize: 20, marginBottom: 10 }}>Select Units: </Text>
+                    <Text style={{ fontSize: 20, marginBottom: 10 }}>Select Units:</Text>
                     <UnitSelector selectedUnit={unit} setSelectedUnit={setUnit} />
                 </View>
             </View>
 
             <View>
-                {/* Input for Category */}
+                {/* Edit Category */}
                 <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 40 }}>
-                    <Text style={{ fontSize: 20 }}>Category: </Text>
+                    <Text style={{ fontSize: 20 }}> Category:</Text>
                     <DropDownPicker
                         style={InteractionStyles.dropdownPicker}
                         textStyle={InteractionStyles.dropdownText}
@@ -130,57 +128,65 @@ export default function AddItem({ navigation, onSubmitEditing }) {
                 </View>
             </View>
 
-            {/* Input for Date */}
-            <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 40 }}>
-                <Text style={{fontSize: 20}}>Select Date Added:</Text>
-                <TouchableOpacity
-                    style={[InteractionStyles.dateButton, { width: '95%' }]}
-                    onPress={() => {
-                        setShowDatePicker(true);
-                    }}
-                >
-                    <Text style={InteractionStyles.dateButtonText}>{date.toLocaleDateString()}</Text>
-                </TouchableOpacity>
-                
-                {showDatePicker && (
-                    <DateSelector 
-                        date={date} 
-                        setDate={setDate} 
-                        setShowDatePicker={setShowDatePicker}
-                
-                    />
-                )}
+            <View>
+                {/* Edit Date */}
+                <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 40 }}>
+                    <Text style={{fontSize: 20}}>Select Date Added:</Text>
+                    <TouchableOpacity
+                        style={[InteractionStyles.dateButton, { width: '95%' }]}
+                        onPress={() => {
+                            setShowDatePicker(true);
+                        }}
+                    >
+                        <Text style={InteractionStyles.dateButtonText}>{date.toLocaleDateString()}</Text>
+                    </TouchableOpacity>
+                    
+                    {showDatePicker && (
+                        <DateSelector 
+                            date={date} 
+                            setDate={setDate} 
+                            setShowDatePicker={setShowDatePicker}
+                    
+                        />
+                    )}
+                </View>
             </View>
 
-            {/* Input for Shelf Life */}
-            <View style={{ justifyContent: 'space-between', paddingHorizontal: 20, }}>
-                <Text style={{ fontSize: 20 }}>Shelf Life:</Text>
+            <View>
+                {/* Edit Shelf Life */}
+                <View style={{ justifyContent: 'space-between', paddingHorizontal: 20, }}>
+                    <Text style={{ fontSize: 20 }}>Shelf Life:</Text>
+                    
+                    <View style={{ flexDirection: 'row', gap: 10 }}>
+                        
+                        <View>
+                            <DropDownPicker
+                                style={InteractionStyles.dropdownPicker}
+                                textStyle={InteractionStyles.dropdownText}
+                                dropDownContainerStyle={InteractionStyles.dropdownWindow}
+                                open={expirationTimeOpen}
+                                value={expirationValue}
+                                items={expirationTimes}
+                                setOpen={setExpirationTimeOpen}
+                                setValue={setExpirationValue}
+                            />
+                        </View>
 
-                <View style={{ flexDirection: 'row', gap: 10 }}>
-                    <View>
-                        <DropDownPicker
-                            style={InteractionStyles.dropdownPicker}
-                            textStyle={InteractionStyles.dropdownText}
-                            dropDownContainerStyle={InteractionStyles.dropdownWindow}
-                            open={expirationTimeOpen}
-                            value={expirationValue}
-                            items={expirationTimes}
-                            setOpen={setExpirationTimeOpen}
-                            setValue={setExpirationValue}
-                        />
+                        <View>
+                            <DropDownPicker
+                                style={InteractionStyles.dropdownPicker}
+                                textStyle={InteractionStyles.dropdownText}
+                                dropDownContainerStyle={InteractionStyles.dropdownWindow}
+                                open={expirationUnitsOpen}
+                                value={expirationUnitsValue}
+                                items={expirationUnits}
+                                setOpen={setExpirationUnitsOpen}
+                                setValue={setExpirationUnitsValue}
+                            />
+                        </View>
+                        
                     </View>
-                    <View>
-                        <DropDownPicker
-                            style={InteractionStyles.dropdownPicker}
-                            textStyle={InteractionStyles.dropdownText}
-                            dropDownContainerStyle={InteractionStyles.dropdownWindow}
-                            open={expirationUnitsOpen}
-                            value={expirationUnitsValue}
-                            items={expirationUnits}
-                            setOpen={setExpirationUnitsOpen}
-                            setValue={setExpirationUnitsValue}
-                        />
-                    </View>
+
                 </View>
             </View>
 
@@ -188,6 +194,6 @@ export default function AddItem({ navigation, onSubmitEditing }) {
                 <SubmitButton handleSubmit={handleSubmit} navigation={navigation} />
             </View>
 
-        </View>        
+        </View>
     );
-}; 
+};
