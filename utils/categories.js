@@ -1,18 +1,18 @@
 const categories = [
     {label: 'produce', value: 'produce', icon: 'leaf',
-        seeds: ['apple', 'banana', 'lettuce', 'tomato', 'carrot', 'onion', 'garlic'],
+        seeds: ['fruit', 'apple', 'banana', 'berries', 'lemon', 'lime', 'orange', 'avocado', 'vegetable', 'lettuce', 'tomato', 'carrot', 'onion', 'garlic', 'ginger'],
     },
     {label: 'meat', value: 'meat', icon: 'restaurant',
         seeds: ['chicken', 'beef', 'steak', 'pork', 'lamb', 'fish', 'salmon', 'shrimp'],
     },
     {label: 'dairy', value: 'dairy', icon: 'ice-cream',
-        seeds: ['milk', 'cheese', 'cream', 'yogurt'],
+        seeds: ['milk', 'cream', 'cheese', 'yogurt', 'butter'],
     },
     {label: 'dry goods', value: 'dry goods', icon: 'basket',
         seeds: ['rice', 'pasta', 'flour', 'oats', 'beans', 'bread'],
     },
     {label: 'canned goods', value: 'canned goods', icon: 'server',
-        seeds: ['tomatoes', 'beans', 'corn'],
+        seeds: ['can', 'tomatoes', 'beans', 'corn'],
     },
     {label: 'spices', value: 'spices', icon: 'flame',
         seeds: ['salt', 'pepper', 'paprika', 'chili powder', 'cumin', 'oregano', 'basil', 'cinnamon', 'all-spice', 'nutmeg'],
@@ -24,7 +24,7 @@ const categories = [
         seeds: ['chips', 'cookies', 'candy'],
     },
     {label: 'household supplies', value: 'household supplies', icon: 'water',
-        seeds: ['paper towels', 'toilet paper', 'dish soap', 'hand soap', 'cleaning spray', 'trash bags']
+        seeds: ['paper', 'paper towels', 'toilet paper', 'soap', 'dish soap', 'hand soap', 'cleaning spray', 'trash bags']
     },
     {label: 'misc.', value: 'misc.',
         seeds: [],
@@ -36,7 +36,6 @@ function autoDetectCategory(itemName) {
     for (let category of categories) {
         for (let seed of category.seeds) { 
             if (name.includes(seed.toLowerCase())){
-                // console.log(category.value);
                 return category.value;
             };
         };

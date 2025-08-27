@@ -55,12 +55,10 @@ export default function EditItem({ item, navigation, onSubmitEditing }) {
     const [expirationUnitsValue, setExpirationUnitsValue] = useState(item.expirationUnitsValue);
 
     const handleSubmit = () => {
-        console.log('handleSubmit called');
         if (!text) return;
-        
-        console.log('onSubmitEditing is:', onSubmitEditing);
 
         onSubmitEditing({
+            id: item.id,
             title: text,
             quantity: quantity || "1",
             unit: unit,

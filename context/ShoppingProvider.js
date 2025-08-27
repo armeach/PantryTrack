@@ -23,28 +23,34 @@ export function ShoppingProvider({ children }) {
                 await saveItems('shopping', defaults);
                 await AsyncStorage.setItem('shoppingFirstRun', 'true');
             } else {
-                stored.forEach(item => dispatch(actionCreators.add(item)));
+                dispatch(actionCreators.setItems(stored));
             };
         })();
     }, []);
 
     const addItem = async (item) => {
         dispatch(actionCreators.add(item)); 
-        await saveItems('pantry', [...state.items, item]);
+        await saveItems('shopping', [...state.items, item]);
     };
 
     const removeItem = async (id) => {
         dispatch(actionCreators.remove(id));
-        await saveItems('pantry', state.items.filter(i => i.id !== id));
+        await saveItems('shopping', state.items.filter(i => i.id !== id));
     };
 
     const editItem = async (item) => {
         dispatch(actionCreators.edit(item));
         const updatedItems = state.items.map(i => (i.id === item.id ? item : i));
-        await saveItems('pantry', updatedItems);
+        await saveItems('shopping', updatedItems);
     };
 
-    const toggleChecked = (id) => dispatch(actionCreators.toggleChecked(id)); 
+    const toggleChecked = async (id) => {
+        const newItems = state.items.map(i =>
+            i.id === id ? { ...i, checked: !i.checked } : i
+        );
+        dispatch(actionCreators.setItems(newItems));
+        await saveItems('shopping', newItems);
+    };
 
     return (
         <ShoppingListContext.Provider value={{ items: state.items, addItem, removeItem, editItem,   toggleChecked }}>

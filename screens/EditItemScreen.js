@@ -17,12 +17,9 @@ export default function EditItemScreen({ navigation, route }) {
     const { item } = route.params;
 
     const listType = route.params?.listType;
-    console.log(listType);
     const editItem = listType === 'pantry'
         ? usePantry().editItem
         : useShoppingList().editItem;
-
-    console.log('EditItemScreen editItem:', editItem);
 
     return (
         <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>

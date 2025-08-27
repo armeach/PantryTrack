@@ -22,8 +22,9 @@ export function PantryProvider({ children }) {
                 defaults.forEach(item => dispatch(actionCreators.add(item)));
                 await saveItems('pantry', defaults);
                 await AsyncStorage.setItem('pantryFirstRun', 'true');
-            } else {
-                stored.forEach(item => dispatch(actionCreators.add(item)));
+            } 
+            else {
+                dispatch(actionCreators.setItems(stored));
             };       
         })();
     }, []);
