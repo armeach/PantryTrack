@@ -1,17 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function TitleScreen({ titleText }) {
-    return (
-        <View>
-            <Text style={styles.title}>{titleText}</Text>
-        </View>
-    );
-};
-
-export const TitleScreenWrapper = ({ navigation }) => {
+export default function TitleScreen({ navigation }) {
     const opacity = useRef(new Animated.Value(1)).current;
     
     useEffect(() => {
@@ -29,7 +21,10 @@ export const TitleScreenWrapper = ({ navigation }) => {
             style={styles.screen}
             colors={['#40e46fff', '#076e0cff']}
         >
-            <TitleScreen titleText="PantryTrack"/>
+            <View>
+                <Text style={styles.title}>PantryTrack</Text>
+            </View>
+
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {

@@ -1,11 +1,10 @@
-  import React from 'react';
   import { createStackNavigator } from '@react-navigation/stack';
   import { NavigationContainer } from '@react-navigation/native';
 
-  import TitleScreen, { TitleScreenWrapper } from './screens/TitleScreen';
+  import TitleScreen from './screens/TitleScreen';
   import AddItemScreen from './screens/AddItemScreen';
   import EditItemScreen from './screens/EditItemScreen';
-  import ScanScreen, { ScanScreenWrapper } from './screens/ScanScreen';
+  import ScanScreen from './screens/ScanScreen';
 
   import NavBar from './components/NavBar';
 
@@ -27,11 +26,11 @@
         <ShoppingProvider>
           <NavigationContainer>
             <Root.Navigator screenOptions={{ headerShown: false }}>
-              <Root.Screen name='Title' component={TitleScreenWrapper} />
+              <Root.Screen name='Title' component={TitleScreen} />
               <Root.Screen name="MainTabs" component={NavBar} />
               <Root.Screen name='AddItem' component={AddItemScreen} />
               <Root.Screen name='EditItem' component={EditItemScreen} />
-              <Root.Screen name='Scan' component={ScanScreenWrapper} />
+              <Root.Screen name='Scan' component={ScanScreen} />
             </Root.Navigator>
           </NavigationContainer>
         </ShoppingProvider>

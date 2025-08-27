@@ -27,7 +27,6 @@ export default function AddPurchasedButton({ icon, iconSize, navigation, onPress
                 expirationValue: item.expirationValue,
                 expirationUnitsValue: item.expirationunitsValue,
                 expirationDate: getExpirationDate(new Date(), item.expirationValue, item.expirationUnitsValue),
-                // expirationDate: getExpirationDate(new Date(), ) // I need to reword how expiration times are stored to get this working
             }); 
             removeShoppingListItem(item.id);
         });
