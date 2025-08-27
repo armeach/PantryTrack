@@ -26,6 +26,7 @@ const categories = [
             'rice', 'pasta', 'quinoa', 'couscous', 
             'bread', 'flour', 'oats', 'cereal', 'granola',
             'beans', 'lentils',
+            'oil',
         ],
     },
     {label: 'canned goods', value: 'canned goods', icon: 'server',

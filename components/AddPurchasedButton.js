@@ -6,6 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useShoppingList } from '../context/ShoppingProvider';
 import { usePantry } from '../context/PantryProvider';
 
+import { getExpirationDate } from '../utils/getExpirationDate.js';
+
 import InteractionStyles from '../styles/InteractionStyles';
 
 export default function AddPurchasedButton({ icon, iconSize, navigation, onPressCustom }) {
@@ -22,6 +24,9 @@ export default function AddPurchasedButton({ icon, iconSize, navigation, onPress
                 unit: item.unit,
                 category: item.category,
                 dateAdded: new Date(),
+                expirationValue: item.expirationValue,
+                expirationUnitsValue: item.expirationunitsValue,
+                expirationDate: getExpirationDate(new Date(), item.expirationValue, item.expirationUnitsValue),
                 // expirationDate: getExpirationDate(new Date(), ) // I need to reword how expiration times are stored to get this working
             }); 
             removeShoppingListItem(item.id);
