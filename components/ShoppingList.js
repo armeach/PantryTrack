@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FlatList, SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SectionList, Text, TouchableOpacity, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -11,16 +11,18 @@ import { useShoppingList } from '../context/ShoppingProvider';
 import { categories } from '../utils/categories';
 import { capitalizeWords } from '../utils/capitalizeWords';
 
-import ListStyles from '../styles/ListStyles';
+import useListStyles from '../styles/ListStyles';
 
 export default function ShoppingList({ enableSwipe = true, navigation }) {
+    const ListStyles = useListStyles(); 
+    
     const { items, addItem, removeItem, editItem, toggleChecked } = useShoppingList(); 
     
     const CheckBoxListItem = ({ item, itemColor }) => {
         const content = `${item.title}, ${item.quantity} ${item.unit}`;
                 
         return(
-            <View style={[ListStyles.item, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: itemColor }]}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: itemColor }}>
                 <Text>{content}</Text>
                 <CheckBox
                     containerStyle={{ padding: 0, margin: 0 }}
@@ -48,7 +50,7 @@ export default function ShoppingList({ enableSwipe = true, navigation }) {
 
     return (
         <SectionList
-            style={{ flex: 1 }}
+            style={{ flex: 1, paddingHorizontal: 15 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {

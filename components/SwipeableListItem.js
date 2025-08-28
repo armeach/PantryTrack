@@ -1,4 +1,3 @@
-import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -7,33 +6,41 @@ import Reanimated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { Ionicons } from '@expo/vector-icons';
 
-import ListStyles from '../styles/ListStyles';
+import useListStyles from '../styles/ListStyles';
+
+import { useTheme } from '../context/ThemeProvider';
 
 function RightAction({ prog, dragX }) { 
+    const theme = useTheme();
+
     const styleAnimation = useAnimatedStyle(() => ({
         transform: [{ translateX: dragX.value+50 }],
     }));
 
     return (
         <Reanimated.View style={[styleAnimation, { justifyContent: 'center', alignItems: 'center' }]}>
-            <Ionicons name={'bag-add-outline'} size={24} color="white" />
+            <Ionicons name={'bag-add-outline'} size={20} color={theme.text} />
         </Reanimated.View>
     );
 };
 
 function LeftAction({ prog, dragX }) {
+    const theme = useTheme();
+
     const styleAnimation = useAnimatedStyle(() => ({
         transform: [{ translateX: dragX.value-50 }],
     }));
 
     return (
         <Reanimated.View style={[styleAnimation, { justifyContent: 'center', alignItems: 'center' }]}>
-            <Ionicons name={'trash-outline'} size={24} color="white" />
+            <Ionicons name={'trash-outline'} size={20} color={theme.text} />
         </Reanimated.View>
     );
 };
 
 export default function SwipeableListItem({ textContent, itemColor, onSwipeRight = () => {}, onSwipeLeft = () => {}, onPress, children }) { 
+    const ListStyles = useListStyles(); 
+    
     const content = children || <Text>{textContent}</Text>;
 
     return (

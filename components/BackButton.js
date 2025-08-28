@@ -1,9 +1,11 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import InteractionStyles from '../styles/InteractionStyles.js';
+import useInteractionStyles from '../styles/InteractionStyles.js';
 
 export default function BackButton ({ navigation, route }) {
+    const InteractionStyles = useInteractionStyles(); 
+    
     return (
         <TouchableOpacity
             style={InteractionStyles.backButton}

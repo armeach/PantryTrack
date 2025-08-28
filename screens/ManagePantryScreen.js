@@ -5,18 +5,25 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PopoverMenuPantryManage from '../components/PopoverMenuPantryManage';
 
 import PantryList from '../components/PantryList';
+import { usePantry } from '../context/PantryProvider';
 
-import ScreenStyles from '../styles/ScreenStyles';
+import useScreenStyles from '../styles/ScreenStyles';
 
 export default function ManagePantryScreen({ navigation, route }) {
+    const ScreenStyles = useScreenStyles();
     const insets = useSafeAreaInsets(); 
+
+    const { items } = usePantry(); 
 
     return (
         <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
             <View style={{ flex: 1, marginTop: 10 }}> 
                 
-                <View style={{ flex: 1 }}>
-                    <PantryList navigation={navigation}/>
+                <View style={{ flex: 1, width: '100%' }}>
+                    <PantryList 
+                        items={items}
+                        navigation={navigation}
+                    />
                 </View>
 
                 <View style={{ 

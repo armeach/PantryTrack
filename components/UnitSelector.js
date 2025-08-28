@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Text, View } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import InteractionStyles from '../styles/InteractionStyles';
+import useInteractionStyles from '../styles/InteractionStyles';
 
 const units = [
     { label: 'package', value: 'pkgs' }, 
@@ -16,6 +15,8 @@ const units = [
 ];
 
 export default function UnitSelector({ selectedUnit, setSelectedUnit }) {
+    const InteractionStyles = useInteractionStyles();
+    
     const [open, setOpen] = useState(false); 
     
     return (

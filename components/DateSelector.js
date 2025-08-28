@@ -1,4 +1,3 @@
-import { StyleSheet, View, Text } from 'react-native'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function DateSelector({ date, setDate, setShowDatePicker }) {
@@ -22,7 +21,3 @@ export default function DateSelector({ date, setDate, setShowDatePicker }) {
         />
     );
 };
-
-const styles = StyleSheet.create({
-
-});

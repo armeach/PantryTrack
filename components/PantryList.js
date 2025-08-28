@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SectionList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SectionList, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,9 +11,14 @@ import { useShoppingList } from '../context/ShoppingProvider';
 import { categories } from '../utils/categories';
 import { capitalizeWords } from '../utils/capitalizeWords';
 
-import ListStyles from '../styles/ListStyles';
+import useListStyles from '../styles/ListStyles';
 
-export default function PantryList({ enableSwipe = true, filter, isSearching, navigation}) {  
+import { useTheme } from '../context/ThemeProvider';
+
+export default function PantryList({ enableSwipe = true, filter = null, isSearching = false, navigation}) {  
+    const ListStyles = useListStyles();
+    const theme = useTheme();
+    
     const { items, addItem, removeItem, editItem } = usePantry(); 
     const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem, editItem: editShoppingItem } = useShoppingList(); 
 
@@ -36,7 +41,7 @@ export default function PantryList({ enableSwipe = true, filter, isSearching, na
 
     return (
         <SectionList
-            style={{ flex: 1 }}
+            style={{ flex: 1, paddingHorizontal: 15 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {
@@ -51,8 +56,8 @@ export default function PantryList({ enableSwipe = true, filter, isSearching, na
                             }}
                         >
                             <View style={{ flexDirection: 'row' }}>
-                                <Ionicons name={iconName} size={24} style={{ marginRight: 10 }} />
-                                <Text>{section.title}</Text>
+                                <Ionicons name={iconName} size={24} color={theme.text} style={{ marginRight: 10 }} />
+                                <Text style={{ color: theme.text }}>{section.title}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -66,25 +71,29 @@ export default function PantryList({ enableSwipe = true, filter, isSearching, na
                 const textContent = `${item.title}, ${item.quantity} ${item.unit}`;
                 
                 const content = (
-                    <Text
-                        style={[ListStyles.listItem, { backgroundColor: getItemColor(item) }]}
-                    >
-                        {textContent}
-                    </Text> 
+                    <View style={[ListStyles.listItem, { backgroundColor: getItemColor(item) }]}>
+                        <Text>
+                            {textContent}
+                        </Text> 
+                    </View>
+                    
                 );
                 
                 return (
                     enableSwipe ? (
-                        <SwipeableListItem 
-                            textContent={textContent}
-                            itemColor={getItemColor(item)}
-                            onSwipeRight={() => removeItem(item.id)}
-                            onSwipeLeft={() => {
-                                addShoppingItem(item);
-                                removeItem(item.id);
-                            }}
-                            onPress={() => navigation.push('EditItem', { item, listType: 'pantry' })}
-                        />
+                        // <View style={[ListStyles.listItem, { backgroundColor: getItemColor(item) }]}>
+                        <View>
+                            <SwipeableListItem 
+                                textContent={textContent}
+                                itemColor={getItemColor(item)}
+                                onSwipeRight={() => removeItem(item.id)}
+                                onSwipeLeft={() => {
+                                    addShoppingItem(item);
+                                    removeItem(item.id);
+                                }}
+                                onPress={() => navigation.push('EditItem', { item, listType: 'pantry' })}
+                            />
+                        </View>
                     ) : (
                         content
                     )

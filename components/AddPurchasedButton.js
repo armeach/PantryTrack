@@ -1,5 +1,4 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -8,9 +7,11 @@ import { usePantry } from '../context/PantryProvider';
 
 import { getExpirationDate } from '../utils/getExpirationDate.js';
 
-import InteractionStyles from '../styles/InteractionStyles';
+import useInteractionStyles from '../styles/InteractionStyles';
 
 export default function AddPurchasedButton({ icon, iconSize, navigation, onPressCustom }) {
+    const InteractionStyles = useInteractionStyles();
+    
     const { items, removeItem: removeShoppingListItem } = useShoppingList(); 
     const { addItem: addPantryItem } = usePantry(); 
     
@@ -44,10 +45,3 @@ export default function AddPurchasedButton({ icon, iconSize, navigation, onPress
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    text: {
-        textAlign: 'center',
-        color: 'white',
-    },
-});

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedPicker from 'react-native-segmented-picker';
@@ -7,15 +7,16 @@ import SegmentedPicker from 'react-native-segmented-picker';
 import { Ionicons } from '@expo/vector-icons';
 
 import UnitSelector from './UnitSelector';
-import DateSelector from './DateSelector';
 import BackButton from './BackButton.js';
 
 import { categories, autoDetectCategory } from '../utils/categories';
 import { getExpirationDate } from '../utils/getExpirationDate.js';
 
-import InteractionStyles from '../styles/InteractionStyles';
+import useInteractionStyles from '../styles/InteractionStyles';
 
 export function SubmitButton({ handleSubmit, navigation }) {
+    const InteractionStyles = useInteractionStyles(); 
+    
     return (
         <TouchableOpacity 
             style={InteractionStyles.backButton} 
@@ -30,6 +31,8 @@ export function SubmitButton({ handleSubmit, navigation }) {
 };
 
 export default function EditItem({ item, navigation, route, onSubmitEditing }) {
+    const InteractionStyles = useInteractionStyles(); 
+
     const [text, setText] = useState(item.title);
     const [quantity, setQuantity] = useState(item.quantity);
     const [unit, setUnit] = useState(item.unit);

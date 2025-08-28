@@ -33,7 +33,8 @@
     "react-native-screens": "~4.11.1",
     "react-native-segmented-picker": "^2.0.2",
     "react-native-svg": "^15.12.1",
-    "react-native-svg-transformer": "^1.5.1"
+    "react-native-svg-transformer": "^1.5.1",
+    "expo-camera": "~16.1.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
