@@ -2,7 +2,17 @@ import { getExpirationDate } from '../utils/getExpirationDate.js';
 
 const randomId = () => Math.random().toString(); 
 
-const createItem = ({ title, quantity=1, unit='units', category='misc.', dateAdded = new Date(), expirationValue = 1, expirationUnitsValue = 'days', expirationDate }) => { 
+const createItem = ({ 
+        title, 
+        quantity=1, 
+        unit='units', 
+        category='misc.', 
+        dateAdded = new Date(), 
+        expirationValue = 1, 
+        expirationUnitsValue = 'days', 
+        expirationDate,
+        barcode,
+    }) => { 
     const newItem = {
         id: randomId(), 
         title,
@@ -13,6 +23,7 @@ const createItem = ({ title, quantity=1, unit='units', category='misc.', dateAdd
         expirationValue: expirationValue,
         expirationUnitsValue: expirationUnitsValue,
         expirationDate : expirationDate || getExpirationDate(dateAdded, expirationValue, expirationUnitsValue),
+        barcode: barcode,
     };
     return newItem;
 };

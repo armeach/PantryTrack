@@ -5,10 +5,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 
+import { checkBarCode } from '../utils/barCodeStorage';
+
 import BackButton from '../components/BackButton';
 
 export default function ScanScreen({ navigation, route }) {
     const insets = useSafeAreaInsets();
+
+    const { listType } = route.params; 
 
     const [permission, requestPermission] = useCameraPermissions();
 
@@ -49,11 +53,21 @@ export default function ScanScreen({ navigation, route }) {
                         barcodeTypes: 'upc_a'
                     }
                 } 
-                onBarcodeScanned={(data) => {
+                onBarcodeScanned={async (scanResult) => {
                     if (!scanned) {
                         setScanned(true);
-                        console.log(data);
-                        navigation.pop();
+
+                        const barcode = scanResult.data;
+
+                        const item = await checkBarCode(barcode); 
+                        
+                        if (!item) { 
+                          console.log('No item found.');
+                          navigation.replace('AddItem', { barcode, listType }); 
+                        } else {
+                          console.log('Found item', item);
+                          navigation.replace('AddItem', { barcode, listType, item})
+                        };
                     };
                 }}
             />

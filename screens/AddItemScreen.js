@@ -6,16 +6,28 @@ import AddItem from '../components/AddItem';
 import { usePantry } from '../context/PantryProvider';
 import { useShoppingList } from '../context/ShoppingProvider';
 
+import { saveBarCode } from '../utils/barCodeStorage';
+
 import useScreenStyles from '../styles/ScreenStyles';
 
 export default function AddItemScreen({ navigation, route }) {
     const ScreenStyles = useScreenStyles(); 
     const insets = useSafeAreaInsets();
 
-    const listType = route.params?.listType;
+    const {listType, barcode = null, item = null} = route.params; 
+
     const addItem = listType === 'pantry'
         ? usePantry().addItem
         : useShoppingList().addItem;
+
+    const onSubmitEditing = (item) => {
+        addItem(item);
+
+        if (item.barcode) {
+            console.log('We should be saving this barcode:', item.barcode);
+            saveBarCode(item.barcode, item);
+        };
+    };
 
     return(
         <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top+10, paddingBottom: insets.bottom }]}>
@@ -25,7 +37,9 @@ export default function AddItemScreen({ navigation, route }) {
                     <AddItem
                         navigation={navigation}
                         route={route}
-                        onSubmitEditing={(item) => addItem(item)}
+                        onSubmitEditing={onSubmitEditing}
+                        barcode={barcode}
+                        item={item}
                     />
                 </View>
 

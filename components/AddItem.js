@@ -33,18 +33,19 @@ export function SubmitButton({ handleSubmit, navigation }) {
     );
 };
 
-export default function AddItem({ navigation, route, onSubmitEditing }) {
+export default function AddItem({ navigation, route, onSubmitEditing, barcode=null, item=null }) {     
     const InteractionStyles = useInteractionStyles(); 
     const theme = useTheme(); 
 
-    const [text, setText] = useState('');
-    const [quantity, setQuantity] = useState(''); 
-    const [unit, setUnit] = useState('pkgs')
-    const [date, setDate] = useState(new Date()); // default to today
+    const [text, setText] = useState(item?.title || '');
+    const [quantity, setQuantity] = useState(item?.quantity || ''); 
+    const [unit, setUnit] = useState(item?.unit || 'pkgs')
+
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [date, setDate] = useState(new Date()); // default to today
 
     const [categoriesOpen, setCategoriesOpen] = useState(false); 
-    const [categoryValue, setCategoryValue] = useState('misc.');
+    const [categoryValue, setCategoryValue] = useState(item?.category || 'misc.');
 
     const expirationTimes = Array.from({ length: 30 }, (_, i) => (
         { label: String(i+1), value: i+1}
@@ -57,10 +58,10 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
     ];
 
     const [expirationTimeOpen, setExpirationTimeOpen] = useState(false);
-    const [expirationValue, setExpirationValue] = useState(1);
+    const [expirationValue, setExpirationValue] = useState(item?.expirationValue || 1);
 
     const [expirationUnitsOpen, setExpirationUnitsOpen] = useState(false);
-    const [expirationUnitsValue, setExpirationUnitsValue] = useState('days');
+    const [expirationUnitsValue, setExpirationUnitsValue] = useState(item?.expirationUnitsValue || 'days');
 
     const shelfLifePickerRef = useRef(null);
     const openShelfLifePicker = () => shelfLifePickerRef.current?.show(); 
@@ -68,6 +69,8 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
         setExpirationValue(selection.col1);
         setExpirationUnitsValue(selection.col2);
     };
+
+    const [barcodeValue, setBarcodeValue] = useState(barcode || null); 
 
     const handleSubmit = () => {
         if (!text) return; 
@@ -81,11 +84,8 @@ export default function AddItem({ navigation, route, onSubmitEditing }) {
             expirationValue: expirationValue,
             expirationUnitsValue: expirationUnitsValue,
             expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
+            barcode: barcodeValue,
         });
-
-        setText('');
-        setQuantity('');
-        setUnit('pkgs');
     };
 
     return (

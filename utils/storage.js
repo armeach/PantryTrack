@@ -5,7 +5,7 @@ export async function loadItems(key) {
         const data = await AsyncStorage.getItem(key); 
         return data ? JSON.parse(data) : [];
     } catch (e) {
-        console.error('Failed to load data.');
+        console.error('Failed to load data.', e);
         return [];
     };
 };
@@ -14,6 +14,6 @@ export async function saveItems(key, items) {
     try {
         await AsyncStorage.setItem(key, JSON.stringify(items));
     } catch (e) {
-        console.error('Failed to save data.');
+        console.error('Failed to save data.', e);
     };
 };

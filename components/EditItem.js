@@ -65,6 +65,8 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
         setExpirationUnitsValue(selection.col2);
     };
 
+    const [barcodeValue, setBarcodeValue] = useState(item?.barcode || null); 
+
     const handleSubmit = () => {
         if (!text) return;
 
@@ -78,6 +80,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
             expirationValue: expirationValue,
             expirationUnitsValue: expirationUnitsValue,
             expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
+            barcode: barcodeValue,
         });
     };
 

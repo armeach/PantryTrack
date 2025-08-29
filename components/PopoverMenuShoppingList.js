@@ -37,6 +37,7 @@ export default function PopoverMenuShoppingList({ navigation, route }) {
                         destination='AddItem' 
                         navigation={navigation} 
                         route={route} 
+                        params={{ listType: 'shopping' }} 
                         onPressCustom={() => {
                             setShowPopover(false);
                         }}
@@ -47,6 +48,7 @@ export default function PopoverMenuShoppingList({ navigation, route }) {
                         destination='Scan' 
                         navigation={navigation} 
                         route={route} 
+                        params={{ listType: 'shopping' }} 
                         onPressCustom={() => {
                             setShowPopover(false);
                         }}
