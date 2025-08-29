@@ -104,6 +104,7 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                         style={InteractionStyles.inputText}
                         value={text}
                         placeholder="Input item..."
+                        placeholderTextColor={theme.text}
                         onChangeText={(val) => {
                             setText(val);
                             setCategoryValue(autoDetectCategory(val));
@@ -117,6 +118,7 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                         style={InteractionStyles.inputText}
                         value={quantity}
                         placeholder="Input quantity..."
+                        placeholderTextColor={theme.text}
                         keyboardType="numeric"
                         onChangeText={setQuantity}
                     />

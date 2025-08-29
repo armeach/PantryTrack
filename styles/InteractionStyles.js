@@ -58,7 +58,7 @@ export default function useInteractionStyles () {
             padding: 10, 
             height: 50,
             fontSize: 20,
-            textAlign: 'left',
+            textAlign: 'left', 
         },
         inputWrapper: {
             width: '90%',

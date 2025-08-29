@@ -51,6 +51,10 @@ const categories = [
             'nuts', 'almonds', 'cashews', 'peanuts', 
         ],
     },
+    {label: 'leftovers', value: 'leftovers', icon: 'archive', 
+        seeds: [],
+
+    },
     {label: 'household supplies', value: 'household supplies', icon: 'water',
         seeds: [
             'paper', 'paper towels', 'toilet paper', 

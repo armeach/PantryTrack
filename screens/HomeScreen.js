@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView, Platform, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,7 +11,11 @@ import { usePantry } from '../context/PantryProvider'
 import useScreenStyles from '../styles/ScreenStyles';
 import useInteractionStyles from '../styles/InteractionStyles';
 
+import { useTheme } from '../context/ThemeProvider';
+
 export default function HomeScreen({ navigation, route })  {
+    theme = useTheme(); 
+
     const ScreenStyles = useScreenStyles();
     const InteractionStyles = useInteractionStyles();
     const insets = useSafeAreaInsets(); 
@@ -29,6 +33,7 @@ export default function HomeScreen({ navigation, route })  {
                             style={InteractionStyles.inputText}
                             value={search}
                             placeholder='Search...'
+                            placeholderTextColor={theme.text}
                             onChangeText={setSearch}
                         />
                     </View>

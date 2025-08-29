@@ -24,7 +24,6 @@ export default function AddItemScreen({ navigation, route }) {
         addItem(item);
 
         if (item.barcode) {
-            console.log('We should be saving this barcode:', item.barcode);
             saveBarCode(item.barcode, item);
         };
     };

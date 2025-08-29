@@ -8,6 +8,7 @@ import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { checkBarCode } from '../utils/barCodeStorage';
 
 import BackButton from '../components/BackButton';
+import ScannerOverlay from '../components/ScannerOverlay';
 
 export default function ScanScreen({ navigation, route }) {
     const insets = useSafeAreaInsets();
@@ -40,11 +41,22 @@ export default function ScanScreen({ navigation, route }) {
 
     // Show camera if permissions are granted. 
     return(
-        <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        // <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <SafeAreaView style={styles.container}>
 
             {/* {Platform.OS === 'android' ? <StatusBar hidden={true} backgroundColor="transparent" /> : null} */}
 
-            <BackButton navigation={navigation} route={route} />
+            <BackButton 
+              style={{
+                position: 'absolute',
+                top: 40, 
+                left: 16, 
+                zIndex: 10,
+                color: 'white',
+              }}
+              navigation={navigation} 
+              route={route} 
+            />
             <CameraView 
                 style={styles.camera}
                 facing={'back'}
@@ -62,15 +74,15 @@ export default function ScanScreen({ navigation, route }) {
                         const item = await checkBarCode(barcode); 
                         
                         if (!item) { 
-                          console.log('No item found.');
                           navigation.replace('AddItem', { barcode, listType }); 
                         } else {
-                          console.log('Found item', item);
                           navigation.replace('AddItem', { barcode, listType, item})
                         };
                     };
                 }}
             />
+            <ScannerOverlay />
+
         </SafeAreaView>
     );    
 };
