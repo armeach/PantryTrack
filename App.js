@@ -21,23 +21,22 @@
   // import AsyncStorage from '@react-native-async-storage/async-storage';
   // AsyncStorage.clear().then(() => console.log('AsyncStorage cleared'));
 
-  export default function App() { 
+    export default function App() { 
     return (
-      <ThemeProvider>
-        <PantryProvider> 
-          <ShoppingProvider>
-            <NavigationContainer>
-              <Root.Navigator screenOptions={{ headerShown: false }}>
-                <Root.Screen name='Title' component={TitleScreen} />
-                <Root.Screen name="MainTabs" component={NavBar} />
-                <Root.Screen name='AddItem' component={AddItemScreen} />
-                <Root.Screen name='EditItem' component={EditItemScreen} />
-                <Root.Screen name='Scan' component={ScanScreen} />
-              </Root.Navigator>
-            </NavigationContainer>
-          </ShoppingProvider>
-        </PantryProvider>
-      </ThemeProvider>
-
+        <ThemeProvider>
+          <PantryProvider> 
+            <ShoppingProvider>
+              <NavigationContainer>
+                <Root.Navigator screenOptions={{ headerShown: false }}>
+                  <Root.Screen name='Title' component={TitleScreen} />
+                  <Root.Screen name="MainTabs" component={NavBar} />
+                  <Root.Screen name='AddItem' component={AddItemScreen} />
+                  <Root.Screen name='EditItem' component={EditItemScreen} />
+                  <Root.Screen name='Scan' component={ScanScreen} />
+                </Root.Navigator>
+              </NavigationContainer>
+            </ShoppingProvider>
+          </PantryProvider>
+        </ThemeProvider>      
     );
   };

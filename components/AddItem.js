@@ -38,8 +38,9 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
     const theme = useTheme(); 
 
     const [text, setText] = useState(item?.title || '');
+    const [brand, setBrand] = useState(item?.brand || '');
     const [quantity, setQuantity] = useState(item?.quantity || ''); 
-    const [unit, setUnit] = useState(item?.unit || 'pkgs')
+    const [unit, setUnit] = useState(item?.unit || '')
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [date, setDate] = useState(new Date()); // default to today
@@ -47,10 +48,11 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
     const [categoriesOpen, setCategoriesOpen] = useState(false); 
     const [categoryValue, setCategoryValue] = useState(item?.category || 'misc.');
 
-    const expirationTimes = Array.from({ length: 30 }, (_, i) => (
+    const expirationTimes = [{ label: 'None', value: null }, ...Array.from({ length: 30 }, (_, i) => (
         { label: String(i+1), value: i+1}
-    ));
+    ))];
     const expirationUnits = [
+        { label: 'None', value: null}, 
         { label: 'days', value: 'days' },
         { label: 'weeks', value: 'weeks' },
         { label: 'months' , value: 'months' },
@@ -58,10 +60,10 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
     ];
 
     const [expirationTimeOpen, setExpirationTimeOpen] = useState(false);
-    const [expirationValue, setExpirationValue] = useState(item?.expirationValue || 1);
+    const [expirationValue, setExpirationValue] = useState(item?.expirationValue || null);
 
     const [expirationUnitsOpen, setExpirationUnitsOpen] = useState(false);
-    const [expirationUnitsValue, setExpirationUnitsValue] = useState(item?.expirationUnitsValue || 'days');
+    const [expirationUnitsValue, setExpirationUnitsValue] = useState(item?.expirationUnitsValue || null);
 
     const shelfLifePickerRef = useRef(null);
     const openShelfLifePicker = () => shelfLifePickerRef.current?.show(); 
@@ -77,6 +79,7 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
 
         onSubmitEditing({
             title: text,
+            brand: brand,
             quantity: quantity || "1",
             unit: unit,
             category: categoryValue,
@@ -109,6 +112,17 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                             setText(val);
                             setCategoryValue(autoDetectCategory(val));
                         }}
+                    />
+                </View>
+
+                {/* Input for Brand */}
+                <View style={InteractionStyles.inputWrapper}>
+                    <TextInput 
+                        style={InteractionStyles.inputText}
+                        value={brand}
+                        placeholder="Input brand (optional)..."
+                        placeholderTextColor={theme.text}
+                        onChangeText={setBrand}
                     />
                 </View>
 
@@ -183,7 +197,7 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                         onPress={openShelfLifePicker}
                     >
                         <Text style={{ fontSize: 20 }}>
-                            {expirationValue} {expirationUnitsValue}
+                            {expirationValue || 'None'} {expirationUnitsValue}
                         </Text>
                         <SegmentedPicker 
                             ref={shelfLifePickerRef}

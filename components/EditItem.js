@@ -34,6 +34,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
     const InteractionStyles = useInteractionStyles(); 
 
     const [text, setText] = useState(item.title);
+    const [brand, setBrand] = useState(item?.brand);
     const [quantity, setQuantity] = useState(item.quantity);
     const [unit, setUnit] = useState(item.unit);
     const [date, setDate] = useState(new Date(item.dateAdded)); 
@@ -42,10 +43,11 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
     const [categoriesOpen, setCategoriesOpen] = useState(false); 
     const [categoryValue, setCategoryValue] = useState(item.category);
 
-    const expirationTimes = Array.from({ length: 30 }, (_, i) => (
-        { label: String(i+1), value: i+1 }
-    ));
+    const expirationTimes = [{ label: 'None', value: null }, ...Array.from({ length: 30 }, (_, i) => (
+        { label: String(i+1), value: i+1}
+    ))];
     const expirationUnits = [
+        { label: 'None', value: null}, 
         { label: 'days', value: 'days' },
         { label: 'weeks', value: 'weeks' },
         { label: 'months' , value: 'months' },
@@ -53,10 +55,10 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
     ];
 
     const [expirationTimeOpen, setExpirationTimeOpen] = useState(false);
-    const [expirationValue, setExpirationValue] = useState(item.expirationValue);
+    const [expirationValue, setExpirationValue] = useState(item?.expirationValue || null);
 
     const [expirationUnitsOpen, setExpirationUnitsOpen] = useState(false);
-    const [expirationUnitsValue, setExpirationUnitsValue] = useState(item.expirationUnitsValue);
+    const [expirationUnitsValue, setExpirationUnitsValue] = useState(item?.expirationUnitsValue || null);
 
     const shelfLifePickerRef = useRef(null);
     const openShelfLifePicker = () => shelfLifePickerRef.current?.show(); 
@@ -73,6 +75,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
         onSubmitEditing({
             id: item.id,
             title: text,
+            brand: brand,
             quantity: quantity || "1",
             unit: unit,
             category: categoryValue,
@@ -105,6 +108,17 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                             setText(val);
                             setCategoryValue(autoDetectCategory(val));
                         }}
+                    />
+                </View>
+
+                {/* Edit Brand */}
+                <View style={InteractionStyles.inputWrapper}>
+                    <TextInput 
+                        style={InteractionStyles.inputText}
+                        value={brand}
+                        placeholder="Input brand (optional)..."
+                        placeholderTextColor={theme.text}
+                        onChangeText={setBrand}
                     />
                 </View>
 
@@ -180,7 +194,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                         onPress={openShelfLifePicker}
                     >
                         <Text style={{ fontSize: 20 }}>
-                            {expirationValue} {expirationUnitsValue}
+                            {expirationValue || 'None'} {expirationUnitsValue}
                         </Text>
                         <SegmentedPicker
                             ref={shelfLifePickerRef}

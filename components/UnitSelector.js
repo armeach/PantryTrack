@@ -5,6 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import useInteractionStyles from '../styles/InteractionStyles';
 
 const units = [
+    { label: 'None', value: '', }, 
     { label: 'package', value: 'pkgs' }, 
     { label: 'bottles', value: 'bottles' }, 
     { label: 'cans', value: 'cans' },

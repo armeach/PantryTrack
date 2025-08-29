@@ -1,6 +1,9 @@
 export const getExpirationDate = (dateAdded, value, unit) => {
+    if (value === null) {
+        return new Date('9999-12-31');
+    };
+    
     const date = new Date(dateAdded);
-
     switch(unit) {
         case 'days': 
             date.setDate(date.getDate() + value);

@@ -4,6 +4,7 @@ const randomId = () => Math.random().toString();
 
 const createItem = ({ 
         title, 
+        brand,
         quantity=1, 
         unit='units', 
         category='misc.', 
@@ -16,6 +17,7 @@ const createItem = ({
     const newItem = {
         id: randomId(), 
         title,
+        brand,
         quantity,
         unit,
         category,
