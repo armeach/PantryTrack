@@ -62,7 +62,7 @@ export default function ScanScreen({ navigation, route }) {
                 facing={'back'}
                 barcodeScannerSettings={
                     {
-                        barcodeTypes: 'upc_a'
+                        barcodeTypes: ['upc_a', 'upc_e', 'ean8', 'ean13',]
                     }
                 } 
                 onBarcodeScanned={async (scanResult) => {
