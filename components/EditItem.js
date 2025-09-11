@@ -160,32 +160,8 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                 </View>
             </View>
 
-            <View>
-                {/* Edit Date */}
-                {/* <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 40 }}>
-                    <Text style={{fontSize: 20}}>Select Date Added:</Text>
-                    <TouchableOpacity
-                        style={[InteractionStyles.dateButton, { width: '95%' }]}
-                        onPress={() => {
-                            setShowDatePicker(true);
-                        }}
-                    >
-                        <Text style={InteractionStyles.dateButtonText}>{date.toLocaleDateString()}</Text>
-                    </TouchableOpacity>
-                    
-                    {showDatePicker && (
-                        <DateSelector 
-                            date={date} 
-                            setDate={setDate} 
-                            setShowDatePicker={setShowDatePicker}
-                    
-                        />
-                    )}
-                </View> */}
-            </View>
-
-                {/* Edit Shelf Life */}
-            <View style={{ justifyContent: 'space-between', paddingHorizontal: 20, }}>
+            {/* Edit Shelf Life */}
+            <View style={{ justifyContent: 'space-between', marginBottom:20, paddingHorizontal: 20, }}>
                 <Text style={{ fontSize: 20, marginBottom: 10 }}>Shelf Life:</Text>
                 
                 <View style={{ alignItems: 'center', justifyContent: 'center'}}>
@@ -217,6 +193,31 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            {/* Edit Date Added */}
+            <View>
+                <View style={{ justifyContent: 'center', paddingHorizontal: 20 }}>
+                    <Text style={{fontSize: 20}}>Select Date Added:</Text>
+                    <TouchableOpacity
+                        style={[InteractionStyles.dateButton, { width: '95%' }]}
+                        onPress={() => {
+                            setShowDatePicker(true);
+                        }}
+                    >
+                        <Text style={InteractionStyles.dateButtonText}>{date.toLocaleDateString()}</Text>
+                    </TouchableOpacity>
+                    
+                    {showDatePicker && (
+                        <DateSelector 
+                            date={date} 
+                            setDate={setDate} 
+                            setShowDatePicker={setShowDatePicker}
+                    
+                        />
+                    )}
+                </View>
+            </View>
+
         </View>
     );
 };

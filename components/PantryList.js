@@ -42,6 +42,7 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
     return (
         <SectionList
             style={{ flex: 1, paddingHorizontal: 15 }}
+            contentContainerStyle={{ paddingBottom: 100 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {
@@ -105,15 +106,10 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
 
 function getItemColor (item) {
     const now = new Date(); 
-    const diff = item.expirationDate - now; // difference between now and item expiration (ms)
+    const diff = new Date(item.expirationDate) - now; // difference between now and item expiration (ms)
     const daysToExpiration = diff / (1000 * 60 * 60 * 24); // compute time to expiration in days
 
-    switch(true) { 
-        case daysToExpiration < 0: 
-            return '#FFB3B3';
-        case daysToExpiration < 2: 
-            return '#FFF5BA';
-        default: 
-            return '#BFFCC6';
-    };
+        if (daysToExpiration < 0) return '#FFB3B3';
+        else if (daysToExpiration < 2) return '#FFF5BA';
+        else return '#BFFCC6';
 };
