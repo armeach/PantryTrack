@@ -51,6 +51,7 @@ export default function ShoppingList({ enableSwipe = true, navigation }) {
     return (
         <SectionList
             style={{ flex: 1, paddingHorizontal: 15 }}
+            contentContainerStyle={{ paddingBottom: 100 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {
