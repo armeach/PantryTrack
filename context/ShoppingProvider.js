@@ -1,62 +1,81 @@
-import { createContext, useEffect, useReducer, useContext } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useContext, useEffect, useState} from 'react';
+import { db } from '../config/FirebaseConfig';
+import { collection, onSnapshot } from 'firebase/firestore';
 
-import { reducer, createInitialState, actionCreators } from '../utils/items';
-import { loadItems, saveItems } from '../utils/storage';
+import { useAuth } from './AuthProvider';
+import { addItem, removeItem, editItem } from '../services/shoppingListService'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ShoppingListContext = createContext(); 
 
 export function ShoppingProvider({ children }) {
+    const [items, setItems] = useState([]); 
+    const { activeShoppingListId } = useAuth(); 
 
-    const [state, dispatch] = useReducer(reducer, { items: [] });
-
-    // Load items when the provider mounts --> ONLY added initialState() items if its the FIRST opening of the app
+    // This useEffect hook re-runs if the shoppingListId changes
     useEffect(() => {
-        (async() => {
-            const firstRun = await AsyncStorage.getItem('shoppingFirstRun');
-            const stored = await loadItems('shopping');
+        // Exit if not shopping list
+        if (!activeShoppingListId) {
+            setItems([]);
+            return; 
+        }
 
-            // firstRun defaults to null, so we use !firstRun to check if we have run this before
-            if (!firstRun || stored.length === 0) {
-                const defaults = createInitialState().items; 
-                defaults.forEach(item => dispatch(actionCreators.add(item)));
-                await saveItems('shopping', defaults);
-                await AsyncStorage.setItem('shoppingFirstRun', 'true');
-            } else {
-                dispatch(actionCreators.setItems(stored));
+        // Set up reference to Firestore db
+        const itemsCollectionRef = collection(db, 'shoppingLists', activeShoppingListId, 'items'); 
+
+        // Set up a real-time listener whose callback runs everytime data in the collection changes
+        const unsubscribe = onSnapshot(itemsCollectionRef, (snapshot) => {
+            // Fetch local persistence of checked status
+            const mergeCheckedState = async () => {
+                const stored = await AsyncStorage.getItem(`checked-${activeShoppingListId}`);
+                const checkedMap = stored ? JSON.parse(stored) : {};
+
+                const itemsList = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    checked: checkedMap[doc.id] || false,
+                }));
+
+                setItems(itemsList); 
             };
-        })();
-    }, []);
+            mergeCheckedState();
+        });
 
-    const addItem = async (item) => {
-        dispatch(actionCreators.add(item)); 
-        await saveItems('shopping', [...state.items, item]);
+        // Clean up the listener when the component unmounts
+        return () => unsubscribe(); 
+    }, [activeShoppingListId]);
+
+    // This handles local checkbox tracking for shopping lists (so that we don't have a TON of Firestore writes)
+    const toggleChecked = (itemId) => {
+        setItems(prev => {
+            const newItems = prev.map(i =>
+                i.id === itemId ? { ...i, checked: !i.checked } : i
+            );
+
+            // Persist locally
+            const checkedMap = {};
+            newItems.forEach(i => { checkedMap[i.id] = i.checked; });
+            AsyncStorage.setItem(`checked-${activeShoppingListId}`, JSON.stringify(checkedMap));
+
+            return newItems;
+        });
     };
 
-    const removeItem = async (id) => {
-        dispatch(actionCreators.remove(id));
-        await saveItems('shopping', state.items.filter(i => i.id !== id));
-    };
+    // Expose items and the Firestore functions to the rest of the app
+    const value = {
+        items,
+        // These functions call our Firestore API from shoppingListService.js
+        addItem: (item) => addItem(activeShoppingListId, item),
+        removeItem: (itemId) => removeItem(activeShoppingListId, itemId),
+        editItem: (updatedData) => editItem(activeShoppingListId, updatedData),
+        toggleChecked, 
+    }; 
 
-    const editItem = async (item) => {
-        dispatch(actionCreators.edit(item));
-        const updatedItems = state.items.map(i => (i.id === item.id ? item : i));
-        await saveItems('shopping', updatedItems);
-    };
-
-    const toggleChecked = async (id) => {
-        const newItems = state.items.map(i =>
-            i.id === id ? { ...i, checked: !i.checked } : i
-        );
-        dispatch(actionCreators.setItems(newItems));
-        await saveItems('shopping', newItems);
-    };
-
-    return (
-        <ShoppingListContext.Provider value={{ items: state.items, addItem, removeItem, editItem,   toggleChecked }}>
+    return ( 
+        <ShoppingListContext.Provider value={value}>
             {children}
         </ShoppingListContext.Provider>
-    );
-};
+    ); 
+}; 
 
 export const useShoppingList = () => useContext(ShoppingListContext); 

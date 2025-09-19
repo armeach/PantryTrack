@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity,View } from 'react-native';
-import { SafeAreaView, Platform, StatusBar } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 import { checkBarCode } from '../utils/barCodeStorage';
 
@@ -41,7 +40,6 @@ export default function ScanScreen({ navigation, route }) {
 
     // Show camera if permissions are granted. 
     return(
-        // <SafeAreaView style={[styles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <SafeAreaView style={styles.container}>
 
             {/* {Platform.OS === 'android' ? <StatusBar hidden={true} backgroundColor="transparent" /> : null} */}

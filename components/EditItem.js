@@ -4,40 +4,28 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedPicker from 'react-native-segmented-picker';
 
-import { Ionicons } from '@expo/vector-icons';
-
 import UnitSelector from './UnitSelector';
+import NavButton from './NavButton.js';
 import BackButton from './BackButton.js';
+import SubmitButton from './SubmitButton.js';
 
 import { categories, autoDetectCategory } from '../utils/categories';
 import { getExpirationDate } from '../utils/getExpirationDate.js';
 
 import useInteractionStyles from '../styles/InteractionStyles';
 
-export function SubmitButton({ handleSubmit, navigation }) {
-    const InteractionStyles = useInteractionStyles(); 
-    
-    return (
-        <TouchableOpacity 
-            style={InteractionStyles.backButton} 
-            onPress={() => {
-                handleSubmit();
-                navigation.goBack();
-            }}
-        >
-            <Ionicons name={'checkmark'} size={36} color='black' />
-        </TouchableOpacity>
-    );
-};
+import { useTheme } from '@react-navigation/native';
 
 export default function EditItem({ item, navigation, route, onSubmitEditing }) {
+    const theme = useTheme(); 
+    
     const InteractionStyles = useInteractionStyles(); 
 
     const [text, setText] = useState(item.title);
     const [brand, setBrand] = useState(item?.brand);
     const [quantity, setQuantity] = useState(item.quantity);
     const [unit, setUnit] = useState(item.unit);
-    const [date, setDate] = useState(new Date(item.dateAdded)); 
+    const [date, setDate] = useState(item.dateAdded.toDate()); 
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     const [categoriesOpen, setCategoriesOpen] = useState(false); 
@@ -161,7 +149,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
             </View>
 
             {/* Edit Shelf Life */}
-            <View style={{ justifyContent: 'space-between', marginBottom:20, paddingHorizontal: 20, }}>
+            <View style={{ justifyContent: 'space-between', marginBottom: 20, paddingHorizontal: 20 }}>
                 <Text style={{ fontSize: 20, marginBottom: 10 }}>Shelf Life:</Text>
                 
                 <View style={{ alignItems: 'center', justifyContent: 'center'}}>
@@ -196,7 +184,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
 
             {/* Edit Date Added */}
             <View>
-                <View style={{ justifyContent: 'center', paddingHorizontal: 20 }}>
+                <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 20 }}>
                     <Text style={{fontSize: 20}}>Select Date Added:</Text>
                     <TouchableOpacity
                         style={[InteractionStyles.dateButton, { width: '95%' }]}
@@ -217,6 +205,19 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                     )}
                 </View>
             </View>
+
+            {/* Add/Edit Barcode */}
+            {/* <View>
+                <View style={{ justifyContent: 'center', paddingHorizontal: 20 }}>
+                    <NavButton 
+                        icon='barcode' 
+                        iconSize={40}
+                        destination='Scan' 
+                        navigation={navigation} 
+                        route={route}
+                    />
+                </View>
+            </View> */}
 
         </View>
     );

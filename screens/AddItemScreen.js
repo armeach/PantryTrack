@@ -1,6 +1,5 @@
 import { View}  from 'react-native';
-import { SafeAreaView } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AddItem from '../components/AddItem';
 import { usePantry } from '../context/PantryProvider';
@@ -29,7 +28,7 @@ export default function AddItemScreen({ navigation, route }) {
     };
 
     return(
-        <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top+10, paddingBottom: insets.bottom }]}>
+        <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
             <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', paddingBottom: insets.bottom+20 }}>
                 
                 <View>

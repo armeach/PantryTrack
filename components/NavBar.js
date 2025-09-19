@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
-import ManagePantryScreen from '../screens/ManagePantryScreen';
+import PantryScreen from '../screens/PantryScreen';
 import ShoppingListScreen from '../screens/ShoppingListScreen';
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +19,7 @@ export default function NavBar({ navigation, route }) {
 
                     if (route.name === 'Home') {
                         iconName = 'home-outline';
-                    } else if (route.name === 'Manage Pantry') { 
+                    } else if (route.name === 'Pantry') { 
                         iconName = 'cube-outline';
                     } else if (route.name === 'Shopping List') {
                         iconName = 'cart-outline';
@@ -35,7 +35,7 @@ export default function NavBar({ navigation, route }) {
             })}
         >
             <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Manage Pantry" component={ManagePantryScreen} />
+            <Tab.Screen name="Pantry" component={PantryScreen} />
             <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
         </Tab.Navigator>
     );

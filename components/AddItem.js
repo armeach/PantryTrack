@@ -4,11 +4,10 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedPicker from 'react-native-segmented-picker';
 
-import { Ionicons } from '@expo/vector-icons';
-
 import UnitSelector from './UnitSelector';
 import DateSelector from './DateSelector';
 import BackButton from './BackButton.js';
+import SubmitButton from './SubmitButton.js';
 
 import { categories, autoDetectCategory } from '../utils/categories';
 import { getExpirationDate } from '../utils/getExpirationDate.js';
@@ -16,22 +15,6 @@ import { getExpirationDate } from '../utils/getExpirationDate.js';
 import useInteractionStyles from '../styles/InteractionStyles.js';
 
 import { useTheme } from '../context/ThemeProvider';
-
-export function SubmitButton({ handleSubmit, navigation }) {
-    const InteractionStyles = useInteractionStyles();
-    
-    return (
-        <TouchableOpacity 
-            style={InteractionStyles.backButton}
-            onPress={() => {
-                handleSubmit();
-                navigation.goBack();
-            }}
-        >
-            <Ionicons name={'checkmark'} size={36} color='black' />
-        </TouchableOpacity>
-    );
-};
 
 export default function AddItem({ navigation, route, onSubmitEditing, barcode=null, item=null }) {     
     const InteractionStyles = useInteractionStyles(); 
@@ -77,16 +60,21 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
     const handleSubmit = () => {
         if (!text) return; 
 
+        // Conditionally calculate expirationDate
+        const calculatedExpirationDate = (expirationValue && expirationUnitsValue)
+            ? getExpirationDate(date, expirationValue, expirationUnitsValue)
+            : null;
+
         onSubmitEditing({
             title: text,
             brand: brand,
-            quantity: quantity || "1",
+            quantity: parseInt(quantity) || 1,
             unit: unit,
             category: categoryValue,
             dateAdded: date,
             expirationValue: expirationValue,
             expirationUnitsValue: expirationUnitsValue,
-            expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
+            expirationDate: calculatedExpirationDate,
             barcode: barcodeValue,
         });
     };

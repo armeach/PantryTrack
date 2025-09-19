@@ -1,12 +1,14 @@
-import React, { use, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { SafeAreaView, Platform, StatusBar } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { TextInput, View } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import filterItems from '../utils/filterItems';
 
 import PantryList from '../components/PantryList';
 import { usePantry } from '../context/PantryProvider'
+
+import SettingsMenu from '../components/SettingsMenu';
 
 import useScreenStyles from '../styles/ScreenStyles';
 import useInteractionStyles from '../styles/InteractionStyles';
@@ -14,7 +16,7 @@ import useInteractionStyles from '../styles/InteractionStyles';
 import { useTheme } from '../context/ThemeProvider';
 
 export default function HomeScreen({ navigation, route })  {
-    theme = useTheme(); 
+    const theme = useTheme(); 
 
     const ScreenStyles = useScreenStyles();
     const InteractionStyles = useInteractionStyles();
@@ -24,11 +26,11 @@ export default function HomeScreen({ navigation, route })  {
     const { items } = usePantry(); 
 
     return (
-        <SafeAreaView style={[ScreenStyles.container, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
+        <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
             <View style={{ flex: 1, marginTop: 10 }}> 
                 
-                <View style={{ alignItems: 'center' }}>
-                    <View style={InteractionStyles.searchWrapper}> 
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20 }}>
+                    <View style={[InteractionStyles.searchWrapper, { flex: 1 }]}> 
                         <TextInput
                             style={InteractionStyles.inputText}
                             value={search}
@@ -36,6 +38,9 @@ export default function HomeScreen({ navigation, route })  {
                             placeholderTextColor={theme.text}
                             onChangeText={setSearch}
                         />
+                    </View>
+                    <View>
+                        <SettingsMenu navigation={navigation} route={route} />
                     </View>
                 </View>
                 

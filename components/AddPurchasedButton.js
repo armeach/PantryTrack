@@ -2,6 +2,8 @@ import { TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { useAuth } from '../context/AuthProvider.js';
+import { batchMoveToPantry } from '../services/shoppingListService.js';
 import { useShoppingList } from '../context/ShoppingProvider';
 import { usePantry } from '../context/PantryProvider';
 
@@ -12,25 +14,16 @@ import useInteractionStyles from '../styles/InteractionStyles';
 export default function AddPurchasedButton({ icon, iconSize, navigation, onPressCustom }) {
     const InteractionStyles = useInteractionStyles();
     
-    const { items, removeItem: removeShoppingListItem } = useShoppingList(); 
-    const { addItem: addPantryItem } = usePantry(); 
+    const { items } = useShoppingList(); 
+    const { activePantryId, activeShoppingListId } = useAuth(); 
     
-    const handlePress = () => {
-        if (onPressCustom) onPressCustom(); 
+    const handlePress = async () => {
+        console.log('Trying to batch move');
+        
+        const checkedItems = items.filter(item => item.checked); 
+        if (!checkedItems.length) return; 
 
-        items.filter(item => item.checked).forEach(item => {
-            addPantryItem({
-                title: item.title,
-                quantity: item.quantity,
-                unit: item.unit,
-                category: item.category,
-                dateAdded: new Date(),
-                expirationValue: item.expirationValue,
-                expirationUnitsValue: item.expirationunitsValue,
-                expirationDate: getExpirationDate(new Date(), item.expirationValue, item.expirationUnitsValue),
-            }); 
-            removeShoppingListItem(item.id);
-        });
+        await batchMoveToPantry(activeShoppingListId, activePantryId, checkedItems); 
     };
 
     return (

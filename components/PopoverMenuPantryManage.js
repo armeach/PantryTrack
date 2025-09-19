@@ -25,8 +25,8 @@ export default function PopoverMenuPantryManage({ navigation, route }) {
                 popoverStyle={{ backgroundColor: 'transparent' }}
                 isVisible={showPopover}
                 from={anchorRef}
-                onRequestClose={() =>{
-                    setShowPopover(false)
+                onRequestClose={() => {
+                    setShowPopover(false);
                 }}
             >
                 <View>
