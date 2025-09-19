@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Alert, TextInput, TouchableOpacity, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Snackbar } from 'react-native-paper';
 
 import BackButton from '../components/BackButton';
 import SubmitButton from '../components/SubmitButton';
@@ -17,11 +18,11 @@ import { useTheme } from '../context/ThemeProvider';
 
 export default function SignupScreen({ navigation, route }) {
     const theme = useTheme(); 
-    
     const ScreenStyles = useScreenStyles(); 
+    const InteractionStyles = useInteractionStyles(); 
     const insets = useSafeAreaInsets(); 
 
-    const InteractionStyles = useInteractionStyles(); 
+    const { signUp } = useAuth(); 
 
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
@@ -29,12 +30,14 @@ export default function SignupScreen({ navigation, route }) {
     const [confirmPassword, setConfirmPassword] = useState(''); 
     const [hideConfirmPassword, setHideConfirmPassword] = useState(true); 
 
-    const { signUp } = useAuth(); 
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [snackbarText, setSnackbarText] = useState(''); 
 
     const handleSubmit = async () => {
         if (password != confirmPassword) {
-            Alert.alert("Passwords do not match.", "Please reenter passwords."); 
-            setPassword(''); 
+            setSnackbarText("Passwords do not match. \nPlease reenter passwords."); 
+            setSnackbarVisible(true); 
+
             setConfirmPassword(''); 
             return
         }; 
@@ -44,36 +47,36 @@ export default function SignupScreen({ navigation, route }) {
             const userCredential = await signUp(email.trim(), password);
             await createUserDoc(userCredential.user.uid, email.trim()); 
 
-            Alert.alert(
-                "Account created.",
-                "Logged in!",
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.goBack(),
-                    }
-                ]
-            );
+            setSnackbarText('Account created. Logged in!');
+            setSnackbarVisible(true);
+
+            setTimeout(() => navigation.goBack(), 1000); 
+
         } catch (signUpError) {
-            // If password is weak
-            if (signUpError.code === 'auth/weak-password') {
-                Alert.alert("Weak password.", "Passwords must be at least 6 characters.");
-            } 
-            // If no password provided
-            else if (signUpError.code === 'auth/missing-password') {
-                Alert.alert("No password provided.", "Please enter a password.")
+            // If email is already in use
+            if (signUpError.code === 'auth/email-already-in-use'){
+                setSnackbarText("Email is already in use. \n Try signing in instead."); 
+                setSnackbarVisible(true);
             }
             // If email is invalid
             else if (signUpError.code === 'auth/invalid-email') {
-                Alert.alert("Email is invalid.", "Please enter a valid email address.");
+                setSnackbarText("Email is invalid. \nPlease enter a valid email address."); 
+                setSnackbarVisible(true);
             }
-            // If email is already in use
-            else if (signUpError.code === 'auth/email-already-in-use'){
-                Alert.alert("Email already in use.", "Try signing in instead.")
+            // If no password provided
+            else if (signUpError.code === 'auth/missing-password') {
+                setSnackbarText("No password provided. \nPlease enter a password");
+                setSnackbarVisible(true);
             }
+            // If password is weak
+            else if (signUpError.code === 'auth/weak-password') {
+                setSnackbarText("Weak password. \nPasswords must be at least 6 characters."); 
+                setSnackbarVisible(true);
+            } 
             // Other errors
             else {
-                Alert.alert("Unable to create account.", signUpError.message); 
+                setSnackbarText(`Unable to create an account. Error: ${signUpError.message || signUpError}`); 
+                setSnackbarVisible(true);
             }   
         };
     };
@@ -154,13 +157,19 @@ export default function SignupScreen({ navigation, route }) {
                 </View>
 
             </View>
+
+            {/* Notifications */}
+            <View>
+                <Snackbar
+                    style={{ backgroundColor: theme.secondary, borderRadius: 12, paddingHorizontal: 15 }}
+                    visible={snackbarVisible}
+                    onDismiss={() => setSnackbarVisible(false)}
+                    duration={2000}
+                >
+                    {snackbarText}
+                </Snackbar>
+            </View>
+
         </SafeAreaView>
-    )
-}
-
-
-
-
-
-
-
+    ); 
+};

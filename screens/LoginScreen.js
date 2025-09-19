@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Alert, TextInput, TouchableOpacity, View } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Snackbar } from 'react-native-paper';
 
 import BackButton from '../components/BackButton';
 import SubmitButton from '../components/SubmitButton';
@@ -16,43 +17,49 @@ import { useTheme } from '../context/ThemeProvider';
 
 export default function LoginScreen({ navigation, route }) {
     const theme = useTheme(); 
-    
     const ScreenStyles = useScreenStyles();
+    const InteractionStyles = useInteractionStyles(); 
     const insets = useSafeAreaInsets(); 
 
-    const InteractionStyles = useInteractionStyles(); 
+    const { signIn } = useAuth(); 
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); 
     const [hidePassword, setHidePassword] = useState(true); 
 
-    const { signIn } = useAuth(); 
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [snackbarText, setSnackbarText] = useState(''); 
 
     const handleSubmit = async () => {
         try { 
             // If user account info is correct, login.
             await signIn(email.trim(), password); 
-            Alert.alert(
-                "Login Successful!",
-                "",
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => navigation.goBack(),
-                    }
-                ]
-            );
+
+            setSnackbarText('Signed in!'); 
+            setSnackbarVisible(true); 
+            
+            setTimeout(() => navigation.goBack(), 1000); 
+
         } catch (signInError) { 
             // If email and/or password are incorrect (or if account does not exist). 
             if (signInError.code === 'auth/invalid-credential') {
-                Alert.alert(
-                    "Invalid Login",
-                    "Please try again or create an account."
-                );
+                setSnackbarText('Invalid login. Please try again or create an account.'); 
+                setSnackbarVisible(true); 
             } 
+            // If email is invalid. 
+            else if (signInError.code === 'auth/invalid-email') {
+                setSnackbarText('Invalid email. Please try again or create an account.');
+                setSnackbarVisible(true);
+            }
+            // Missing password
+            else if (signInError.code === 'auth/missing-password') {
+                setSnackbarText('Missing password. Please try again.');
+                setSnackbarVisible(true); 
+            }
             // Other errors
             else {
-                Alert.alert("Unable to login. Error:", signInError.message); 
+                setSnackbarText(`Unable to login. Error: ${signInError.message || signInError}`);
+                setSnackbarVisible(true)
             }
         };
     };
@@ -109,6 +116,19 @@ export default function LoginScreen({ navigation, route }) {
                 </View>
 
             </View>
+
+            {/* Notifications */}
+            <View>
+                <Snackbar
+                    style={{ backgroundColor: theme.secondary, borderRadius: 12 }}
+                    visible={snackbarVisible}
+                    onDismiss={() => setSnackbarVisible(false)}
+                    duration={2000}
+                >
+                    {snackbarText}
+                </Snackbar>
+            </View>
+
         </SafeAreaView>
-    )
-}
+    );
+}; 

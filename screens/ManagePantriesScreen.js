@@ -24,7 +24,6 @@ export default function ManagePantriesScreen({ navigation, route }) {
 
     const { user, userPantries, setUserPantries, refreshPantries } = useAuth(); 
 
-    // const [userPantries, setUserPantries] = useState([]); 
     const [pantryDetails, setPantryDetails] = useState([]); 
     const [newPantryName, setNewPantryName] = useState(''); 
     const [joinPantryId, setJoinPantryId] = useState(''); 
