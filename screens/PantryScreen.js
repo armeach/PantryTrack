@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'; 
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -13,6 +13,11 @@ import { useAuth } from '../context/AuthProvider';
 import { fetchUserPantries, fetchPantryById } from '../services/pantryService'; 
 import { usePantry } from '../context/PantryProvider';
 
+import { categories } from '../utils/categories';
+import { capitalizeWords } from '../utils/capitalizeWords';
+
+import { Ionicons } from '@expo/vector-icons';
+
 import useScreenStyles from '../styles/ScreenStyles';
 import useInteractionStyles from '../styles/InteractionStyles';
 
@@ -21,13 +26,15 @@ export default function PantryScreen({ navigation, route }) {
     const InteractionStyles = useInteractionStyles(); 
     const insets = useSafeAreaInsets(); 
 
-    const { user, activePantryId, selectPantry, userPantries, setUserPantries, refreshPantries } = useAuth();    
+    const { user, activePantryId, selectPantry, userPantries, setUserPantries, refreshPantries, loadingPantries } = useAuth();    
     const { items } = usePantry(); 
 
-    // const [userPantries, setUserPantries] = useState([]); 
     const [pantryDetails, setPantryDetails] = useState([]); 
     const [showPantryList, setShowPantryList] = useState(false); 
     const [selectedPantry, setSelectedPantry] = useState(activePantryId); 
+    
+    const [allOpen, setAllOpen] = useState(false); 
+    const [expandedSections, setExpandedSections] = useState({}); 
 
     // useEffect to fetch all pantryIds when the user is available
     useEffect(() => {
@@ -76,7 +83,9 @@ export default function PantryScreen({ navigation, route }) {
                                 selectPantry(val);
                             }}
                             items={pantryItems}
-                            placeholder={pantryItems.length > 0 ? "Select a pantry..." : "No pantries found"}
+                            placeholder={pantryItems.length > 0 
+                                            ? "Select a pantry..." 
+                                            : "No pantries found"}
                         />
                     </View>
 
@@ -88,9 +97,39 @@ export default function PantryScreen({ navigation, route }) {
 
                 <View style={{ flex: 1, width: '100%' }}>
                     <PantryList 
-                        items={items}
                         navigation={navigation}
+                        expandedSections={expandedSections}
+                        setExpandedSections={setExpandedSections}
                     />
+                </View>
+
+                <View 
+                    style={{ 
+                        flexDirection: 'row', 
+                        justifyContent: 'flex-end', 
+                        paddingHorizontal: 20, 
+                        paddingVertical: 20, 
+                        backgroundColor: 'transparent',
+
+                        position: 'absolute',
+                        bottom: 80,
+                        right: 2,
+                        zIndex: 10,
+                    }} 
+                >
+                    <TouchableOpacity
+                        underlayColor='lightgray'
+                        onPress={() => {
+                            const allSectionsExpanded = {};
+                            categories.forEach(cat => {
+                                allSectionsExpanded[capitalizeWords(cat.label)] = !allOpen;
+                            });
+                            setExpandedSections(allSectionsExpanded);
+                            setAllOpen(!allOpen); 
+                        }}
+                    >
+                        <Ionicons name={!allOpen ? 'chevron-down-circle' : 'chevron-up-circle'} size={80} color="#6F8C84" />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ 
@@ -105,7 +144,10 @@ export default function PantryScreen({ navigation, route }) {
                         right: 2,
                         zIndex: 10,
                     }} >
-                        <PopoverMenuPantryManage navigation={navigation} route={route} />
+                        <PopoverMenuPantryManage 
+                            navigation={navigation} 
+                            route={route} 
+                        />
                 </View>
 
             </View>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'; 
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -12,6 +12,11 @@ import ShoppingList from '../components/ShoppingList';
 import { useAuth } from '../context/AuthProvider'; 
 import { fetchUserShoppingLists, fetchShoppingListById } from '../services/shoppingListService';
 import { useShoppingList } from '../context/ShoppingProvider';
+
+import { categories } from '../utils/categories';
+import { capitalizeWords } from '../utils/capitalizeWords';
+
+import { Ionicons } from '@expo/vector-icons';
 
 import useScreenStyles from '../styles/ScreenStyles';
 import useInteractionStyles from '../styles/InteractionStyles';
@@ -27,6 +32,9 @@ export default function ShoppingListScreen({ navigation, route }) {
     const [shoppingListDetails, setShoppingListDetails] = useState([]); 
     const [showShoppingListDropdown, setShowShoppingListDropdown] = useState(false); 
     const [selectedShoppingList, setSelectedShoppingList] = useState(activeShoppingListId); 
+
+    const [allOpen, setAllOpen] = useState(false); 
+    const [expandedSections, setExpandedSections] = useState({}); 
 
     // useEffect to fetch all shoppingListIds when the user is available
     useEffect(() => {
@@ -86,7 +94,40 @@ export default function ShoppingListScreen({ navigation, route }) {
                 </View>
             
                 <View style={{ flex: 1, width: '100%' }}>
-                    <ShoppingList navigation={navigation}/>
+                    <ShoppingList 
+                        navigation={navigation}
+                        expandedSections={expandedSections}
+                        setExpandedSections={setExpandedSections}
+                    />
+                </View>
+
+                <View 
+                    style={{ 
+                        flexDirection: 'row', 
+                        justifyContent: 'flex-end', 
+                        paddingHorizontal: 20, 
+                        paddingVertical: 20, 
+                        backgroundColor: 'transparent',
+
+                        position: 'absolute',
+                        bottom: 80,
+                        right: 2,
+                        zIndex: 10,
+                    }} 
+                >
+                    <TouchableOpacity
+                        underlayColor='lightgray'
+                        onPress={() => {
+                            const allSectionsExpanded = {};
+                            categories.forEach(cat => {
+                                allSectionsExpanded[capitalizeWords(cat.label)] = !allOpen;
+                            });
+                            setExpandedSections(allSectionsExpanded);
+                            setAllOpen(!allOpen); 
+                        }}
+                    >
+                        <Ionicons name={!allOpen ? 'chevron-down-circle' : 'chevron-up-circle'} size={80} color="#6F8C84" />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={{ 

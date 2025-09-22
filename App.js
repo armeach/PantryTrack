@@ -27,13 +27,11 @@ const Root = createStackNavigator();
 // AsyncStorage.clear().then(() => console.log('AsyncStorage cleared'));
 
 export default function App() { 
-  const { user, activePantryId, activeShoppingListId } = useAuth(); 
-
   return (
     <AuthProvider>
       <ThemeProvider>
-        <PantryProvider pantryId={activePantryId}>
-          <ShoppingProvider shoppingListId={activeShoppingListId}>
+        <PantryProvider>
+          <ShoppingProvider>
             <NavigationContainer>
               <Root.Navigator screenOptions={{ headerShown: false }}>
                 <Root.Screen name='Title' component={TitleScreen} />

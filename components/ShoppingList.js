@@ -13,7 +13,7 @@ import { capitalizeWords } from '../utils/capitalizeWords';
 
 import useListStyles from '../styles/ListStyles';
 
-export default function ShoppingList({ enableSwipe = true, navigation }) {
+export default function ShoppingList({ enableSwipe = true, navigation, expandedSections, setExpandedSections }) {
     const ListStyles = useListStyles(); 
     
     const { items, addItem, removeItem, editItem, toggleChecked } = useShoppingList(); 
@@ -40,7 +40,6 @@ export default function ShoppingList({ enableSwipe = true, navigation }) {
         )
     }))
 
-    const [expandedSections, setExpandedSections] = useState({});
     const toggleSection = (value) => {
         setExpandedSections(prev => ({
             ...prev,

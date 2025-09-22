@@ -15,7 +15,7 @@ import useListStyles from '../styles/ListStyles';
 
 import { useTheme } from '../context/ThemeProvider';
 
-export default function PantryList({ enableSwipe = true, filter = null, isSearching = false, navigation}) {  
+export default function PantryList({ enableSwipe = true, filter = null, isSearching = false, navigation, expandedSections, setExpandedSections }) {     
     const ListStyles = useListStyles();
     const theme = useTheme();
     
@@ -31,7 +31,7 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
         )
     }));
 
-    const [expandedSections, setExpandedSections] = useState({}); 
+    // const [expandedSections, setExpandedSections] = useState({}); 
     const toggleSection = (value) => {
         setExpandedSections(prev => ({
             ...prev,

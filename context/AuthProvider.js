@@ -50,9 +50,13 @@ export const AuthProvider = ({ children }) => {
     // Store userPantries and userShoppingLists for rendering across screens
     const [userPantries, setUserPantries] = useState([]);
     const refreshPantries = async () => {
-        if (user) {
+        if (!user) {
+            setUserPantries([]); 
+            return; 
+
+        } else {
             const pantries = await fetchUserPantries(user.uid);
-            setUserPantries(pantries); 
+            setUserPantries(pantries);  
         }
     }; 
 

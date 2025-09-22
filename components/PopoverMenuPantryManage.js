@@ -1,12 +1,16 @@
 import { useState, useRef } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import Popover from 'react-native-popover-view';
 import { Ionicons } from '@expo/vector-icons';
 
 import NavButton from './NavButton';
 
+import useInteractionStyles from '../styles/InteractionStyles';
+
 export default function PopoverMenuPantryManage({ navigation, route }) {
+    const InteractionStyles = useInteractionStyles(); 
+
     const [showPopover, setShowPopover] = useState(false);
     const anchorRef = useRef();
 
@@ -30,6 +34,7 @@ export default function PopoverMenuPantryManage({ navigation, route }) {
                 }}
             >
                 <View>
+
                     <NavButton 
                         icon='add-circle-outline' 
                         iconSize={40}
@@ -41,6 +46,7 @@ export default function PopoverMenuPantryManage({ navigation, route }) {
                             setShowPopover(false);
                         }}
                     />
+
                     <NavButton 
                         icon='barcode' 
                         iconSize={40}
@@ -52,6 +58,7 @@ export default function PopoverMenuPantryManage({ navigation, route }) {
                             setShowPopover(false);
                         }}
                     />
+
                 </View>
             </Popover>
         </View>

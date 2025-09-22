@@ -25,6 +25,8 @@ export default function HomeScreen({ navigation, route })  {
     const [search, setSearch] = useState('');
     const { items } = usePantry(); 
 
+    const [expandedSections, setExpandedSections] = useState({}); 
+
     return (
         <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
             <View style={{ flex: 1, marginTop: 10 }}> 
@@ -46,11 +48,12 @@ export default function HomeScreen({ navigation, route })  {
                 
                 <View style={{ flex: 1, width: '100%' }}>
                     <PantryList
-                        items={items}
                         route = {route}
                         enableSwipe = {false}
                         filter={filterItems(items, search)}
                         isSearching={search.length > 0}
+                        expandedSections={expandedSections}
+                        setExpandedSections={setExpandedSections}
                     />
                 </View>
             </View>
