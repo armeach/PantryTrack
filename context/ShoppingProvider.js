@@ -10,12 +10,12 @@ const ShoppingListContext = createContext();
 
 export function ShoppingProvider({ children }) {
     const [items, setItems] = useState([]); 
-    const { activeShoppingListId } = useAuth(); 
+    const { user, activeShoppingListId } = useAuth(); 
 
     // This useEffect hook re-runs if the shoppingListId changes
     useEffect(() => {
         // Exit if not shopping list
-        if (!activeShoppingListId) {
+        if (!activeShoppingListId || !user) {
             setItems([]);
             return; 
         }

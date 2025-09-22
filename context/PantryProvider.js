@@ -9,12 +9,12 @@ const PantryContext = createContext();
 
 export function PantryProvider({ children }) {
     const [items, setItems] = useState([]); 
-    const { activePantryId } = useAuth(); 
+    const { user, activePantryId } = useAuth(); 
 
     // This useEffect hook re-runs if the pantryId changes
     useEffect(() => {
         // Exit if no pantry
-        if (!activePantryId) {
+        if (!activePantryId || !user) {
             setItems([]); 
             return; 
         }; 

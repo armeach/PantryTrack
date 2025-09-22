@@ -71,7 +71,13 @@ export const AuthProvider = ({ children }) => {
     // Functions to wrap the Firebase authentification methods
     const signUp = (email, password) => createUserWithEmailAndPassword(auth, email, password);
     const signIn = (email, password) => signInWithEmailAndPassword(auth, email, password);
-    const logOut = () => signOut(auth); 
+    const logOut = async () => {
+        setUserPantries([]);
+        setUserShoppingLists([]);
+        setActivePantryId(null);
+        setActiveShoppingListId(null);
+        await signOut(auth); 
+    };
     const selectPantry = async (pantryId) => {
         setActivePantryId(pantryId); 
         await AsyncStorage.setItem('activePantryId', pantryId); 
