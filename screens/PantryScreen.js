@@ -11,6 +11,7 @@ import PopoverMenuPantryManage from '../components/PopoverMenuPantryManage';
 import PantryList from '../components/PantryList';
 
 import { useAuth } from '../context/AuthProvider'; 
+import { fetchFavoritePantry } from '../services/userService';
 import { fetchUserPantries, fetchPantryById } from '../services/pantryService'; 
 import { usePantry } from '../context/PantryProvider';
 
@@ -34,7 +35,20 @@ export default function PantryScreen({ navigation, route }) {
 
     const [pantryDetails, setPantryDetails] = useState([]); 
     const [showPantryList, setShowPantryList] = useState(false); 
-    const [selectedPantry, setSelectedPantry] = useState(activePantryId); 
+
+    const [selectedPantry, setSelectedPantry] = useState(null); 
+    useEffect(() => {
+        const loadFavorite = async () => {
+            if (user) {
+                const favId = await fetchFavoritePantry(user.uid);
+                if (favId) {
+                    setSelectedPantry(favId);
+                    selectPantry(favId);
+                }
+            }
+        };
+        loadFavorite();
+    }, [user]);
     
     const [allOpen, setAllOpen] = useState(false); 
     const [expandedSections, setExpandedSections] = useState({}); 

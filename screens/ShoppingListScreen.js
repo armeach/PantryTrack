@@ -11,6 +11,7 @@ import PopoverMenuShoppingList from '../components/PopoverMenuShoppingList';
 import ShoppingList from '../components/ShoppingList';
 
 import { useAuth } from '../context/AuthProvider'; 
+import { fetchFavoriteShoppingList } from '../services/userService';
 import { fetchUserShoppingLists, fetchShoppingListById } from '../services/shoppingListService';
 import { useShoppingList } from '../context/ShoppingProvider';
 
@@ -34,7 +35,20 @@ export default function ShoppingListScreen({ navigation, route }) {
 
     const [shoppingListDetails, setShoppingListDetails] = useState([]); 
     const [showShoppingListDropdown, setShowShoppingListDropdown] = useState(false); 
-    const [selectedShoppingList, setSelectedShoppingList] = useState(activeShoppingListId); 
+
+    const [selectedShoppingList, setSelectedShoppingList] = useState(null);
+    useEffect(() => {
+        const loadFavorite = async () => {
+            if (user) {
+                const favId = await fetchFavoriteShoppingList(user.uid);
+                if (favId) {
+                    setSelectedShoppingList(favId);
+                    selectShoppingList(favId);
+                }
+            }
+        };
+        loadFavorite();
+    }, [user]);  
 
     const [allOpen, setAllOpen] = useState(false); 
     const [expandedSections, setExpandedSections] = useState({}); 
@@ -69,11 +83,6 @@ export default function ShoppingListScreen({ navigation, route }) {
         label: shoppingList.name,
         value: shoppingList.id,
     })); 
-
-    console.log('User:', user); 
-    console.log('Active Shopping List Id:', activeShoppingListId);
-    console.log('Selected shopping list:', selectedShoppingList);  
-    console.log(shoppingListItems); 
     
     return(
         <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>

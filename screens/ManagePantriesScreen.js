@@ -5,7 +5,8 @@ import { Snackbar } from 'react-native-paper';
 import * as Clipboard from 'expo-clipboard'; 
 
 import { useAuth } from '../context/AuthProvider';
-import { fetchUserPantries, fetchPantryById, createPantry, joinPantry } from '../services/pantryService'; 
+import { fetchFavoritePantry } from '../services/userService';
+import { fetchUserPantries, fetchPantryById, createPantry, joinPantry, setFavoritePantry } from '../services/pantryService'; 
 
 import BackButton from "../components/BackButton";
 
@@ -38,10 +39,32 @@ export default function ManagePantriesScreen({ navigation, route }) {
 
     const [snackbarVisible, setSnackbarVisible] = useState(false); 
     const [snackbarText, setSnackbarText ] = useState(''); 
+    
     const copyToClipboard = async (id) => {
         await Clipboard.setStringAsync(id); 
+
         setSnackbarText(`Pantry ID copied: ${id}`);
         setSnackbarVisible(true); 
+    }; 
+
+    const [favoritePantryId, setFavoritePantryId] = useState(null); 
+    useEffect(() => {
+        const loadFavorite = async () => {
+            if (user) {
+                const favId = await fetchFavoritePantry(user.uid);
+                setFavoritePantryId(favId);
+            }
+        };
+        loadFavorite();
+    }, [user]);
+
+    const markFavorite = async (id) => {
+        await setFavoritePantry(user.uid, id); 
+        const favId = await fetchFavoritePantry(user.uid);
+        setFavoritePantryId(favId);
+
+        setSnackbarText('Favorite pantry updated!');
+        setSnackbarVisible(true);
     }; 
 
     // useEffect to fetch all pantryIds when the user is available
@@ -191,12 +214,27 @@ export default function ManagePantriesScreen({ navigation, route }) {
                         )}
                         renderItem={({ item }) => (
                             <View style={[ListStyles.listItem, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F9F7F3' }]}>
+                                
                                 <Text style={{ fontSize: 16 }}>{item.label}</Text>
-                                <TouchableOpacity
-                                    onPress={() => copyToClipboard(item.value)}
-                                >
-                                    <Ionicons name='copy-outline' size={24} />
-                                </TouchableOpacity>
+
+                                <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+
+                                    <TouchableOpacity
+                                        style={{ marginHorizontal: 8 }}
+                                        onPress={() => markFavorite(item.value)}
+                                    >
+                                        <Ionicons name={item.value === favoritePantryId ? 'star' : 'star-outline' } size={24} />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={{ marginHorizontal: 8 }}
+                                        onPress={() => copyToClipboard(item.value)}
+                                    >
+                                        <Ionicons name='copy-outline' size={24} />
+                                    </TouchableOpacity>
+
+                                </View>
+                                
                             </View>
                         )}
                     />

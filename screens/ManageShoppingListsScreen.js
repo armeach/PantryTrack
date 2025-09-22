@@ -5,7 +5,8 @@ import { Snackbar } from 'react-native-paper';
 import * as Clipboard from 'expo-clipboard'; 
 
 import { useAuth } from '../context/AuthProvider';
-import { fetchUserShoppingLists, fetchShoppingListById, createShoppingList, joinShoppingList } from '../services/shoppingListService';
+import { fetchFavoriteShoppingList } from '../services/userService';
+import { fetchUserShoppingLists, fetchShoppingListById, createShoppingList, joinShoppingList, setFavoriteShoppingList } from '../services/shoppingListService';
 
 import BackButton from "../components/BackButton";
 
@@ -38,10 +39,31 @@ export default function ManageShoppingListsScreen({ navigation, route }) {
 
     const [snackbarVisible, setSnackbarVisible] = useState(false); 
     const [snackbarText, setSnackbarText ] = useState(''); 
+    
     const copyToClipboard = async (id) => {
         await Clipboard.setStringAsync(id); 
         setSnackbarText(`Pantry ID copied: ${id}`);
         setSnackbarVisible(true); 
+    }; 
+
+    const [favoriteShoppingListId, setFavoriteShoppingListId] = useState(null); 
+    useEffect(() => {
+        const loadFavorite = async () => {
+            if (user) {
+                const favId = await fetchFavoriteShoppingList(user.uid);
+                setFavoriteShoppingListId(favId);
+            }
+        };
+        loadFavorite();
+    }, [user]);
+
+    const markFavorite = async (id) => {
+        await setFavoriteShoppingList(user.uid, id); 
+        const favId = await fetchFavoriteShoppingList(user.uid);
+        setFavoriteShoppingListId(favId);
+
+        setSnackbarText('Favorite shopping list updated!');
+        setSnackbarVisible(true);
     }; 
 
     // useEffect to fetch all shoppingListIds when the user is available
@@ -190,12 +212,27 @@ export default function ManageShoppingListsScreen({ navigation, route }) {
                         )}
                         renderItem={({ item }) => (
                             <View style={[ListStyles.listItem, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F9F7F3' }]}>
+                                
                                 <Text style={{ fontSize: 16 }}>{item.label}</Text>
-                                <TouchableOpacity
-                                    onPress={() => copyToClipboard(item.value)}
-                                >
-                                    <Ionicons name='copy-outline' size={24} />
-                                </TouchableOpacity>
+                                
+                                <View style={{ flexDirection: 'row', justifyContent:'space-between' }}>
+
+                                    <TouchableOpacity
+                                        style={{ marginHorizontal: 8 }}
+                                        onPress={() => markFavorite(item.value)}
+                                    >
+                                        <Ionicons name={item.value === favoriteShoppingListId ? 'star' : 'star-outline' } size={24} />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={{ marginHorizontal: 8 }}
+                                        onPress={() => copyToClipboard(item.value)}
+                                    >
+                                        <Ionicons name='copy-outline' size={24} />
+                                    </TouchableOpacity>
+
+                                </View>
+                                
                             </View>
                         )}
                     />

@@ -97,7 +97,13 @@ export const fetchShoppingListById = async (shoppingListId) => {
         console.error(`Error fetching shopping list ${shoppingListId}`, error);
         return;
     }
-}
+};
+
+// Favorite a Shopping List
+export const setFavoriteShoppingList = async (uid, shoppingListId) => {
+    const userRef = doc(db, 'users', uid);
+    await updateDoc(userRef, { favoriteShoppingListId: shoppingListId }); 
+}; 
 
 // Add an item to a shopping list
 export const addItem = async (shoppingListId, item) => {

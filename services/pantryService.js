@@ -97,6 +97,12 @@ export const fetchPantryById = async (pantryId) => {
     }
 }; 
 
+// Favorite a Pantry
+export const setFavoritePantry = async (uid, pantryId) => {
+    const userRef = doc(db, 'users', uid); 
+    await updateDoc(userRef, { favoritePantryId: pantryId }); 
+}; 
+
 // Add an item to a pantry
 export const addItem = async (pantryId, item) => {
     try { 
