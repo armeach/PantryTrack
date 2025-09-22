@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'; 
 import { TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Snackbar } from 'react-native-paper';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -20,10 +21,12 @@ import { Ionicons } from '@expo/vector-icons';
 
 import useScreenStyles from '../styles/ScreenStyles';
 import useInteractionStyles from '../styles/InteractionStyles';
+import { useTheme } from '../context/ThemeProvider';
 
 export default function PantryScreen({ navigation, route }) {
     const ScreenStyles = useScreenStyles();
     const InteractionStyles = useInteractionStyles(); 
+    const theme = useTheme(); 
     const insets = useSafeAreaInsets(); 
 
     const { user, activePantryId, selectPantry, userPantries, setUserPantries, refreshPantries, loadingPantries } = useAuth();    
@@ -35,6 +38,9 @@ export default function PantryScreen({ navigation, route }) {
     
     const [allOpen, setAllOpen] = useState(false); 
     const [expandedSections, setExpandedSections] = useState({}); 
+
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [snackbarText, setSnackbarText] = useState(''); 
 
     // useEffect to fetch all pantryIds when the user is available
     useEffect(() => {
@@ -63,6 +69,11 @@ export default function PantryScreen({ navigation, route }) {
         label: pantry.name,
         value: pantry.id,
     }))
+
+    console.log('User:', user); 
+    console.log('Active Pantry Id:', activePantryId);
+    console.log('Selected pantry:', selectedPantry);  
+    console.log(pantryItems); 
 
     return (
         <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
@@ -147,10 +158,29 @@ export default function PantryScreen({ navigation, route }) {
                         <PopoverMenuPantryManage 
                             navigation={navigation} 
                             route={route} 
+                            onRequestSnackbar={(msg) => {
+                                setSnackbarText(msg);
+                                setSnackbarVisible(true);
+                            }}
                         />
                 </View>
 
+                <View>
+                    {/* Notifications */}
+                    <Snackbar
+                        style={{ backgroundColor: theme.secondary, borderRadius: 12,
+                                    position: 'absolute', bottom: 15, left: 0, right: 90
+                            }}
+                        visible={snackbarVisible}
+                        onDismiss={() => setSnackbarVisible(false)}
+                        duration={2000}
+                    >
+                        {snackbarText}
+                    </Snackbar>
+                </View>
+
             </View>
+    
         </SafeAreaView>
     );
 };

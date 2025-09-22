@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { SectionList, Text, TouchableOpacity, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 

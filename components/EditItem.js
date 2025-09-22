@@ -73,6 +73,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
             expirationDate: getExpirationDate(date, expirationValue, expirationUnitsValue),
             barcode: barcodeValue,
         });
+        return true; 
     };
 
     return (

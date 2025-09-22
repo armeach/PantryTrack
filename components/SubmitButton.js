@@ -10,8 +10,8 @@ export default function SubmitButton ({ handleSubmit, navigation, skipNav = fals
         <TouchableOpacity
             style={InteractionStyles.backButton}
             onPress = {async () => {
-                await handleSubmit(); 
-                if (!skipNav) navigation.goBack(); 
+                const success = await handleSubmit(); 
+                if (!skipNav && success) navigation.goBack(); 
             }}
         >
             <Ionicons name={'checkmark'} size={36} color='black' />

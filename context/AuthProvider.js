@@ -23,6 +23,14 @@ export const AuthProvider = ({ children }) => {
     // Track the currently active shopping list; null if no shopping list is active.
     const [activeShoppingListId, setActiveShoppingListId] = useState(null); 
 
+    const [userShoppingLists, setUserShoppingLists] = useState([]); 
+    const refreshShoppingLists = async () => {
+        if (user) {
+            const shoppingLists = await fetchUserShoppingLists(user.uid);
+            setUserShoppingLists(shoppingLists); 
+        }
+    }
+
     // Load stored activePantry on mount
     useEffect(() => {
         const loadActivePantry = async () => {
@@ -47,6 +55,25 @@ export const AuthProvider = ({ children }) => {
         return unsubscribe;
     }, []);
 
+    // Refresh pantries/shopping lists if logged in otherwise clear all state and local storage on logout
+    useEffect(() => {
+        const clearState = async () => {
+            setUserPantries([]);
+            setUserShoppingLists([]);
+            setActivePantryId(null);
+            setActiveShoppingListId(null);
+            await AsyncStorage.removeItem('activePantryId');
+            await AsyncStorage.removeItem('activeShoppingListId');
+        }; 
+
+        if (user) {
+            refreshPantries();
+            refreshShoppingLists();
+        } else {
+            clearState(); 
+        }
+    }, [user]);
+
     // Store userPantries and userShoppingLists for rendering across screens
     const [userPantries, setUserPantries] = useState([]);
     const refreshPantries = async () => {
@@ -60,24 +87,10 @@ export const AuthProvider = ({ children }) => {
         }
     }; 
 
-    const [userShoppingLists, setUserShoppingLists] = useState([]); 
-    const refreshShoppingLists = async () => {
-        if (user) {
-            const shoppingLists = await fetchUserShoppingLists(user.uid);
-            setUserShoppingLists(shoppingLists); 
-        }
-    }
-
     // Functions to wrap the Firebase authentification methods
     const signUp = (email, password) => createUserWithEmailAndPassword(auth, email, password);
     const signIn = (email, password) => signInWithEmailAndPassword(auth, email, password);
-    const logOut = async () => {
-        setUserPantries([]);
-        setUserShoppingLists([]);
-        setActivePantryId(null);
-        setActiveShoppingListId(null);
-        await signOut(auth); 
-    };
+    const logOut = () => signOut(auth);
     const selectPantry = async (pantryId) => {
         setActivePantryId(pantryId); 
         await AsyncStorage.setItem('activePantryId', pantryId); 

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { SectionList, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -30,8 +29,7 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
             item.category ? item.category === cat.value : categories.value === 'Misc.'
         )
     }));
-
-    // const [expandedSections, setExpandedSections] = useState({}); 
+ 
     const toggleSection = (value) => {
         setExpandedSections(prev => ({
             ...prev,
@@ -105,6 +103,8 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
 };
 
 function getItemColor (item) {
+    if (item.expirationDate === null) return '#BFFCC6';
+
     const now = new Date(); 
     const diff = new Date(item.expirationDate) - now; // difference between now and item expiration (ms)
     const daysToExpiration = diff / (1000 * 60 * 60 * 24); // compute time to expiration in days

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedPicker from 'react-native-segmented-picker';
@@ -9,16 +10,17 @@ import DateSelector from './DateSelector';
 import BackButton from './BackButton.js';
 import SubmitButton from './SubmitButton.js';
 
+import { useAuth } from '../context/AuthProvider';
+
 import { categories, autoDetectCategory } from '../utils/categories';
 import { getExpirationDate } from '../utils/getExpirationDate.js';
 
 import useInteractionStyles from '../styles/InteractionStyles.js';
-
 import { useTheme } from '../context/ThemeProvider';
 
 export default function AddItem({ navigation, route, onSubmitEditing, barcode=null, item=null }) {     
     const InteractionStyles = useInteractionStyles(); 
-    const theme = useTheme(); 
+    const theme = useTheme();  
 
     const [text, setText] = useState(item?.title || '');
     const [brand, setBrand] = useState(item?.brand || '');
@@ -55,28 +57,39 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
         setExpirationUnitsValue(selection.col2);
     };
 
-    const [barcodeValue, setBarcodeValue] = useState(barcode || null); 
+    const [barcodeValue, setBarcodeValue] = useState(barcode || null);
+    
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [snackbarText, setSnackbarText] = useState(''); 
 
     const handleSubmit = () => {
-        if (!text) return; 
+        if (!text) {
+            setSnackbarText("Please input item name..."); 
+            setSnackbarVisible(true); 
+            return false;
+        } 
 
-        // Conditionally calculate expirationDate
-        const calculatedExpirationDate = (expirationValue && expirationUnitsValue)
-            ? getExpirationDate(date, expirationValue, expirationUnitsValue)
-            : null;
+        else {
+            // Conditionally calculate expirationDate
+            const calculatedExpirationDate = (expirationValue && expirationUnitsValue)
+                ? getExpirationDate(date, expirationValue, expirationUnitsValue)
+                : null;
 
-        onSubmitEditing({
-            title: text,
-            brand: brand,
-            quantity: parseInt(quantity) || 1,
-            unit: unit,
-            category: categoryValue,
-            dateAdded: date,
-            expirationValue: expirationValue,
-            expirationUnitsValue: expirationUnitsValue,
-            expirationDate: calculatedExpirationDate,
-            barcode: barcodeValue,
-        });
+            onSubmitEditing({
+                title: text,
+                brand: brand || null,
+                quantity: parseInt(quantity) || 1,
+                unit: unit,
+                category: categoryValue,
+                dateAdded: date,
+                expirationValue: expirationValue,
+                expirationUnitsValue: expirationUnitsValue,
+                expirationDate: calculatedExpirationDate,
+                barcode: barcodeValue,
+            });
+            return true; 
+        }
+        
     };
 
     return (
@@ -208,6 +221,19 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                     />
                 )}
             </View>
+
+            {/* Notifications */}
+            <View>
+                <Snackbar
+                    style={{ backgroundColor: theme.secondary, borderRadius: 12 }}
+                    visible={snackbarVisible}
+                    onDismiss={() => setSnackbarVisible(false)}
+                    duration={2000}
+                >
+                    {snackbarText}
+                </Snackbar>
+            </View>
+
         </View>        
     );
 }; 

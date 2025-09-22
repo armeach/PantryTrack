@@ -1,26 +1,32 @@
 import { useState, useRef } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import Popover from 'react-native-popover-view';
 import { Ionicons } from '@expo/vector-icons';
 
+import { useAuth } from '../context/AuthProvider'; 
+
 import NavButton from './NavButton';
 
-import useInteractionStyles from '../styles/InteractionStyles';
-
-export default function PopoverMenuPantryManage({ navigation, route }) {
-    const InteractionStyles = useInteractionStyles(); 
+export default function PopoverMenuPantryManage({ navigation, route, onRequestSnackbar }) {
+    const { user, activePantryId } = useAuth(); 
 
     const [showPopover, setShowPopover] = useState(false);
     const anchorRef = useRef();
+    
+    const handlePress = () => {
+        if (!user || !activePantryId) {
+               onRequestSnackbar?.("You must be logged in and select a pantry to add an item!");
+        } else {
+            setShowPopover(true); 
+        }
+    }; 
 
     return (
         <View>
             <TouchableOpacity
                 ref={anchorRef}
-                onPress={() => {
-                    setShowPopover(true)
-                }}
+                onPress={handlePress}
             >
                 <Ionicons name="add-circle" size={80} color="#6F8C84" />
             </TouchableOpacity>
@@ -61,6 +67,7 @@ export default function PopoverMenuPantryManage({ navigation, route }) {
 
                 </View>
             </Popover>
+
         </View>
     );
 };
