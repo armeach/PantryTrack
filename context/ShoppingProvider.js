@@ -43,7 +43,7 @@ export function ShoppingProvider({ children }) {
 
         // Clean up the listener when the component unmounts
         return () => unsubscribe(); 
-    }, [activeShoppingListId]);
+    }, [activeShoppingListId, user]);
 
     // This handles local checkbox tracking for shopping lists (so that we don't have a TON of Firestore writes)
     const toggleChecked = (itemId) => {

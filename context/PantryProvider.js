@@ -33,7 +33,7 @@ export function PantryProvider({ children }) {
 
         // Clean up the listener when the component unmounts
         return () => unsubscribe();
-    }, [activePantryId]);
+    }, [activePantryId, user]);
 
     // Expose items and the Firestore functions to the rest of the app
     const value = {

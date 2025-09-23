@@ -1,9 +1,12 @@
+import { useState } from 'react'; 
 import { SectionList, Text, TouchableOpacity, View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import SwipeableListItem from './SwipeableListItem';
 
+import { useAuth } from '../context/AuthProvider';
 import { usePantry } from '../context/PantryProvider';
 import { useShoppingList } from '../context/ShoppingProvider';
 
@@ -14,9 +17,11 @@ import useListStyles from '../styles/ListStyles';
 
 import { useTheme } from '../context/ThemeProvider';
 
-export default function PantryList({ enableSwipe = true, filter = null, isSearching = false, navigation, expandedSections, setExpandedSections }) {     
+export default function PantryList({ enableSwipe = true, filter = null, isSearching = false, navigation, expandedSections, setExpandedSections, onRequestSnackbar }) {     
     const ListStyles = useListStyles();
     const theme = useTheme();
+
+    const { activeShoppingListId, refreshShoppingLists } = useAuth(); 
     
     const { items, addItem, removeItem, editItem } = usePantry(); 
     const { items: shoppingItems, addItem: addShoppingItem, removeItem: removeShoppingItem, editItem: editShoppingItem } = useShoppingList(); 
@@ -25,8 +30,8 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
 
     const sections = categories.map(cat => ({
         title: capitalizeWords(cat.label),
-        data: (dataToRender || []).filter(item => 
-            item.category ? item.category === cat.value : categories.value === 'Misc.'
+        data: (dataToRender).filter(item => 
+            item.category === cat.value
         )
     }));
  
@@ -36,6 +41,20 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
             [value]: !prev[value],
         }));
     };
+
+    const moveItemToShopping = async (item) => {
+        if (!activeShoppingListId) {
+            await refreshShoppingLists(); 
+        };
+
+        if (!activeShoppingListId) {
+            onRequestSnackbar?.("No shopping list available.");
+            return; 
+        };
+
+        await addShoppingItem(item);
+        await removeItem(item.id); 
+    }; 
 
     return (
         <SectionList
@@ -80,16 +99,13 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
                 
                 return (
                     enableSwipe ? (
-                        // <View style={[ListStyles.listItem, { backgroundColor: getItemColor(item) }]}>
                         <View>
                             <SwipeableListItem 
                                 textContent={textContent}
                                 itemColor={getItemColor(item)}
                                 onSwipeRight={() => removeItem(item.id)}
-                                onSwipeLeft={() => {
-                                    addShoppingItem(item);
-                                    removeItem(item.id);
-                                }}
+                                onSwipeLeft={() => moveItemToShopping(item)}
+                                    
                                 onPress={() => navigation.push('EditItem', { item, listType: 'pantry' })}
                             />
                         </View>

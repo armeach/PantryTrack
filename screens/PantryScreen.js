@@ -82,12 +82,7 @@ export default function PantryScreen({ navigation, route }) {
     const pantryItems = pantryDetails.map(pantry => ({
         label: pantry.name,
         value: pantry.id,
-    }))
-
-    console.log('User:', user); 
-    console.log('Active Pantry Id:', activePantryId);
-    console.log('Selected pantry:', selectedPantry);  
-    console.log(pantryItems); 
+    })); 
 
     return (
         <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
