@@ -25,41 +25,34 @@ export function ShoppingProvider({ children }) {
 
         // Set up a real-time listener whose callback runs everytime data in the collection changes
         const unsubscribe = onSnapshot(itemsCollectionRef, (snapshot) => {
-            // Fetch local persistence of checked status
-            const mergeCheckedState = async () => {
-                const stored = await AsyncStorage.getItem(`checked-${activeShoppingListId}`);
-                const checkedMap = stored ? JSON.parse(stored) : {};
-
-                const itemsList = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    checked: checkedMap[doc.id] || false,
-                }));
-
-                setItems(itemsList); 
-            };
-            mergeCheckedState();
+            const itemsList = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            setItems(itemsList); 
         });
 
         // Clean up the listener when the component unmounts
         return () => unsubscribe(); 
     }, [activeShoppingListId, user]);
 
-    // This handles local checkbox tracking for shopping lists (so that we don't have a TON of Firestore writes)
+    // Locally handle tracking of checkbox status
+    const [checkedMap, setCheckedMap] = useState({}); 
+    useEffect(() => {
+        const loadChecked = async () => {
+            const stored = await AsyncStorage.getItem(`checked-${activeShoppingListId}`);
+            setCheckedMap(stored ? JSON.parse(stored) : {});
+        };
+        if (activeShoppingListId) loadChecked(); 
+    }, [activeShoppingListId]); 
+
     const toggleChecked = (itemId) => {
-        setItems(prev => {
-            const newItems = prev.map(i =>
-                i.id === itemId ? { ...i, checked: !i.checked } : i
-            );
-
-            // Persist locally
-            const checkedMap = {};
-            newItems.forEach(i => { checkedMap[i.id] = i.checked; });
-            AsyncStorage.setItem(`checked-${activeShoppingListId}`, JSON.stringify(checkedMap));
-
-            return newItems;
+        setCheckedMap(prev => {
+            const newMap = { ...prev, [itemId]: !prev[itemId] };
+            AsyncStorage.setItem(`checked-${activeShoppingListId}`, JSON.stringify(newMap));
+            return newMap;
         });
-    };
+    }; 
 
     // Expose items and the Firestore functions to the rest of the app
     const value = {
@@ -69,6 +62,7 @@ export function ShoppingProvider({ children }) {
         removeItem: (itemId) => removeItem(activeShoppingListId, itemId),
         editItem: (updatedData) => editItem(activeShoppingListId, updatedData),
         toggleChecked, 
+        checkedMap, 
     }; 
 
     return ( 

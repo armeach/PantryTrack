@@ -15,7 +15,7 @@ import useListStyles from '../styles/ListStyles';
 export default function ShoppingList({ enableSwipe = true, navigation, expandedSections, setExpandedSections }) {
     const ListStyles = useListStyles(); 
     
-    const { items, addItem, removeItem, editItem, toggleChecked } = useShoppingList(); 
+    const { items, addItem, removeItem, editItem, toggleChecked, checkedMap } = useShoppingList(); 
     
     const CheckBoxListItem = ({ item, itemColor }) => {
         const content = `${item.title}, ${item.quantity} ${item.unit}`;
@@ -25,7 +25,7 @@ export default function ShoppingList({ enableSwipe = true, navigation, expandedS
                 <Text>{content}</Text>
                 <CheckBox
                     containerStyle={{ padding: 0, margin: 0 }}
-                    checked={item.checked}
+                    checked={checkedMap[item.id] || false}
                     onPress={() => toggleChecked(item.id)}
                 />
             </View>
@@ -49,7 +49,7 @@ export default function ShoppingList({ enableSwipe = true, navigation, expandedS
     return (
         <SectionList
             style={{ flex: 1, paddingHorizontal: 15 }}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            contentContainerStyle={{ paddingBottom: 200 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {

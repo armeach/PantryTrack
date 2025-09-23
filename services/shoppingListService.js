@@ -170,6 +170,9 @@ export const batchMoveToPantry = async (shoppingListId, pantryId, items) => {
 
         // Batch remove items from shopping list
         const shoppingListRef = doc(db, 'shoppingLists', shoppingListId, 'items', item.id); 
+        
+        console.log('Deleting shopping list item at path:', shoppingListRef.path, 'with id:', item.id);
+        
         batch.delete(shoppingListRef); 
         }); 
 

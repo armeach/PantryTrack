@@ -30,8 +30,8 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
 
     const sections = categories.map(cat => ({
         title: capitalizeWords(cat.label),
-        data: (dataToRender).filter(item => 
-            item.category === cat.value
+        data: (dataToRender || []).filter(item => 
+            item.category ? item.category === cat.value : categories.value === 'Misc.'
         )
     }));
  
@@ -52,14 +52,16 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
             return; 
         };
 
-        await addShoppingItem(item);
-        await removeItem(item.id); 
+        const { id: docId, ...itemData } = item;
+
+        await addShoppingItem(itemData);
+        await removeItem(docId); 
     }; 
 
     return (
         <SectionList
             style={{ flex: 1, paddingHorizontal: 15 }}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            contentContainerStyle={{ paddingBottom: 200 }}
             sections={sections}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section }) => {

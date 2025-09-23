@@ -14,13 +14,11 @@ import useInteractionStyles from '../styles/InteractionStyles';
 export default function AddPurchasedButton({ icon, iconSize, navigation, onPressCustom }) {
     const InteractionStyles = useInteractionStyles();
     
-    const { items } = useShoppingList(); 
+    const { items, checkedMap } = useShoppingList(); 
     const { activePantryId, activeShoppingListId } = useAuth(); 
     
-    const handlePress = async () => {
-        console.log('Trying to batch move');
-        
-        const checkedItems = items.filter(item => item.checked); 
+    const handlePress = async () => {      
+        const checkedItems = items.filter(item => checkedMap[item.id]); 
         if (!checkedItems.length) return; 
 
         await batchMoveToPantry(activeShoppingListId, activePantryId, checkedItems); 
@@ -31,7 +29,10 @@ export default function AddPurchasedButton({ icon, iconSize, navigation, onPress
             <TouchableOpacity
                 style={InteractionStyles.addItemsButton}
                 underlayColor='lightgray'
-                onPress={handlePress}
+                onPress={() => {
+                    if (onPressCustom) onPressCustom(); 
+                    handlePress(); 
+                }}
             >  
                 <Ionicons name={icon} size={iconSize} />
             </TouchableOpacity>

@@ -17,7 +17,7 @@ export default function PopoverMenuShoppingList({ navigation, route, onRequestSn
 
     const handlePress = () => {
         if (!user || !activeShoppingListId) {
-               onRequestSnackbar?.("You must be logged in and select a shopping list to add an item!");
+            onRequestSnackbar?.("You must be logged in and select a shopping list to add an item!");
         } else {
             setShowPopover(true); 
         }
