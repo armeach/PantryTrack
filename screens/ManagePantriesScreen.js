@@ -102,6 +102,12 @@ export default function ManagePantriesScreen({ navigation, route }) {
     }))
 
     const handleCreatePantry = async () => {
+        if (!user) {
+            setSnackbarText('You must be logged in to create a pantry.');
+            setSnackbarVisible(true); 
+            return; 
+        }; 
+        
         if (newPantryName !== '') {
             await createPantry(user.uid, newPantryName); 
             await refreshPantries(); 
@@ -111,12 +117,12 @@ export default function ManagePantriesScreen({ navigation, route }) {
         } else {
             setSnackbarText('No pantry name input.'); 
             setSnackbarVisible(true); 
-        }
+        };
     }; 
 
     const handleJoinPantry = async () => {
         if (!user) {
-            setSnackbarText('You must be logged in to join a pantry.')
+            setSnackbarText('You must be logged in to join a pantry.'); 
             setSnackbarVisible(true); 
             return;
         };

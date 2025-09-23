@@ -99,6 +99,12 @@ export default function ManageShoppingListsScreen({ navigation, route }) {
     })); 
 
     const handleCreateShoppingList = async () => {
+        if (!user) {
+            setSnackbarText('You must be logged in to create a shopping list.'); 
+            setSnackbarVisible(true); 
+            return; 
+        }; 
+
         if (newShoppingListName !== '') {
             await createShoppingList(user.uid, newShoppingListName); 
             await refreshShoppingLists(); 
@@ -108,7 +114,7 @@ export default function ManageShoppingListsScreen({ navigation, route }) {
         } else {
             setSnackbarText('No shopping list name input.'); 
             setSnackbarVisible(true); 
-        }
+        }; 
     };
 
     const handleJoinShoppingList = async () => {
