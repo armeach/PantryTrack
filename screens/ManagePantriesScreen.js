@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'; 
-import { SectionList, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Alert, SectionList, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper'; 
 import * as Clipboard from 'expo-clipboard'; 
 
 import { useAuth } from '../context/AuthProvider';
-import { fetchFavoritePantry } from '../services/userService';
+import { removeUserFromPantry, fetchFavoritePantry } from '../services/userService';
 import { fetchUserPantries, fetchPantryById, createPantry, joinPantry, setFavoritePantry } from '../services/pantryService'; 
 
 import BackButton from "../components/BackButton";
@@ -138,6 +138,25 @@ export default function ManagePantriesScreen({ navigation, route }) {
         }
     }; 
 
+    const handleRemovePantry = async (pantryId, pantryName) => {
+        await removeUserFromPantry(user.uid, pantryId);
+        await refreshPantries(); 
+        
+        setSnackbarText(`Removed user from ${pantryName}`); 
+        setSnackbarVisible(true); 
+    };
+
+    const confirmRemovePantry = (pantryId, pantryName) => {
+        Alert.alert(
+            "Leave Pantry?",
+            `Are you sure you want to leave ${pantryName}?`,
+            [
+                { text: "Leave", style: "destructive", onPress: () => handleRemovePantry(pantryId, pantryName) },
+                { text: "Cancel", style: "cancel" }
+            ]
+        ); 
+    }; 
+
     return (
         <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
             
@@ -231,6 +250,13 @@ export default function ManagePantriesScreen({ navigation, route }) {
                                         onPress={() => copyToClipboard(item.value)}
                                     >
                                         <Ionicons name='copy-outline' size={24} />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={{ marginHorizontal: 8 }}
+                                        onPress={() => confirmRemovePantry(item.value, item.label)}
+                                    >
+                                        <Ionicons name='person-remove' size={24} />
                                     </TouchableOpacity>
 
                                 </View>

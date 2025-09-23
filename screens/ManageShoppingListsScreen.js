@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { SectionList, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
+import { Alert, SectionList, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper'; 
 import * as Clipboard from 'expo-clipboard'; 
 
 import { useAuth } from '../context/AuthProvider';
-import { fetchFavoriteShoppingList } from '../services/userService';
+import { removeUserFromShoppingList, fetchFavoriteShoppingList } from '../services/userService';
 import { fetchUserShoppingLists, fetchShoppingListById, createShoppingList, joinShoppingList, setFavoriteShoppingList } from '../services/shoppingListService';
 
 import BackButton from "../components/BackButton";
@@ -135,6 +135,25 @@ export default function ManageShoppingListsScreen({ navigation, route }) {
         }
     }; 
 
+    const handleRemoveShoppingList = async (shoppingListId, shoppingListName) => {
+        await removeUserFromShoppingList(user.uid, shoppingListId);
+        await refreshShoppingLists(); 
+        
+        setSnackbarText(`Removed user from ${shoppingListName}`); 
+        setSnackbarVisible(true); 
+    };
+    
+    const confirmRemoveShoppingList = (shoppingListId, shoppingListName) => {
+        Alert.alert(
+            "Leave Shopping List?",
+            `Are you sure you want to leave ${shoppingListName}?`,
+            [
+                { text: "Leave", style: "destructive", onPress: () => handleRemoveShoppingList(shoppingListId, shoppingListName) },
+                { text: "Cancel", style: "cancel" }
+            ]
+        ); 
+    }; 
+
     return (
         <SafeAreaView style={ScreenStyles.container} edges={['top', 'bottom']}>
             
@@ -229,6 +248,13 @@ export default function ManageShoppingListsScreen({ navigation, route }) {
                                         onPress={() => copyToClipboard(item.value)}
                                     >
                                         <Ionicons name='copy-outline' size={24} />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={{ marginHorizontal: 8 }}
+                                        onPress={() => confirmRemoveShoppingList(item.value, item.label)}
+                                    >
+                                        <Ionicons name='person-remove' size={24} />
                                     </TouchableOpacity>
 
                                 </View>
