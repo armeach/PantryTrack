@@ -1,4 +1,4 @@
-# Pantry Track
+# PantryTrack
 **PantryTrack** is a mobile application that helps users manage household inventory and shopping lists. It also allows for tracking of item shelf-life to help reduce waste.
 
 ## Features
