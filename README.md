@@ -86,3 +86,17 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## App Icon
 Generated using [Expo Icon Builder](https://expo-icon-builder.com/), which uses [Twemoji](https://github.com/twitter/twemoji) (open-source emoji library).
+
+## Screenshots
+<table>
+  <tr>
+    <td><img src="assets/screenshots/home.jpg" alt="Home" width="300"/></td>
+    <td><img src="assets/screenshots/pantry.jpg" alt="Pantry" width="300"/></td>
+    <td><img src="assets/screenshots/shopping_list.jpg" alt="Shopping List" width="300"/></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshots/addingItem_1.jpg" alt="Adding Item" width="300"/></td>
+    <td><img src="assets/screenshots/addingItem_2.jpg" alt="Shelf Life Selector" width="300"/></td>
+    <td><img src="assets/screenshots/pantry_management.jpg" alt="Pantry Management" width="300"/></td>
+  </tr>
+</table>
