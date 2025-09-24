@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 
@@ -43,22 +43,22 @@ export default function LoginScreen({ navigation, route }) {
         } catch (signInError) { 
             // If email and/or password are incorrect (or if account does not exist). 
             if (signInError.code === 'auth/invalid-credential') {
-                setSnackbarText('Invalid login. Please try again or create an account.'); 
+                setSnackbarText('Invalid login. \nPlease try again or create an account.'); 
                 setSnackbarVisible(true); 
             } 
             // If email is invalid. 
             else if (signInError.code === 'auth/invalid-email') {
-                setSnackbarText('Invalid email. Please try again or create an account.');
+                setSnackbarText('Invalid email. \nPlease try again or create an account.');
                 setSnackbarVisible(true);
             }
             // Missing password
             else if (signInError.code === 'auth/missing-password') {
-                setSnackbarText('Missing password. Please try again.');
+                setSnackbarText('Missing password. \nPlease try again.');
                 setSnackbarVisible(true); 
             }
             // Other errors
             else {
-                setSnackbarText(`Unable to login. Error: ${signInError.message || signInError}`);
+                setSnackbarText(`Unable to login. \nError: ${signInError.message || signInError}`);
                 setSnackbarVisible(true)
             }
         };
@@ -118,14 +118,14 @@ export default function LoginScreen({ navigation, route }) {
             </View>
 
             {/* Notifications */}
-            <View>
+            <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
                 <Snackbar
-                    style={{ backgroundColor: theme.secondary, borderRadius: 12 }}
+                    style={{ backgroundColor: theme.accent, borderRadius: 12 }}
                     visible={snackbarVisible}
                     onDismiss={() => setSnackbarVisible(false)}
                     duration={2000}
                 >
-                    {snackbarText}
+                    <Text style={{ color: theme.text, textAlign: 'center' }}>{snackbarText}</Text>
                 </Snackbar>
             </View>
 

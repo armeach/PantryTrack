@@ -11,11 +11,13 @@ import { categories } from '../utils/categories';
 import { capitalizeWords } from '../utils/capitalizeWords';
 
 import useListStyles from '../styles/ListStyles';
+import { useTheme } from '../context/ThemeProvider';
 
 export default function ShoppingList({ enableSwipe = true, navigation, expandedSections, setExpandedSections }) {
+    const theme = useTheme(); 
     const ListStyles = useListStyles(); 
     
-    const { items, addItem, removeItem, editItem, toggleChecked, checkedMap } = useShoppingList(); 
+    const { items, removeItem, toggleChecked, checkedMap } = useShoppingList(); 
     
     const CheckBoxListItem = ({ item, itemColor }) => {
         const content = `${item.title}, ${item.quantity} ${item.unit}`;
@@ -73,7 +75,7 @@ export default function ShoppingList({ enableSwipe = true, navigation, expandedS
             }}
 
             renderItem={({ item, section }) => {    
-                const itemColor = item.checked ? '#C6E2B3' : '#F9F7F3';
+                const itemColor = checkedMap[item.id] ? theme.listItemChecked : theme.listItem;
                 if (!expandedSections[section.title]) return null; // If we haven't expanded the section don't show it
 
 

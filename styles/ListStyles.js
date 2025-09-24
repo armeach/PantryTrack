@@ -11,13 +11,10 @@ export default  function useListStyles () {
             borderRadius: 12,
             alignSelf: 'stretch',
 
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1},
-            shadowOpacity: 0.1,
-            shadowRadius: 2,
-            elevation: 2,
+            borderWidth: 1, 
+            borderColor: theme.listSectionBorder, 
 
-            backgroundColor: theme.secondary,
+            backgroundColor: theme.listSection,
         },
         listItem: {
             padding: 15, 
@@ -25,11 +22,9 @@ export default  function useListStyles () {
             borderRadius: 12,
             alignSelf: 'stretch',
 
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1},
-            shadowOpacity: 0.1,
-            shadowRadius: 2,
-            elevation: 2,
+            borderWidth: 1, 
+            borderColor: theme.listItemBorder,
+
         },
     });
 };

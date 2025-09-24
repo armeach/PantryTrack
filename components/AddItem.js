@@ -154,7 +154,7 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                 <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 40 }}>
                     <Text style={{ fontSize: 20, marginBottom: 10 }}>Category: </Text>
                     <DropDownPicker
-                        style={InteractionStyles.dropdownPicker}
+                        style={InteractionStyles.dropdownWrapper}
                         textStyle={InteractionStyles.dropdownText}
                         dropDownContainerStyle={InteractionStyles.dropdownWindow}
                         open={categoriesOpen}
@@ -192,9 +192,9 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
                             ]}
 
                             size={.4}
-                            confirmTextColor='white'
-                            toolbarBackgroundColor={theme.secondary}
-                            backgroundColor={theme.primary}
+                            confirmTextColor={theme.text}
+                            toolbarBackgroundColor={theme.accent}
+                            backgroundColor={theme.interactionBackground}
                         />
                     </TouchableOpacity>
                 </View>
@@ -223,14 +223,14 @@ export default function AddItem({ navigation, route, onSubmitEditing, barcode=nu
             </View>
 
             {/* Notifications */}
-            <View>
+            <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
                 <Snackbar
-                    style={{ backgroundColor: theme.secondary, borderRadius: 12 }}
+                    style={{ backgroundColor: theme.accent, borderRadius: 12 }}
                     visible={snackbarVisible}
                     onDismiss={() => setSnackbarVisible(false)}
                     duration={2000}
                 >
-                    {snackbarText}
+                    <Text style={{ color: theme.text, textAlign: 'center' }}>{snackbarText}</Text>
                 </Snackbar>
             </View>
 

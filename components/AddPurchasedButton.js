@@ -10,9 +10,11 @@ import { usePantry } from '../context/PantryProvider';
 import { getExpirationDate } from '../utils/getExpirationDate.js';
 
 import useInteractionStyles from '../styles/InteractionStyles';
+import { useTheme } from '../context/ThemeProvider';
 
 export default function AddPurchasedButton({ icon, iconSize, navigation, onPressCustom }) {
     const InteractionStyles = useInteractionStyles();
+    const theme = useTheme(); 
     
     const { items, checkedMap } = useShoppingList(); 
     const { activePantryId, activeShoppingListId } = useAuth(); 
@@ -34,7 +36,7 @@ export default function AddPurchasedButton({ icon, iconSize, navigation, onPress
                     handlePress(); 
                 }}
             >  
-                <Ionicons name={icon} size={iconSize} />
+                <Ionicons name={icon} size={iconSize} color={theme.popoverIconColor} />
             </TouchableOpacity>
         </View>
     );

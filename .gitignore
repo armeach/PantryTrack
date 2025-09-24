@@ -42,5 +42,9 @@ yarn-error.*
 # Firebase config
 /config/FirebaseConfig.js
 
+# Android and iOS folders
+/android/
+/ios/ 
+
 # Test Files
 /testfiles/

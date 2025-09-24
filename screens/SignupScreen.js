@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextInput, TouchableOpacity, View } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 
@@ -47,7 +47,7 @@ export default function SignupScreen({ navigation, route }) {
             const userCredential = await signUp(email.trim(), password);
             await createUserDoc(userCredential.user.uid, email.trim()); 
 
-            setSnackbarText('Account created. Logged in!');
+            setSnackbarText('Account created. \nLogged in!');
             setSnackbarVisible(true);
 
             setTimeout(() => navigation.goBack(), 1000); 
@@ -75,7 +75,7 @@ export default function SignupScreen({ navigation, route }) {
             } 
             // Other errors
             else {
-                setSnackbarText(`Unable to create an account. Error: ${signUpError.message || signUpError}`); 
+                setSnackbarText(`Unable to create an account. \nError: ${signUpError.message || signUpError}`); 
                 setSnackbarVisible(true);
             }   
         };
@@ -159,14 +159,14 @@ export default function SignupScreen({ navigation, route }) {
             </View>
 
             {/* Notifications */}
-            <View>
+            <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
                 <Snackbar
-                    style={{ backgroundColor: theme.secondary, borderRadius: 12, paddingHorizontal: 15 }}
+                    style={{ backgroundColor: theme.accent, borderRadius: 12 }}
                     visible={snackbarVisible}
                     onDismiss={() => setSnackbarVisible(false)}
                     duration={2000}
                 >
-                    {snackbarText}
+                    <Text style={{ color: theme.text, textAlign: 'center' }}>{snackbarText}</Text>
                 </Snackbar>
             </View>
 

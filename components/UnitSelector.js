@@ -22,7 +22,7 @@ export default function UnitSelector({ selectedUnit, setSelectedUnit }) {
     
     return (
         <DropDownPicker
-            style={[InteractionStyles.dropdownPicker, { flex: 1 }]}
+            style={[InteractionStyles.dropdownWrapper, { flex: 1 }]}
             textStyle={InteractionStyles.dropdownText}
             dropDownContainerStyle={InteractionStyles.dropdownWindow}
             open={open}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'; 
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 
@@ -12,7 +12,7 @@ import ShoppingList from '../components/ShoppingList';
 
 import { useAuth } from '../context/AuthProvider'; 
 import { fetchFavoriteShoppingList } from '../services/userService';
-import { fetchUserShoppingLists, fetchShoppingListById } from '../services/shoppingListService';
+import { fetchShoppingListById } from '../services/shoppingListService';
 import { useShoppingList } from '../context/ShoppingProvider';
 
 import { categories } from '../utils/categories';
@@ -146,7 +146,7 @@ export default function ShoppingListScreen({ navigation, route }) {
                             setAllOpen(!allOpen); 
                         }}
                     >
-                        <Ionicons name={!allOpen ? 'chevron-down-circle' : 'chevron-up-circle'} size={80} color="#6F8C84" />
+                        <Ionicons name={!allOpen ? 'chevron-down-circle' : 'chevron-up-circle'} size={80} color={theme.floatingButtonIcon} />
                     </TouchableOpacity>
                 </View>
 
@@ -171,17 +171,17 @@ export default function ShoppingListScreen({ navigation, route }) {
                     />
                 </View>
 
-                <View>
-                    {/* Notifications */}
+                {/* Notifications */}
+                <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
                     <Snackbar
                         style={{ backgroundColor: theme.secondary, borderRadius: 12,
-                                 position: 'absolute', bottom: 15, left: 0, right: 90
+                                    position: 'absolute', bottom: 15, left: 0, right: 90
                             }}
                         visible={snackbarVisible}
                         onDismiss={() => setSnackbarVisible(false)}
                         duration={2000}
                     >
-                        {snackbarText}
+                        <Text style={{ color: theme.text, textAlign: 'center' }}>{snackbarText}</Text>
                     </Snackbar>
                 </View>
 

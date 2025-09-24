@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import SegmentedPicker from 'react-native-segmented-picker';
 
 import UnitSelector from './UnitSelector';
-import NavButton from './NavButton.js';
+import DateSelector from './DateSelector';
 import BackButton from './BackButton.js';
 import SubmitButton from './SubmitButton.js';
 
@@ -14,19 +14,19 @@ import { getExpirationDate } from '../utils/getExpirationDate.js';
 
 import useInteractionStyles from '../styles/InteractionStyles';
 
-import { useTheme } from '@react-navigation/native';
+import { useTheme } from '../context/ThemeProvider.js';
 
 export default function EditItem({ item, navigation, route, onSubmitEditing }) {
-    const theme = useTheme(); 
-    
     const InteractionStyles = useInteractionStyles(); 
+    const theme = useTheme(); 
 
     const [text, setText] = useState(item.title);
     const [brand, setBrand] = useState(item?.brand);
     const [quantity, setQuantity] = useState(item.quantity);
     const [unit, setUnit] = useState(item.unit);
-    const [date, setDate] = useState(item.dateAdded.toDate()); 
+    
     const [showDatePicker, setShowDatePicker] = useState(false);
+    const [date, setDate] = useState(item.dateAdded.toDate()); 
 
     const [categoriesOpen, setCategoriesOpen] = useState(false); 
     const [categoryValue, setCategoryValue] = useState(item.category);
@@ -137,7 +137,7 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                 <View style={{ justifyContent: 'center', marginBottom: 20, paddingHorizontal: 40 }}>
                     <Text style={{ fontSize: 20, marginBottom: 10 }}> Category:</Text>
                     <DropDownPicker
-                        style={InteractionStyles.dropdownPicker}
+                        style={InteractionStyles.dropdownWrapper}
                         textStyle={InteractionStyles.dropdownText}
                         dropDownContainerStyle={InteractionStyles.dropdownWindow}
                         open={categoriesOpen}
@@ -175,9 +175,9 @@ export default function EditItem({ item, navigation, route, onSubmitEditing }) {
                             ]}
 
                             size={.4}
-                            confirmTextColor='white'
-                            toolbarBackgroundColor='#8AA29E'
-                            backgroundColor='#FFFFFF'
+                            confirmTextColor={theme.text}
+                            toolbarBackgroundColor={theme.accent}
+                            backgroundColor={theme.interactionBackground}
                         />
                     </TouchableOpacity>
                 </View>

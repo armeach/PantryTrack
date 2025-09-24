@@ -8,9 +8,24 @@ import HomeScreen from '../screens/HomeScreen';
 import PantryScreen from '../screens/PantryScreen';
 import ShoppingListScreen from '../screens/ShoppingListScreen';
 
+import { useTheme } from '../context/ThemeProvider';
+
 const Tab = createBottomTabNavigator();
 
 export default function NavBar({ navigation, route }) {
+    const theme = useTheme(); 
+
+    const styles = StyleSheet.create({ 
+        buttonView: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+        },  
+        tabStyle: {
+            backgroundColor: theme.navBar,
+            height: 60,
+        },
+    });
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -30,8 +45,8 @@ export default function NavBar({ navigation, route }) {
 
                 headerShown: false,
                 tabBarStyle: styles.tabStyle,
-                tabBarActiveTintColor: '#F5F5DC',
-                tabBarInactiveTintColor: '#D9D9C6',   
+                tabBarActiveTintColor: theme.navBarActiveColor,
+                tabBarInactiveTintColor: theme.navBarInactiveColor,   
             })}
         >
             <Tab.Screen name="Home" component={HomeScreen} />
@@ -39,15 +54,4 @@ export default function NavBar({ navigation, route }) {
             <Tab.Screen name="Shopping List" component={ShoppingListScreen} />
         </Tab.Navigator>
     );
-};
-
-const styles = StyleSheet.create({ 
-    buttonView: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },  
-    tabStyle: {
-        backgroundColor: '#8AA29E',
-        height: 60,
-    },
-});
+}; 

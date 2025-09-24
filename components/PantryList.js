@@ -91,7 +91,7 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
                 const textContent = `${item.title}, ${item.quantity} ${item.unit}`;
                 
                 const content = (
-                    <View style={[ListStyles.listItem, { backgroundColor: getItemColor(item) }]}>
+                    <View style={[ListStyles.listItem, { backgroundColor: getItemColor(item, theme) }]}>
                         <Text>
                             {textContent}
                         </Text> 
@@ -104,7 +104,7 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
                         <View>
                             <SwipeableListItem 
                                 textContent={textContent}
-                                itemColor={getItemColor(item)}
+                                itemColor={getItemColor(item, theme)}
                                 onSwipeRight={() => removeItem(item.id)}
                                 onSwipeLeft={() => moveItemToShopping(item)}
                                     
@@ -120,14 +120,14 @@ export default function PantryList({ enableSwipe = true, filter = null, isSearch
     );
 };
 
-function getItemColor (item) {
-    if (item.expirationDate === null) return '#BFFCC6';
+function getItemColor (item, theme) {
+    if (item.expirationDate === null) return theme.listItem;
 
     const now = new Date(); 
     const diff = new Date(item.expirationDate) - now; // difference between now and item expiration (ms)
     const daysToExpiration = diff / (1000 * 60 * 60 * 24); // compute time to expiration in days
 
-        if (daysToExpiration < 0) return '#FFB3B3';
-        else if (daysToExpiration < 2) return '#FFF5BA';
-        else return '#BFFCC6';
+        if (daysToExpiration < 0) return theme.listItemExpired;
+        else if (daysToExpiration < 2) return theme.listItemNearExpiry;
+        else return theme.listItem;
 };

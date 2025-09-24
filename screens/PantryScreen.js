@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'; 
-import { TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 
@@ -148,7 +148,7 @@ export default function PantryScreen({ navigation, route }) {
                             setAllOpen(!allOpen); 
                         }}
                     >
-                        <Ionicons name={!allOpen ? 'chevron-down-circle' : 'chevron-up-circle'} size={80} color="#6F8C84" />
+                        <Ionicons name={!allOpen ? 'chevron-down-circle' : 'chevron-up-circle'} size={80} color={theme.floatingButtonIcon} />
                     </TouchableOpacity>
                 </View>
 
@@ -174,8 +174,8 @@ export default function PantryScreen({ navigation, route }) {
                         />
                 </View>
 
-                <View>
-                    {/* Notifications */}
+                {/* Notifications */}
+                <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
                     <Snackbar
                         style={{ backgroundColor: theme.secondary, borderRadius: 12,
                                     position: 'absolute', bottom: 15, left: 0, right: 90
@@ -184,7 +184,7 @@ export default function PantryScreen({ navigation, route }) {
                         onDismiss={() => setSnackbarVisible(false)}
                         duration={2000}
                     >
-                        {snackbarText}
+                        <Text style={{ color: theme.text, textAlign: 'center' }}>{snackbarText}</Text>
                     </Snackbar>
                 </View>
 

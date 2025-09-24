@@ -7,8 +7,7 @@ export default function useScreenStyles () {
     return StyleSheet.create({
         container: {
             flex: 1,
-            // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-            backgroundColor: theme.primary, // main background color
+            backgroundColor: theme.backgroundColor, // main background color
         },
     });
 };

@@ -6,8 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { useAuth } from '../context/AuthProvider';
 
-import NavButton from './NavButton';
-
 import useInteractionStyles from '../styles/InteractionStyles';
 
 export default function SettingsMenu({ navigation, route }) {
@@ -38,14 +36,14 @@ export default function SettingsMenu({ navigation, route }) {
                     setShowSettingsMenu(false);
                 }}
             >
-                <View>
+                <View style={{ flex: 1, width: 250}}>
                     
                     {/* User/Account Management */}
                     <View style={{ flexDirection: 'row' }}>
                         {/* Case 1: User is Logged in -> Display "Log Out" */}
                         { user ? (
                             <TouchableHighlight
-                                style={InteractionStyles.navButton}
+                                style={[InteractionStyles.navButton, { flex: 1 }]}
                                 underlayColor='lightgray'
                                 onPress={() => {
                                     setShowSettingsMenu(false); 
@@ -64,7 +62,7 @@ export default function SettingsMenu({ navigation, route }) {
                             (
                             <>
                                 <TouchableHighlight
-                                    style={InteractionStyles.navButton}
+                                    style={[InteractionStyles.navButton, { flex: 1 }]}
                                     underlayColor='lightgray'
                                     onPress = {() => {
                                         setShowSettingsMenu(false); 
@@ -75,7 +73,7 @@ export default function SettingsMenu({ navigation, route }) {
                                 </TouchableHighlight>
 
                                 <TouchableHighlight
-                                    style={InteractionStyles.navButton}
+                                    style={[InteractionStyles.navButton, { flex: 1 }]}
                                     underlayColor='lightgray'
                                     onPress = {() => {
                                         setShowSettingsMenu(false); 

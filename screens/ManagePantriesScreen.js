@@ -277,12 +277,12 @@ export default function ManagePantriesScreen({ navigation, route }) {
             {/* Notifications */}
             <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
                 <Snackbar
-                    style={{ backgroundColor: theme.secondary, borderRadius: 12 }}
+                    style={{ backgroundColor: theme.accent, borderRadius: 12 }}
                     visible={snackbarVisible}
                     onDismiss={() => setSnackbarVisible(false)}
                     duration={2000}
                 >
-                    {snackbarText}
+                    <Text style={{ color: theme.text, textAlign: 'center' }}>{snackbarText}</Text>
                 </Snackbar>
             </View>
 

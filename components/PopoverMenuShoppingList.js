@@ -9,7 +9,11 @@ import { useAuth } from '../context/AuthProvider';
 import NavButton from './NavButton';
 import AddPurchasedButton from './AddPurchasedButton';
 
+import { useTheme } from '../context/ThemeProvider';
+
 export default function PopoverMenuShoppingList({ navigation, route, onRequestSnackbar }) {
+    const theme = useTheme(); 
+    
     const { user, activeShoppingListId } = useAuth(); 
     
     const [showPopover, setShowPopover] = useState(false);
@@ -29,7 +33,7 @@ export default function PopoverMenuShoppingList({ navigation, route, onRequestSn
                 ref={anchorRef}
                 onPress={handlePress}
             >
-                <Ionicons name="add-circle" size={80} color="#6F8C84" />
+                <Ionicons name="add-circle" size={80} color={theme.floatingButtonIcon} />
             </TouchableOpacity>
 
             <Popover

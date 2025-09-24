@@ -5,19 +5,20 @@ export default function useInteractionStyles () {
     const theme = useTheme(); 
     
     return StyleSheet.create({
+        // Buttons
         navButton: {
             margin: 5,
             padding: 20,
             borderRadius: 12, 
             alignItems: 'center',
-            backgroundColor: theme.secondary,
+            backgroundColor: theme.popoverButtonColor,
         },
         addItemsButton: {
             margin: 5,
             padding: 20,
             borderRadius: 12, 
             alignItems: 'center',
-            backgroundColor: theme.secondary,
+            backgroundColor: theme.popoverButtonColor,
         },
         backButton: {
             width: 40,
@@ -28,47 +29,66 @@ export default function useInteractionStyles () {
         dateButton: {
             padding: 15,
             borderRadius: 12,
-            backgroundColor: theme.tertiary,
+            backgroundColor: theme.interactionBackground,
+
+            shadowColor: theme.interactionShadow,
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.1,
+            shadowRadius: 2,
+            elevation: 2,
         },
         dateButtonText: {
             fontSize: 20,
+            color: theme.text,
         },
+
+        // Dropdowns and Text Inputs
         dropdownPicker: {
             height: 50, 
             width: 200,
             borderWidth: 0,
-            backgroundColor: theme.tertiary,
+            backgroundColor: theme.interactionBackground,
             zIndex: 1000,
+
         },
         dropdownWindow: {
             borderRadius: 12, 
-            backgroundColor: 'white',
+            backgroundColor: theme.interactionBackground,
             zIndex: 2000,
         },
         dropdownText: {
             fontSize: 20,
-            color: 'black',
+            color: theme.text,
         },
         dropdownWrapper: {
-            width: '90%',
-            backgroundColor: theme.primary,
-            borderRadius: 15,
+            height: 50, 
+            width: 200,
+            borderWidth: 0,
+            backgroundColor: theme.interactionBackground,
+            zIndex: 1000,
+
+            shadowColor: theme.interactionShadow,
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.1,
+            shadowRadius: 2,
+            elevation: 2,
         },
         inputText: {
             padding: 10, 
             height: 50,
             fontSize: 20,
             textAlign: 'left', 
+            color: theme.text,
         },
         inputWrapper: {
             width: '90%',
-            backgroundColor: theme.tertiary,
+            backgroundColor: theme.interactionBackground,
             borderRadius: 15,
             paddingHorizontal: 15,
             paddingVertical: 5, 
             marginBottom: 10,
 
-            shadowColor: '#000',
+            shadowColor: theme.interactionShadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.1,
             shadowRadius: 2,
@@ -76,13 +96,13 @@ export default function useInteractionStyles () {
         },
         searchWrapper: {
             width: '90%',
-            backgroundColor: theme.tertiary,
+            backgroundColor: theme.interactionBackground,
             borderRadius: 25,
             paddingHorizontal: 15,
             paddingVertical: 5, 
             marginBottom: 10,
 
-            shadowColor: '#000',
+            shadowColor: theme.interactionShadow,
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.1,
             shadowRadius: 2,
