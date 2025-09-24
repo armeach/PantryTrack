@@ -16,10 +16,7 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./icon.png",
-        "backgroundColor": "#ffffff"
-      },
+      "icon": "./icon.png", 
       "edgeToEdgeEnabled": true,
       "package": "com.armeacham.PantryTrack"
     },
