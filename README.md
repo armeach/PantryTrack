@@ -80,3 +80,9 @@ npx react-native run-ios
 
 ## Next Steps
 - Recipe suggestions based on pantry items and user food preferences.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+**App Icon:** 
+Generated using [Expo Icon Builder](https://expo-icon-builder.com/), which uses [Twemoji](https://github.com/twitter/twemoji) (open-source emoji library).
